@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity implements AtVideoPlayerCont
         setContentView(R.layout.activity_main_layout);
         ButterKnife.bind(this);
         initVideo();
+
     }
 
 

@@ -1,5 +1,7 @@
 package com.chou.android.mediaplayerlibrary;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
@@ -14,8 +16,12 @@ import android.view.Gravity;
 import android.view.Surface;
 import android.view.TextureView;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.ScaleAnimation;
 import android.widget.FrameLayout;
 
+import android.widget.Toast;
 import com.chou.android.mediaplayerlibrary.utils.ChouPlayerUtil;
 import com.chou.android.mediaplayerlibrary.utils.LogUtil;
 import com.chou.android.mediaplayerlibrary.view.VideoTextureView;
@@ -26,7 +32,7 @@ import tv.danmaku.ijk.media.player.IMediaPlayer;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 
 public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventListener,
-        TextureView.SurfaceTextureListener {
+    TextureView.SurfaceTextureListener {
     /**
      * 播放状态
      **/
@@ -47,17 +53,8 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
     public static final int MODE_FULL_SCREEN = 11;
 
     /**
-     * 播放器类型
-     */
-    public static final int TYPE_IJK = 111;
-    public static final int TYPE_NATIVE = 222;
-    public static final int TYPE_ALI = 333;
-    public static final int TYPE_EXO = 444;
-
-    /**
      * 设置默认
      */
-    private int mPlayerType = TYPE_ALI;
     private int mCurrentState = STATE_IDLE;
     private int mCurrentMode = MODE_NORMAL;
 
@@ -73,6 +70,7 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
      */
     private IjkMediaPlayer mMediaPlayer;
     private FrameLayout mContainer;
+    private FrameLayout mContainer1;
     private VideoTextureView mTextureView;
     private VideoPlayerBaseController mController;
     private SurfaceTexture mSurfaceTexture;
@@ -88,8 +86,8 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
 
 
     public ChouVideoPlayer(
-            @NonNull Context context,
-            @Nullable AttributeSet attrs) {
+        @NonNull Context context,
+        @Nullable AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
         init();
@@ -100,7 +98,7 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
         mContainer = new FrameLayout(mContext);
         mContainer.setBackgroundColor(Color.BLACK);
         LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT);
+            ViewGroup.LayoutParams.MATCH_PARENT);
         this.addView(mContainer, params);
     }
 
@@ -111,7 +109,7 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
         mController.reset();
         mController.setVideoPlayerView(this);
         LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT);
+            ViewGroup.LayoutParams.MATCH_PARENT);
         mContainer.addView(mController, params);
     }
 
@@ -141,19 +139,22 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
         }
     }
 
+
     private void initAudioManager() {
         if (mAudioManager == null) {
             mAudioManager = (AudioManager) getContext().getSystemService(Context.AUDIO_SERVICE);
             mAudioManager.requestAudioFocus(null, AudioManager.STREAM_MUSIC,
-                    AudioManager.AUDIOFOCUS_GAIN);
+                AudioManager.AUDIOFOCUS_GAIN);
         }
     }
+
 
     private void initMediaPlayer() {
         mMediaPlayer = new IjkMediaPlayer();
         mMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "enable-accurate-seek", 1);
         mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
     }
+
 
     private void initTextureView() {
         if (mTextureView == null) {
@@ -162,12 +163,13 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
         }
     }
 
+
     private void addTextureView() {
         mContainer.removeView(mTextureView);
         LayoutParams params = new LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                Gravity.CENTER);
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            Gravity.CENTER);
         mContainer.addView(mTextureView, 0, params);
     }
 
@@ -224,6 +226,27 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
         }
     }
 
+    /**
+     * 设置视频缩放
+     * @param isScaling
+     */
+    @Override public void isVideoScaling(boolean isScaling) {
+        AnimatorSet animatorSetsuofang = new AnimatorSet();//组合动画
+        ObjectAnimator scaleX;
+        ObjectAnimator scaleY;
+        if (isScaling){
+             scaleX = ObjectAnimator.ofFloat(mContainer, "scaleX", 1f, 0.9f);
+             scaleY = ObjectAnimator.ofFloat(mContainer, "scaleY", 1f, 0.9f);
+        }else {
+             scaleX = ObjectAnimator.ofFloat(mContainer, "scaleX", 0.9f, 1.0f);
+             scaleY = ObjectAnimator.ofFloat(mContainer, "scaleY", 0.9f, 1.0f);
+        }
+        animatorSetsuofang.setDuration(1000);
+        animatorSetsuofang.setInterpolator(new DecelerateInterpolator());
+        animatorSetsuofang.play(scaleX).with(scaleY);//两个动画同时开始
+        animatorSetsuofang.start();
+    }
+
 
     @Override
     public void setVolume(int volume) {
@@ -235,8 +258,9 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
 
     @Override
     public void setSpeed(float speed) {
-        mMediaPlayer.setSpeed(speed);
-
+        if (mMediaPlayer != null) {
+            mMediaPlayer.setSpeed(speed);
+        }
     }
 
 
@@ -298,6 +322,7 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
     public boolean isFullScreen() {
         return mCurrentMode == MODE_FULL_SCREEN;
     }
+
 
     @Override
     public boolean isNormal() {
@@ -369,6 +394,19 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
     }
 
 
+    /**
+     * 倒退时间
+     * @param backTime 毫秒
+     */
+    @Override public void setRewind(long backTime) {
+        if (mMediaPlayer!=null){
+            long time = mMediaPlayer.getCurrentPosition() - backTime;
+            mMediaPlayer.seekTo(time);
+            Toast.makeText(mContext,"视频快退5s成功",Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
     private void openMediaPlayer() {
         // 屏幕常亮
         mContainer.setKeepScreenOn(true);
@@ -397,8 +435,8 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
 
 
     private IjkMediaPlayer
-            .OnPreparedListener mOnPreparedListener
-            = new IjkMediaPlayer.OnPreparedListener() {
+        .OnPreparedListener mOnPreparedListener
+        = new IjkMediaPlayer.OnPreparedListener() {
         @Override
         public void onPrepared(IMediaPlayer mp) {
             mCurrentState = STATE_PREPARED;
@@ -413,7 +451,7 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
 
     };
     private IjkMediaPlayer.OnVideoSizeChangedListener mOnVideoSizeChangedListener
-            = new IjkMediaPlayer.OnVideoSizeChangedListener() {
+        = new IjkMediaPlayer.OnVideoSizeChangedListener() {
         @Override
         public void onVideoSizeChanged(IMediaPlayer mp, int width, int height, int sar_num, int sar_den) {
             mTextureView.adaptVideoSize(width, height);
@@ -421,7 +459,7 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
     };
 
     private IjkMediaPlayer.OnCompletionListener mOnCompletionListener
-            = new IjkMediaPlayer.OnCompletionListener() {
+        = new IjkMediaPlayer.OnCompletionListener() {
         @Override
         public void onCompletion(IMediaPlayer mp) {
             mCurrentState = STATE_COMPLETED;
@@ -432,7 +470,7 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
     };
 
     private IjkMediaPlayer.OnErrorListener mOnErrorListener
-            = new IjkMediaPlayer.OnErrorListener() {
+        = new IjkMediaPlayer.OnErrorListener() {
         @Override
         public boolean onError(IMediaPlayer mp, int what, int extra) {
             mCurrentState = STATE_ERROR;
@@ -442,7 +480,7 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
     };
 
     private IjkMediaPlayer.OnInfoListener mOnInfoListener
-            = new IjkMediaPlayer.OnInfoListener() {
+        = new IjkMediaPlayer.OnInfoListener() {
         @Override
         public boolean onInfo(IMediaPlayer mp, int what, int extra) {
             if (what == IMediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START) {
@@ -484,7 +522,7 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
     };
 
     private IjkMediaPlayer.OnBufferingUpdateListener mOnBufferingUpdateListener
-            = new IjkMediaPlayer.OnBufferingUpdateListener() {
+        = new IjkMediaPlayer.OnBufferingUpdateListener() {
         @Override
         public void onBufferingUpdate(IMediaPlayer mp, int percent) {
             mBufferPercentage = percent;
@@ -504,19 +542,21 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
         // 隐藏ActionBar、状态栏，并横屏
         ChouPlayerUtil.hideActionBar(mContext);
         ChouPlayerUtil.scanForActivity(mContext)
-                .setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            .setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         ViewGroup contentView = (ViewGroup) ChouPlayerUtil.scanForActivity(mContext)
-                .findViewById(android.R.id.content);
+            .findViewById(android.R.id.content);
+        contentView.setBackgroundColor(Color.BLACK);
         this.removeView(mContainer);
         LayoutParams params = new LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT);
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT);
         contentView.addView(mContainer, params);
 
         mCurrentMode = MODE_FULL_SCREEN;
         mController.onPlayModeChanged(mCurrentMode);
     }
+
 
     /**
      * 退出全屏
@@ -526,14 +566,15 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
         if (mCurrentMode == MODE_FULL_SCREEN) {
             ChouPlayerUtil.showActionBar(mContext);
             ChouPlayerUtil.scanForActivity(mContext)
-                    .setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                .setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
             ViewGroup contentView = (ViewGroup) ChouPlayerUtil.scanForActivity(mContext)
-                    .findViewById(android.R.id.content);
+                .findViewById(android.R.id.content);
+            contentView.setBackgroundColor(Color.WHITE);
             contentView.removeView(mContainer);
             LayoutParams params = new LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT);
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
             this.addView(mContainer, params);
 
             mCurrentMode = MODE_NORMAL;

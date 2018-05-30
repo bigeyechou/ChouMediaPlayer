@@ -1,61 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rel_total"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:id="@+id/at_right"
-        android:layout_width="60dp"
+        android:id="@+id/at_video_cut_layout"
+        android:layout_width="90dip"
+        android:layout_marginTop="30dip"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_toLeftOf="@+id/at_video_right"
+        android:layout_gravity="end|center_vertical"
+        android:layout_marginRight="100dp">
+
+        <com.chou.android.mediaplayerlibrary.view.CircularProgressBar
+            android:id="@+id/at_video_cut_progress"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            app:cpb_background_progressbar_color="#B3FFFFFF"
+            app:cpb_background_progressbar_width="5dp"
+            app:cpb_progressbar_color="#B3dc691b"
+            app:cpb_progressbar_width="5dp"
+            app:cpb_progress="15000"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#b3ffffff"
+            android:layout_marginTop="10dip"
+            android:gravity="center_horizontal"
+            android:lineSpacingExtra="4sp"
+            android:text="松开完成截取视频"
+            android:textSize="12sp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/at_video_right"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="vertical"
-        android:visibility="visible"
+        android:visibility="gone"
         android:layout_alignParentRight="true">
-        <TextView
-            android:id="@+id/at_speed"
+
+        <ImageView
+            android:id="@+id/at_video_speed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="10dp"
-            android:layout_margin="5dp"
-            android:background="#ffff8333"
-            android:text="倍速"/>
-        <TextView
-            android:id="@+id/at_start_time"
+            android:src="@mipmap/ic_wujike_media_speed_normal"/>
+
+        <com.chou.android.mediaplayerlibrary.view.TouchView
+            android:id="@+id/at_video_cut"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
             android:padding="10dp"
-            android:layout_margin="5dp"
-            android:background="#ffff8333"
-            android:text="开始"/>
-        <TextView
-            android:id="@+id/at_stop_time"
+            android:src="@drawable/ic_wujike_media_cut"/>
+
+        <ImageView
+            android:id="@+id/at_video_mirror"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
             android:padding="10dp"
-            android:layout_margin="5dp"
-            android:background="#ffff8333"
-            android:text="结束"/>
-        <TextView
-            android:id="@+id/at_startab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:layout_margin="5dp"
-            android:background="#ffff8333"
-            android:text="AB循环"/>
-        <TextView
-            android:id="@+id/at_mirror"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:layout_margin="5dp"
-            android:background="#ffff8333"
-            android:text="镜像"/>
+            android:src="@mipmap/ic_video_transform"/>
+
     </LinearLayout>
+    <ImageView
+        android:id="@+id/at_video_rew"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="15dp"
+        android:src="@mipmap/ic_wujike_media_rew"/>
+    <ImageView
+        android:id="@+id/at_video_save_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="6dp"
+        android:layout_marginLeft="27dp"
+        android:layout_marginTop="24dp"
+        android:visibility="visible"
+        android:src="@mipmap/ic_save_close"/>
+    <ImageView
+        android:id="@+id/at_video_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:padding="10dp"
+        android:src="@mipmap/ic_wujike_media_save"/>
+
+
     <!--加载动画-->
     <LinearLayout
-        android:id="@+id/at_loading"
+        android:id="@+id/at_video_loading"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
@@ -68,7 +115,7 @@
             android:indeterminateDrawable="@drawable/loading"/>
 
         <TextView
-            android:id="@+id/at_load_text"
+            android:id="@+id/at_video_load_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -78,7 +125,7 @@
     </LinearLayout>
     <!--改变播放位置-->
     <LinearLayout
-        android:id="@+id/at_change_position"
+        android:id="@+id/at_video_change_position"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -89,7 +136,7 @@
         android:visibility="gone">
 
         <TextView
-            android:id="@+id/at_change_position_current"
+            android:id="@+id/at_video_change_position_current"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="00:00"
@@ -98,7 +145,7 @@
 
         <ProgressBar
             style="@android:style/Widget.ProgressBar.Horizontal"
-            android:id="@+id/at_change_position_progress"
+            android:id="@+id/at_video_change_position_progress"
             android:layout_width="100dp"
             android:layout_height="2dp"
             android:layout_marginBottom="4dp"
@@ -108,7 +155,7 @@
     </LinearLayout>
     <!--改变亮度-->
     <LinearLayout
-        android:id="@+id/at_change_brightness"
+        android:id="@+id/at_video_change_brightness"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -121,11 +168,11 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_palyer_brightness"/>
+            android:src="@mipmap/ic_wujike_media_bright"/>
 
         <ProgressBar
             style="@android:style/Widget.ProgressBar.Horizontal"
-            android:id="@+id/at_change_brightness_progress"
+            android:id="@+id/at_video_change_brightness_progress"
             android:layout_width="100dp"
             android:layout_height="2dp"
             android:layout_marginBottom="4dp"
@@ -136,7 +183,7 @@
     </LinearLayout>
     <!--改变声音-->
     <LinearLayout
-        android:id="@+id/at_change_volume"
+        android:id="@+id/at_video_change_volume"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -149,11 +196,11 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_palyer_volume"/>
+            android:src="@mipmap/ic_wujike_media_volume_up"/>
 
         <ProgressBar
             style="@android:style/Widget.ProgressBar.Horizontal"
-            android:id="@+id/at_change_volume_progress"
+            android:id="@+id/at_video_change_volume_progress"
             android:layout_width="100dp"
             android:layout_height="2dp"
             android:layout_marginBottom="4dp"
@@ -164,7 +211,7 @@
     </LinearLayout>
     <!--播放错误-->
     <LinearLayout
-        android:id="@+id/at_error"
+        android:id="@+id/at_video_error"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/black"
@@ -180,7 +227,7 @@
             android:textSize="13sp"/>
 
         <TextView
-            android:id="@+id/at_retry"
+            android:id="@+id/at_video_retry"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -195,7 +242,7 @@
     </LinearLayout>
     <!--顶部控制区-->
     <RelativeLayout
-        android:id="@+id/at_top"
+        android:id="@+id/at_video_top"
         android:layout_width="match_parent"
         android:layout_height="42dp"
         android:background="@drawable/player_mask_top"
@@ -204,22 +251,23 @@
         android:paddingRight="8dp">
 
         <ImageView
-            android:id="@+id/at_back"
+            android:id="@+id/at_video_back"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/ic_player_back"
+            android:src="@mipmap/ic_wujike_media_back"
             android:visibility="visible"/>
+
         <ImageView
-            android:id="@+id/at_report"
+            android:id="@+id/at_video_report"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/ic_player_back"
             android:visibility="visible"
-            android:layout_alignParentRight="true"/>
+            android:layout_alignParentRight="true"
+            android:src="@mipmap/ic_play_more"/>
     </RelativeLayout>
     <!--底部控制区-->
     <LinearLayout
-        android:id="@+id/at_bottom"
+        android:id="@+id/at_video_bottom"
         android:layout_width="match_parent"
         android:layout_height="42dp"
         android:layout_alignParentBottom="true"
@@ -229,13 +277,13 @@
         android:paddingRight="8dp">
 
         <ImageView
-            android:id="@+id/at_restart_or_pause"
+            android:id="@+id/at_video_restart_or_pause"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/ic_player_start"/>
+            android:src="@mipmap/ic_video_play"/>
 
         <TextView
-            android:id="@+id/at_position"
+            android:id="@+id/at_video_position"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
@@ -244,7 +292,7 @@
             android:textSize="12sp"/>
 
         <SeekBar
-            android:id="@+id/at_seek"
+            android:id="@+id/at_video_seek"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -257,7 +305,7 @@
             android:thumb="@drawable/seek_thumb"/>
 
         <TextView
-            android:id="@+id/at_duration"
+            android:id="@+id/at_video_duration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="00:00"
@@ -265,11 +313,11 @@
             android:textSize="12sp"/>
 
         <ImageView
-            android:id="@+id/at_full_screen"
+            android:id="@+id/at_video_full_screen"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginLeft="8dp"
-            android:src="@drawable/ic_player_enlarge"/>
+            android:src="@mipmap/ic_video_enlarge"/>
     </LinearLayout>
 
 </RelativeLayout>

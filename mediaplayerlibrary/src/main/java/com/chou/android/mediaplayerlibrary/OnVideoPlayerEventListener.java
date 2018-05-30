@@ -33,6 +33,10 @@ public interface OnVideoPlayerEventListener {
      * seek到制定的位置继续播放
      */
     void seekTo(long pos);
+    /**
+     * 缩放布局
+     */
+    void isVideoScaling(boolean isScaling);
 
     /**
      * 设置音量
@@ -97,6 +101,8 @@ public interface OnVideoPlayerEventListener {
      * 设置镜像
      */
     void setMirror(boolean mirror);
+
+    void setRewind(long backTime);
 
     /**
      * 进入全屏模式
