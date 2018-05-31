@@ -112,6 +112,7 @@ public class AtVideoPlayerController extends VideoPlayerBaseController
     private OnNoticeActivityListener onNoticeActivityListener;
 
 
+
     public interface OnNoticeActivityListener {
         void onEventforATController(int eventType);
     }
