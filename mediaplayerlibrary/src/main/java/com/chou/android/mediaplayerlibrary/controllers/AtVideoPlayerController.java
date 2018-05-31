@@ -2,6 +2,7 @@ package com.chou.android.mediaplayerlibrary.controllers;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
@@ -27,7 +28,7 @@ import com.chou.android.mediaplayerlibrary.view.CircularProgressBar;
 import com.chou.android.mediaplayerlibrary.view.TouchView;
 
 /**
- * 爱跳界面
+ * 爱跳详情界面
  */
 public class AtVideoPlayerController extends VideoPlayerBaseController
     implements View.OnClickListener, SeekBar.OnSeekBarChangeListener {
@@ -110,11 +111,19 @@ public class AtVideoPlayerController extends VideoPlayerBaseController
      * 通知activity的事件
      */
     private OnNoticeActivityListener onNoticeActivityListener;
-
+    private static final int BACK_EVENT = 1;
+    private static final int INFORM_EVENT = 2;
+    private static final int SAVE_CUT_EVENT = 3;
+    private Bundle mEventBundle;
 
 
     public interface OnNoticeActivityListener {
-        void onEventforATController(int eventType);
+        /**
+         * 交互的事件通知
+         *
+         * @param eventType 通知类型：1
+         */
+        void onEventforATController(int eventType, Bundle eventBundle);
     }
 
 
@@ -123,6 +132,9 @@ public class AtVideoPlayerController extends VideoPlayerBaseController
     }
 
 
+    /**
+     * 构造
+     */
     public AtVideoPlayerController(@NonNull Context context) {
         super(context);
         this.mContext = context;
@@ -209,34 +221,43 @@ public class AtVideoPlayerController extends VideoPlayerBaseController
         atVideoCut.setOnTouchEventListener(new TouchView.OnTouchEventListener() {
             @Override public void onTouchDown() {
                 //显示
-                cutAnimator.start();
-                cutShow();
-                cutStartTime = mOnVideoPlayerEventListener.getCurrentPosition();
-                isABCirculation = false;
+                touchDown();
             }
-
 
             @Override public void onTouchCancel() {
                 //隐藏
-                cutStopTime = mOnVideoPlayerEventListener.getCurrentPosition();
-                stopTime = (int) (cutStopTime/1000);
-                cutAnimator.cancel();
-
-                if (currentCutTime >= VIDEO_CUT_MAX - VIDEO_CUT_MIN) {
-                    //小于1秒
-                    isABCirculation = false;
-                    Toast.makeText(mContext, "不能小于一秒", Toast.LENGTH_SHORT).show();
-                    saveCloseShow(false);
-                } else if (currentCutTime < VIDEO_CUT_MAX - VIDEO_CUT_MIN || currentCutTime == 0) {
-                    //1~15秒
-                    saveShow();
-                    isABCirculation = true;
-                    mOnVideoPlayerEventListener.seekTo(cutStartTime);
-
-                }
+                touchCancel(false);
             }
         });
+    }
 
+    private void touchDown(){
+        cutAnimator.start();
+        cutShow();
+        cutStartTime = mOnVideoPlayerEventListener.getCurrentPosition();
+        isABCirculation = false;
+    }
+
+    private void touchCancel(boolean isEnd){
+        if (!isEnd){
+            cutStopTime = mOnVideoPlayerEventListener.getCurrentPosition();
+        }else {
+            cutStopTime = mOnVideoPlayerEventListener.getDuration();
+        }
+        stopTime = (int) (cutStopTime / 1000);
+        cutAnimator.cancel();
+
+        if (currentCutTime >= VIDEO_CUT_MAX - VIDEO_CUT_MIN) {
+            //小于1秒
+            isABCirculation = false;
+            Toast.makeText(mContext, "不能小于一秒", Toast.LENGTH_SHORT).show();
+            saveCloseShow(false);
+        } else if (currentCutTime < VIDEO_CUT_MAX - VIDEO_CUT_MIN || currentCutTime == 0) {
+            //1~15秒
+            saveShow();
+            isABCirculation = true;
+            mOnVideoPlayerEventListener.seekTo(cutStartTime);
+        }
     }
 
 
@@ -246,7 +267,7 @@ public class AtVideoPlayerController extends VideoPlayerBaseController
                 mOnVideoPlayerEventListener.exitFullScreen();
             } else {
                 if (null != onNoticeActivityListener) {
-                    onNoticeActivityListener.onEventforATController(1);
+                    onNoticeActivityListener.onEventforATController(BACK_EVENT, null);
                 }
             }
         } else if (v == atVideoRestartOrPause) {
@@ -267,7 +288,7 @@ public class AtVideoPlayerController extends VideoPlayerBaseController
             mOnVideoPlayerEventListener.restart();
         } else if (v == atVideoReport) {//举报
             if (null != onNoticeActivityListener) {
-                onNoticeActivityListener.onEventforATController(2);
+                onNoticeActivityListener.onEventforATController(INFORM_EVENT, null);
             }
         } else if (v == atVideoSpeed) {//速度调节
             setSpeed();
@@ -276,6 +297,12 @@ public class AtVideoPlayerController extends VideoPlayerBaseController
             mOnVideoPlayerEventListener.setMirror(isMirror);
         } else if (v == atVideoSave) {//保存
             saveCloseShow(true);
+            if (null != onNoticeActivityListener) {
+                mEventBundle = new Bundle();
+                mEventBundle.putLong("CUT_START_TIME", cutStartTime);
+                mEventBundle.putLong("CUT_STOP_TIME", cutStopTime);
+                onNoticeActivityListener.onEventforATController(SAVE_CUT_EVENT, mEventBundle);
+            }
         } else if (v == atVideoSaveClose) {//取消保存
             saveCloseShow(true);
         } else if (v == atVideoRew) {//倒退
@@ -339,7 +366,7 @@ public class AtVideoPlayerController extends VideoPlayerBaseController
         setTopBottomVisible(true);
         mOnVideoPlayerEventListener.start();
         isABCirculation = false;
-        if (isAnim){
+        if (isAnim) {
             mOnVideoPlayerEventListener.isVideoScaling(false);
         }
     }
@@ -380,6 +407,7 @@ public class AtVideoPlayerController extends VideoPlayerBaseController
         mOnVideoPlayerEventListener.setSpeed(speed);
     }
 
+
     public void setPathUrl(String pathUrl) {
         this.videoUrl = pathUrl;
         // 给播放器配置视频链接地址
@@ -392,7 +420,7 @@ public class AtVideoPlayerController extends VideoPlayerBaseController
     @Override public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         mProgress = (long) (progress * mOnVideoPlayerEventListener.getDuration() / 100f);
         int pro = (int) mOnVideoPlayerEventListener.getCurrentPosition() / 1000;
-        if (isABCirculation && pro == stopTime) {
+        if (isABCirculation && pro >= stopTime) {
             mOnVideoPlayerEventListener.seekTo(cutStartTime);
         }
         long duration = mOnVideoPlayerEventListener.getDuration();
@@ -456,9 +484,9 @@ public class AtVideoPlayerController extends VideoPlayerBaseController
                 cancelDismissTopBottomTimer();
                 break;
             case ChouVideoPlayer.STATE_BUFFERING_PLAYING:
-                if (isABCirculation){
+                if (isABCirculation) {
                     atVideoLoading.setVisibility(View.GONE);
-                }else {
+                } else {
                     atVideoLoading.setVisibility(View.VISIBLE);
                 }
                 atVideoRestartOrPause.setImageResource(R.mipmap.ic_video_pause);
@@ -466,9 +494,9 @@ public class AtVideoPlayerController extends VideoPlayerBaseController
                 startDismissTopBottomTimer();
                 break;
             case ChouVideoPlayer.STATE_BUFFERING_PAUSED:
-                if (isABCirculation){
+                if (isABCirculation) {
                     atVideoLoading.setVisibility(View.GONE);
-                }else {
+                } else {
                     atVideoLoading.setVisibility(View.VISIBLE);
                 }
                 atVideoRestartOrPause.setImageResource(R.mipmap.ic_video_play);
@@ -484,7 +512,9 @@ public class AtVideoPlayerController extends VideoPlayerBaseController
             case ChouVideoPlayer.STATE_COMPLETED:
                 cancelUpdateProgressTimer();
                 setTopBottomVisible(false);
+                touchCancel(true);
                 mOnVideoPlayerEventListener.restart();
+                //隐藏
                 break;
         }
 

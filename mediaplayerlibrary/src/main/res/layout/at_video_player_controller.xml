@@ -252,15 +252,15 @@
 
         <ImageView
             android:id="@+id/at_video_back"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:src="@mipmap/ic_wujike_media_back"
             android:visibility="visible"/>
 
         <ImageView
             android:id="@+id/at_video_report"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:visibility="visible"
             android:layout_alignParentRight="true"
             android:src="@mipmap/ic_play_more"/>
@@ -278,8 +278,8 @@
 
         <ImageView
             android:id="@+id/at_video_restart_or_pause"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:src="@mipmap/ic_video_play"/>
 
         <TextView
@@ -314,8 +314,8 @@
 
         <ImageView
             android:id="@+id/at_video_full_screen"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:src="@mipmap/ic_video_enlarge"/>
     </LinearLayout>

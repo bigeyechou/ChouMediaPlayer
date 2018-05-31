@@ -35,7 +35,5 @@ dependencies {
     implementation 'tv.danmaku.ijk.media:ijkplayer-x86:0.8.3'
     implementation 'tv.danmaku.ijk.media:ijkplayer-arm64:0.8.3'
     implementation 'tv.danmaku.ijk.media:ijkplayer-x86_64:0.8.3'
-    //垂直的viewpage
-//    implementation 'com.github.castorflex.verticalviewpager:library:19.0.1'
 
 }
