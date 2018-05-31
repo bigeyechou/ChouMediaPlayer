@@ -512,9 +512,11 @@ public class AtVideoPlayerController extends VideoPlayerBaseController
             case ChouVideoPlayer.STATE_COMPLETED:
                 cancelUpdateProgressTimer();
                 setTopBottomVisible(false);
-                touchCancel(true);
-                mOnVideoPlayerEventListener.restart();
-                //隐藏
+                if (isABCirculation){
+                    touchCancel(true);
+                }else {
+                    mOnVideoPlayerEventListener.restart();
+                }
                 break;
         }
 

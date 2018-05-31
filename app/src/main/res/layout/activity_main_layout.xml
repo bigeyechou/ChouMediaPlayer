@@ -4,8 +4,21 @@
     android:layout_height="match_parent">
 
     <Button
-        android:id="@+id/btn_"
+        android:id="@+id/btn_detail"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:text="主视频"/>
+
+    <Button
+        android:id="@+id/btn_box"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="盒子视频"/>
+
+    <Button
+        android:id="@+id/btn_circle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="圈子的"/>
 
 </LinearLayout>

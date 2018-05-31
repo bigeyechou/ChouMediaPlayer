@@ -5,10 +5,44 @@
     android:layout_height="match_parent"
     android:background="@color/black">
 
+    <ImageView
+        android:id="@+id/box_video_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:src="@mipmap/ic_wujike_media_back"
+        android:visibility="visible"/>
+
+    <LinearLayout
+        android:id="@+id/box_video_control"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <Button
+            android:id="@+id/box_video_mirror"
+            android:layout_width="80dip"
+            android:layout_height="35dip"
+            android:layout_margin="15dp"
+            android:text="镜像"
+            android:textColor="#B3FFFFFF"
+            android:background="@drawable/shape_dancebox_btn"/>
+
+        <Button
+            android:id="@+id/box_video_speed"
+            android:layout_width="80dip"
+            android:layout_height="35dip"
+            android:layout_margin="15dp"
+            android:text="慢速"
+            android:textColor="#B3FFFFFF"
+            android:background="@drawable/shape_dancebox_btn"/>
+    </LinearLayout>
 
     <!--加载动画-->
     <LinearLayout
-        android:id="@+id/at_video_loading"
+        android:id="@+id/box_video_loading"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
@@ -21,7 +55,7 @@
             android:indeterminateDrawable="@drawable/loading"/>
 
         <TextView
-            android:id="@+id/at_video_load_text"
+            android:id="@+id/box_video_load_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -32,7 +66,7 @@
 
     <!--播放错误-->
     <LinearLayout
-        android:id="@+id/at_video_error"
+        android:id="@+id/box_video_error"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/black"
@@ -48,7 +82,7 @@
             android:textSize="13sp"/>
 
         <TextView
-            android:id="@+id/at_video_retry"
+            android:id="@+id/box_video_retry"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -62,17 +96,27 @@
             android:textSize="13sp"/>
     </LinearLayout>
 
-
-        <ImageView
-            android:id="@+id/at_video_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:src="@mipmap/ic_wujike_media_back"
-            android:visibility="visible"/>
+    <ImageView
+        android:id="@+id/box_video_previous"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:padding="10dp"
+        android:scaleType="center"
+        android:src="@mipmap/ic_dancebox_previous"/>
 
     <ImageView
-        android:id="@+id/at_video_full_screen"
+        android:id="@+id/box_video_next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:padding="10dp"
+        android:scaleType="center"
+        android:src="@mipmap/ic_dancebox_next"/>
+
+    <ImageView
+        android:id="@+id/box_video_full_screen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="8dp"
