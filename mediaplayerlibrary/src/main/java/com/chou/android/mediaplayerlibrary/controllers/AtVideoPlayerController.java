@@ -31,7 +31,6 @@ import com.chou.android.mediaplayerlibrary.view.TouchView;
  */
 public class AtVideoPlayerController extends VideoPlayerBaseController
     implements View.OnClickListener, SeekBar.OnSeekBarChangeListener {
-
     private RelativeLayout atVideoTotal;
     private TextView atVideoLoadText;
     private LinearLayout atVideoLoading;
@@ -54,36 +53,46 @@ public class AtVideoPlayerController extends VideoPlayerBaseController
     private LinearLayout atVideoBottom;
     private LinearLayout atVideoCutLayout;
     private CircularProgressBar atVideoCutProgress;
-    /**
-     * 举报按钮
-     */
     private ImageView atVideoReport;
-
     private ImageView atVideoSaveClose;
     private ImageView atVideoSave;
     private ImageView atVideoRew;
-    /**
-     * 右侧的控件
-     */
     private LinearLayout atVideoRight;
     private ImageView atVideoSpeed;
     private TouchView atVideoCut;
     private ImageView atVideoMirror;
 
     private Context mContext;
+    /**
+     * 倒计时
+     */
     private CountDownTimer mDismissTopBottomCountDownTimer;
+    /**
+     * 隐藏显示的动画
+     */
     private Animation showTop, showBottom, showRight, hindTop, hindBottom, hindRight;
     private boolean topBottomVisible;
+    /**
+     * 倒带时间
+     */
     private static final long BACK_TIME = 5 * 1000;
+    /**
+     * 速度调节
+     */
     private int speedType = 3;
     private static final float SPEED_050 = 0.50f;
     private static final float SPEED_075 = 0.75f;
     private static final float SPEED_100 = 1f;
     private static final float SPEED_150 = 1.50f;
     private static final float SPEED_200 = 2.0f;
+
     private boolean isShowRight = false;
     private boolean isMirror = true;
+
     private String videoUrl;
+    /**
+     * AB循环相关
+     */
     private long mProgress;
     private long cutStartTime;
     private long cutStopTime;
