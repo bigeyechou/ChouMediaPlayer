@@ -33,6 +33,9 @@
         <activity android:name=".VideoDanceBoxActivity"
             android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden|screenSize"/>
+        <activity android:name=".DouYinActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden|screenSize"/>
     </application>
 
 </manifest>

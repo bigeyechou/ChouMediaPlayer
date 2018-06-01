@@ -39,6 +39,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btn_box:
                 startActivity(new Intent(MainActivity.this,VideoDanceBoxActivity.class));
                 break;
+            case R.id.btn_circle:
+                startActivity(new Intent(MainActivity.this,DouYinActivity.class));
+                break;
         }
     }
 
