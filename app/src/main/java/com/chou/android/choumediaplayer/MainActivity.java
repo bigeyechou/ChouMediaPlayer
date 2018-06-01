@@ -36,6 +36,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btn_detail:
                 startActivity(new Intent(MainActivity.this,VideoDetailActivity.class));
                 break;
+            case R.id.btn_box:
+                startActivity(new Intent(MainActivity.this,VideoDanceBoxActivity.class));
+                break;
         }
     }
 

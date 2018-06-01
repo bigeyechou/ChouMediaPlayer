@@ -2,8 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rel_total"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/black">
+    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/box_video_back"
@@ -119,7 +118,7 @@
         android:id="@+id/box_video_full_screen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="8dp"
+        android:padding="10dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:src="@mipmap/ic_video_enlarge"/>
