@@ -99,6 +99,7 @@ public class AtVideoPlayerController extends VideoPlayerBaseController
     private long cutStopTime;
     private int stopTime;
     private boolean isABCirculation = false;
+    private boolean isReStart = true;
     /**
      * 录制动画相关
      */
@@ -197,8 +198,7 @@ public class AtVideoPlayerController extends VideoPlayerBaseController
                 currentCutTime = Math.round((float) animation.getAnimatedValue());
                 atVideoCutProgress.setProgress((Float) animation.getAnimatedValue());
                 if (currentCutTime == 0) {//自动显示
-                    saveShow();
-                    isABCirculation = true;
+                    autoIntoCut();
                 }
             }
         });
@@ -226,7 +226,9 @@ public class AtVideoPlayerController extends VideoPlayerBaseController
 
             @Override public void onTouchCancel() {
                 //隐藏
-                touchCancel(false);
+                if (!isABCirculation){
+                    touchCancel();
+                }
             }
         });
     }
@@ -238,12 +240,8 @@ public class AtVideoPlayerController extends VideoPlayerBaseController
         isABCirculation = false;
     }
 
-    private void touchCancel(boolean isEnd){
-        if (!isEnd){
-            cutStopTime = mOnVideoPlayerEventListener.getCurrentPosition();
-        }else {
-            cutStopTime = mOnVideoPlayerEventListener.getDuration();
-        }
+    private void touchCancel(){
+        cutStopTime = mOnVideoPlayerEventListener.getCurrentPosition();
         stopTime = (int) (cutStopTime / 1000);
         cutAnimator.cancel();
 
@@ -252,11 +250,22 @@ public class AtVideoPlayerController extends VideoPlayerBaseController
             isABCirculation = false;
             Toast.makeText(mContext, "不能小于一秒", Toast.LENGTH_SHORT).show();
             saveCloseShow(false);
-        } else if (currentCutTime < VIDEO_CUT_MAX - VIDEO_CUT_MIN || currentCutTime == 0) {
+        } else if (currentCutTime < VIDEO_CUT_MAX - VIDEO_CUT_MIN) {
             //1~15秒
             saveShow();
             isABCirculation = true;
             mOnVideoPlayerEventListener.seekTo(cutStartTime);
+        }
+    }
+    private void autoIntoCut(){
+        cutStopTime = mOnVideoPlayerEventListener.getCurrentPosition();
+        stopTime = (int) (cutStopTime / 1000);
+        cutAnimator.cancel();
+        isABCirculation = true;
+        saveShow();
+        mOnVideoPlayerEventListener.seekTo(cutStartTime);
+        if (!isReStart){
+            mOnVideoPlayerEventListener.start();
         }
     }
 
@@ -332,7 +341,7 @@ public class AtVideoPlayerController extends VideoPlayerBaseController
         atVideoRight.setVisibility(VISIBLE);
         atVideoCut.setVisibility(VISIBLE);
         atVideoCutLayout.setVisibility(VISIBLE);
-
+        isReStart = false;
     }
 
 
@@ -348,6 +357,7 @@ public class AtVideoPlayerController extends VideoPlayerBaseController
         atVideoSave.setVisibility(VISIBLE);
         this.setOnClickListener(null);
         mOnVideoPlayerEventListener.isVideoScaling(true);
+        isReStart = false;
     }
 
 
@@ -369,6 +379,7 @@ public class AtVideoPlayerController extends VideoPlayerBaseController
         if (isAnim) {
             mOnVideoPlayerEventListener.isVideoScaling(false);
         }
+        isReStart =true;
     }
 
 
@@ -510,12 +521,12 @@ public class AtVideoPlayerController extends VideoPlayerBaseController
                 atVideoError.setVisibility(View.VISIBLE);
                 break;
             case ChouVideoPlayer.STATE_COMPLETED:
-                cancelUpdateProgressTimer();
-                setTopBottomVisible(false);
-                if (isABCirculation){
-                    touchCancel(true);
-                }else {
+                if (isReStart){
+                    cancelUpdateProgressTimer();
+                    setTopBottomVisible(false);
                     mOnVideoPlayerEventListener.restart();
+                }else {
+                    autoIntoCut();
                 }
                 break;
         }

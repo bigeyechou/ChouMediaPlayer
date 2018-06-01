@@ -16,7 +16,7 @@ import static com.chou.android.choumediaplayer.App.getProxy;
 public class VideoDetailActivity extends AppCompatActivity implements AtVideoPlayerController.OnNoticeActivityListener{
 
     @Bind(R.id.video) ChouVideoPlayer video;
-    private String videoPath = "http://play.g3proxy.lecloud.com/vod/v2/MjUxLzE2LzgvbGV0di11dHMvMTQvdmVyXzAwXzIyLTExMDc2NDEzODctYXZjLTE5OTgxOS1hYWMtNDgwMDAtNTI2MTEwLTE3MDg3NjEzLWY1OGY2YzM1NjkwZTA2ZGFmYjg2MTVlYzc5MjEyZjU4LTE0OTg1NTc2ODY4MjMubXA0?b=259&mmsid=65565355&tm=1499247143&key=f0eadb4f30c404d49ff8ebad673d3742&platid=3&splatid=345&playid=0&tss=no&vtype=21&cvid=2026135183914&payff=0&pip=08cc52f8b09acd3eff8bf31688ddeced&format=0&sign=mb&dname=mobile&expect=1&tag=mobile&xformat=super";
+    private String videoPath = "http://aliyunvideo.wujike.com.cn/3b4aa75e3c1b4df9bd268b67a50bfdf6/9ab7363c6422430f9d1f58e7849b281d-2f3d59ee927c4f91d67789ed134d127d-sd.mp4";
     private String proxyPath;
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
