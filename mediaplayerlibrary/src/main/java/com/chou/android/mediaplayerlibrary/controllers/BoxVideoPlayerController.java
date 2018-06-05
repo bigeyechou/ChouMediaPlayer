@@ -39,6 +39,8 @@ public class BoxVideoPlayerController extends VideoPlayerBaseController
 
     private OnNoticeActivityListener onNoticeActivityListener;
     private static final int BACK_EVENT = 1;
+    private static final int NEXT_EVENT = 2;
+    private static final int PREVIOUS_EVENT = 3;
     public interface OnNoticeActivityListener {
         /**
          * 交互的事件通知
@@ -126,9 +128,13 @@ public class BoxVideoPlayerController extends VideoPlayerBaseController
         } else if (v == boxVideoRetry) {//重试
             mOnVideoPlayerEventListener.restart();
         } else if (v == boxVideoPrevious) {//上一个
-
+            if (null != onNoticeActivityListener) {
+                onNoticeActivityListener.onEventforBoxController(PREVIOUS_EVENT, null);
+            }
         } else if (v == boxVideoNext) {//下一个
-
+            if (null != onNoticeActivityListener) {
+                onNoticeActivityListener.onEventforBoxController(NEXT_EVENT, null);
+            }
         } else if (v == boxVideoFullScreen) {//宽屏
             if (mOnVideoPlayerEventListener.isNormal()) {
                 mOnVideoPlayerEventListener.enterFullScreen();
