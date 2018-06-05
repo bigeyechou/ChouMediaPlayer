@@ -1,6 +1,6 @@
-package com.chou.android.choumediaplayer;
+package com.chou.android.choumediaplayer.datas;
 
-class VideoBean {
+public class VideoBean {
     private String title;
     private String url;
     private String thumb;

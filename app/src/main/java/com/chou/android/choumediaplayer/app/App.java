@@ -1,4 +1,4 @@
-package com.chou.android.choumediaplayer;
+package com.chou.android.choumediaplayer.app;
 
 import android.app.Application;
 import android.content.Context;

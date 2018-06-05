@@ -1,4 +1,4 @@
-package com.chou.android.choumediaplayer;
+package com.chou.android.choumediaplayer.utils;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

@@ -1,4 +1,4 @@
-package com.chou.android.choumediaplayer;
+package com.chou.android.choumediaplayer.datas;
 
 import java.util.ArrayList;
 import java.util.List;

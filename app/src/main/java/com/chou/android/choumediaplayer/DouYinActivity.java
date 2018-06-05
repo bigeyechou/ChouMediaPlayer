@@ -3,12 +3,12 @@ package com.chou.android.choumediaplayer;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
-import android.view.View;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import com.chou.android.choumediaplayer.adapter.DouYinAdapter;
+import com.chou.android.choumediaplayer.datas.DataUtil;
+import com.chou.android.choumediaplayer.datas.VideoBean;
 import fr.castorflex.android.verticalviewpager.VerticalViewPager;
-import java.util.ArrayList;
 import java.util.List;
 
 public class DouYinActivity extends AppCompatActivity {

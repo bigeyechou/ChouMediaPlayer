@@ -3,16 +3,15 @@ package com.chou.android.choumediaplayer;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import com.chou.android.choumediaplayer.utils.NetUtils;
 import com.chou.android.mediaplayerlibrary.ChouVideoPlayer;
 import com.chou.android.mediaplayerlibrary.VideoPlayerManager;
-import com.chou.android.mediaplayerlibrary.controllers.AtVideoPlayerController;
 import com.chou.android.mediaplayerlibrary.controllers.BoxVideoPlayerController;
 import com.danikula.videocache.HttpProxyCacheServer;
 
-import static com.chou.android.choumediaplayer.App.getProxy;
+import static com.chou.android.choumediaplayer.app.App.getProxy;
 
 public class VideoDanceBoxActivity extends AppCompatActivity implements BoxVideoPlayerController.OnNoticeActivityListener {
 
@@ -75,6 +74,31 @@ public class VideoDanceBoxActivity extends AppCompatActivity implements BoxVideo
             case 1:
                 finish();
                 break;
+        }
+    }
+
+
+    /**
+     * 列表模式的Video
+     */
+    public static class VideoListActivity extends AppCompatActivity{
+        @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+        }
+
+
+        @Override protected void onResume() {
+            super.onResume();
+        }
+
+
+        @Override protected void onPause() {
+            super.onPause();
+        }
+
+
+        @Override protected void onDestroy() {
+            super.onDestroy();
         }
     }
 }

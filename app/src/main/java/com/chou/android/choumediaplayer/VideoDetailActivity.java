@@ -6,12 +6,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import com.chou.android.choumediaplayer.utils.NetUtils;
 import com.chou.android.mediaplayerlibrary.ChouVideoPlayer;
 import com.chou.android.mediaplayerlibrary.VideoPlayerManager;
 import com.chou.android.mediaplayerlibrary.controllers.AtVideoPlayerController;
 import com.danikula.videocache.HttpProxyCacheServer;
 
-import static com.chou.android.choumediaplayer.App.getProxy;
+import static com.chou.android.choumediaplayer.app.App.getProxy;
 
 public class VideoDetailActivity extends AppCompatActivity implements AtVideoPlayerController.OnNoticeActivityListener{
 
