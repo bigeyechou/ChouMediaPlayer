@@ -60,6 +60,7 @@ public class DouYinActivity extends AppCompatActivity {
             controller = new DouYinVideoPlayerController(this);
             proxyPath = proxy.getProxyUrl(item.getUrl());
             controller.setPathUrl(proxyPath);
+            controller.setImagePath(item.getThumb());
             chouVideoPlayer.setController(controller);
             views.add(view);
         }

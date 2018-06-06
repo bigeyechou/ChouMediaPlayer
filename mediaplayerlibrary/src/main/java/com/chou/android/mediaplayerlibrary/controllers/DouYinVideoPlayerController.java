@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import com.bumptech.glide.Glide;
 import com.chou.android.mediaplayerlibrary.ChouVideoPlayer;
 import com.chou.android.mediaplayerlibrary.OnVideoPlayerEventListener;
 import com.chou.android.mediaplayerlibrary.R;
@@ -22,7 +23,6 @@ public class DouYinVideoPlayerController extends VideoPlayerBaseController
     private TextView dyVideoRetry;
     private Context mContext;
     private String videoUrl;
-    private String imageUrl;
 
 
     public DouYinVideoPlayerController(
@@ -35,7 +35,7 @@ public class DouYinVideoPlayerController extends VideoPlayerBaseController
 
     private void init() {
         LayoutInflater.from(mContext).inflate(R.layout.douyin_video_player_controller, this, true);
-
+        dyIvBackground = findViewById(R.id.dy_iv_background);
         dyVideoLoading = findViewById(R.id.dy_video_loading);
         dyVideoLoadText = findViewById(R.id.dy_video_load_text);
         dyVideoError = findViewById(R.id.dy_video_error);
@@ -66,6 +66,7 @@ public class DouYinVideoPlayerController extends VideoPlayerBaseController
 
 
     public void setImagePath(String imageUrl) {
+        Glide.with(mContext).load(imageUrl).into(dyIvBackground);
     }
 
 
@@ -83,12 +84,13 @@ public class DouYinVideoPlayerController extends VideoPlayerBaseController
             case ChouVideoPlayer.STATE_PREPARING:
                 dyVideoError.setVisibility(View.GONE);
                 dyVideoLoading.setVisibility(View.VISIBLE);
-                dyVideoLoadText.setText("正在准备...");
+                dyVideoLoadText.setText("正在加载...");
                 break;
             case ChouVideoPlayer.STATE_PREPARED:
                 break;
             case ChouVideoPlayer.STATE_PLAYING:
                 dyVideoLoading.setVisibility(View.GONE);
+                dyIvBackground.setVisibility(View.GONE);
                 break;
             case ChouVideoPlayer.STATE_PAUSED:
                 dyVideoLoading.setVisibility(View.GONE);
@@ -119,6 +121,7 @@ public class DouYinVideoPlayerController extends VideoPlayerBaseController
     @Override protected void reset() {
         dyVideoLoading.setVisibility(View.GONE);
         dyVideoError.setVisibility(View.GONE);
+        dyIvBackground.setVisibility(View.VISIBLE);
     }
 
 

@@ -6,7 +6,6 @@
     <com.chou.android.mediaplayerlibrary.ChouVideoPlayer
         android:id="@+id/douyin_video"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
+        android:layout_height="match_parent"/>
 
 </LinearLayout>
