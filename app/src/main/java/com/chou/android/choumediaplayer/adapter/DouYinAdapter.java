@@ -14,24 +14,15 @@ import java.util.List;
 import static com.chou.android.choumediaplayer.app.App.getProxy;
 
 public class DouYinAdapter extends PagerAdapter {
-    private Context context;
-    private List<VideoBean> list;
-    private String proxyPath;
-    private ChouVideoPlayer videoview;
-    private  BoxVideoPlayerController controller;
+    private List<View> mViews;
 
-    public DouYinAdapter(Context context, List<VideoBean> list) {
-        this.context = context;
-        this.list = list;
+    public DouYinAdapter(List<View> views) {
+        this.mViews = views;
     }
-
-
-
-
 
     @Override
     public int getCount() {
-        return Integer.MAX_VALUE;
+        return mViews.size();
     }
 
 
@@ -43,23 +34,13 @@ public class DouYinAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, final int position) {
-        View view = View.inflate(context, R.layout.douyin_item, null);
-        videoview = view.findViewById(R.id.video);
-        HttpProxyCacheServer proxy = getProxy(context);
-        proxyPath = proxy.getProxyUrl(list.get(position).getUrl());
-        videoview.isOpenGesture(false);
-        controller = new BoxVideoPlayerController(context);
-        videoview.setController(controller);
-        videoview.setVideoPath(proxyPath);
-        videoview.start();
-        container.addView(view);
-        return view;
+        container.addView(mViews.get(position));
+        return mViews.get(position);
     }
 
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        videoview.pause();
         container.removeView((View) object);
     }
 }

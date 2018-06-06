@@ -21,4 +21,10 @@
         android:layout_height="wrap_content"
         android:text="圈子的"/>
 
+    <Button
+        android:id="@+id/btn_douyin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="仿抖音"/>
+
 </LinearLayout>

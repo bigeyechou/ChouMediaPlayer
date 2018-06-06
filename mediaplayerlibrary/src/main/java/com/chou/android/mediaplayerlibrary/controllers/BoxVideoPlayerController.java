@@ -150,7 +150,7 @@ public class BoxVideoPlayerController extends VideoPlayerBaseController
             case ChouVideoPlayer.STATE_IDLE:
                 break;
             case ChouVideoPlayer.STATE_PREPARING:
-
+                boxVideoError.setVisibility(View.GONE);
                 boxVideoLoading.setVisibility(View.VISIBLE);
                 boxVideoLoadText.setText("正在准备...");
                 break;

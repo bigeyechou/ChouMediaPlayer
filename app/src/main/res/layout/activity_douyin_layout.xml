@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
 
     <fr.castorflex.android.verticalviewpager.VerticalViewPager
-        android:id="@+id/douyin_vvp"
+        android:id="@+id/vp_douyin"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 </LinearLayout>
