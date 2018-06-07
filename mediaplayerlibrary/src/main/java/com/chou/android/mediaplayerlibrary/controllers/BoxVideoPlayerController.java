@@ -37,21 +37,17 @@ public class BoxVideoPlayerController extends VideoPlayerBaseController
     private boolean isSpeed = false;
     private boolean isMirror = true;
 
-    private OnNoticeActivityListener onNoticeActivityListener;
     private static final int BACK_EVENT = 1;
     private static final int NEXT_EVENT = 2;
     private static final int PREVIOUS_EVENT = 3;
-    public interface OnNoticeActivityListener {
-        /**
-         * 交互的事件通知
-         *
-         * @param eventType 通知类型：1
-         */
-        void onEventforBoxController(int eventType, Bundle eventBundle);
+    private OnDancerBoxListener onDancerBoxListener;
+    public interface OnDancerBoxListener {
+        void onVideoBack();
+        void onVideoNext();
+        void onVideoPrevious();
     }
-
-    public void setOnNoticeActivityListener(OnNoticeActivityListener listener) {
-        this.onNoticeActivityListener = listener;
+    public void setOnDancerBoxListener(OnDancerBoxListener listener) {
+        this.onDancerBoxListener = listener;
     }
 
 
@@ -109,8 +105,8 @@ public class BoxVideoPlayerController extends VideoPlayerBaseController
             if (mOnVideoPlayerEventListener.isFullScreen()) {
                 mOnVideoPlayerEventListener.exitFullScreen();
             } else {
-                if (null != onNoticeActivityListener) {
-                    onNoticeActivityListener.onEventforBoxController(BACK_EVENT, null);
+                if (null != onDancerBoxListener) {
+                    onDancerBoxListener.onVideoBack();
                 }
             }
         } else if (v == boxVideoMirror) {//镜像
@@ -128,12 +124,12 @@ public class BoxVideoPlayerController extends VideoPlayerBaseController
         } else if (v == boxVideoRetry) {//重试
             mOnVideoPlayerEventListener.restart();
         } else if (v == boxVideoPrevious) {//上一个
-            if (null != onNoticeActivityListener) {
-                onNoticeActivityListener.onEventforBoxController(PREVIOUS_EVENT, null);
+            if (null != onDancerBoxListener) {
+                onDancerBoxListener.onVideoPrevious();
             }
         } else if (v == boxVideoNext) {//下一个
-            if (null != onNoticeActivityListener) {
-                onNoticeActivityListener.onEventforBoxController(NEXT_EVENT, null);
+            if (null != onDancerBoxListener) {
+                onDancerBoxListener.onVideoNext();
             }
         } else if (v == boxVideoFullScreen) {//宽屏
             if (mOnVideoPlayerEventListener.isNormal()) {

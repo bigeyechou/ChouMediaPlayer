@@ -13,7 +13,7 @@ import com.danikula.videocache.HttpProxyCacheServer;
 
 import static com.chou.android.choumediaplayer.app.App.getProxy;
 
-public class VideoDanceBoxActivity extends AppCompatActivity implements BoxVideoPlayerController.OnNoticeActivityListener {
+public class VideoDanceBoxActivity extends AppCompatActivity implements BoxVideoPlayerController.OnDancerBoxListener {
 
     @Bind(R.id.video) ChouVideoPlayer video;
     private String videoPath = "http://aliyunvideo.wujike.com.cn/3b4aa75e3c1b4df9bd268b67a50bfdf6/9ab7363c6422430f9d1f58e7849b281d-2f3d59ee927c4f91d67789ed134d127d-sd.mp4";
@@ -33,7 +33,7 @@ public class VideoDanceBoxActivity extends AppCompatActivity implements BoxVideo
         proxyPath = proxy.getProxyUrl(videoPath);
         BoxVideoPlayerController controller = new BoxVideoPlayerController(this);
         controller.setPathUrl(proxyPath);
-        controller.setOnNoticeActivityListener(this);
+        controller.setOnDancerBoxListener(this);
         video.setController(controller);
         NetUtils.setContext(this);
         if (NetUtils.isNetworkConnected()){
@@ -69,12 +69,18 @@ public class VideoDanceBoxActivity extends AppCompatActivity implements BoxVideo
     }
 
 
-    @Override public void onEventforBoxController(int eventType, Bundle eventBundle) {
-        switch (eventType){
-            case 1:
-                finish();
-                break;
-        }
+    @Override public void onVideoBack() {
+        finish();
+    }
+
+
+    @Override public void onVideoNext() {
+
+    }
+
+
+    @Override public void onVideoPrevious() {
+
     }
 
 
