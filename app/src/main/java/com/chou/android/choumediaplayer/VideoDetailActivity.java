@@ -14,7 +14,7 @@ import com.danikula.videocache.HttpProxyCacheServer;
 
 import static com.chou.android.choumediaplayer.app.App.getProxy;
 
-public class VideoDetailActivity extends AppCompatActivity implements AtVideoPlayerController.OnNoticeActivityListener{
+public class VideoDetailActivity extends AppCompatActivity implements AtVideoPlayerController.OnVideoDetailListener{
 
     @Bind(R.id.video) ChouVideoPlayer video;
     private String videoPath = "http://aliyunvideo.wujike.com.cn/3b4aa75e3c1b4df9bd268b67a50bfdf6/9ab7363c6422430f9d1f58e7849b281d-2f3d59ee927c4f91d67789ed134d127d-sd.mp4";
@@ -35,7 +35,7 @@ public class VideoDetailActivity extends AppCompatActivity implements AtVideoPla
         video.isOpenGesture(true);
         AtVideoPlayerController controller = new AtVideoPlayerController(this);
         controller.setPathUrl(proxyPath);
-        controller.setOnNoticeActivityListener(this);
+        controller.setOnVideoDetailListener(this);
         video.setController(controller);
         NetUtils.setContext(this);
         if (NetUtils.isNetworkConnected()){
@@ -71,16 +71,17 @@ public class VideoDetailActivity extends AppCompatActivity implements AtVideoPla
     }
 
 
-    @Override public void onEventforATController(int eventType, Bundle eventBundle) {
-        switch (eventType){
-            case 1:
-                finish();
-                break;
-            case 2:
-                Toast.makeText(this,"举报~",Toast.LENGTH_SHORT).show();
-                break;
-            case 3:
-                break;
-        }
+    @Override public void onVideoBack() {
+        finish();
+    }
+
+
+    @Override public void onVideoInform() {
+
+    }
+
+
+    @Override public void onVideoSaveCut(long startTime, long stopTime) {
+
     }
 }

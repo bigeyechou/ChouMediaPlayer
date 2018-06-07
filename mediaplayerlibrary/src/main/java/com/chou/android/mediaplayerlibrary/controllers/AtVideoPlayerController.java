@@ -109,27 +109,25 @@ public class AtVideoPlayerController extends VideoPlayerBaseController
     private int currentCutTime;
 
     /**
-     * 通知activity的事件
+     * 相关接口
      */
-    private OnNoticeActivityListener onNoticeActivityListener;
-    private static final int BACK_EVENT = 1;
-    private static final int INFORM_EVENT = 2;
-    private static final int SAVE_CUT_EVENT = 3;
-    private Bundle mEventBundle;
-
-
-    public interface OnNoticeActivityListener {
+    private OnVideoDetailListener onVideoDetailListener;
+    public interface OnVideoDetailListener {
         /**
-         * 交互的事件通知
-         *
-         * @param eventType 通知类型：1
+         * 后退
          */
-        void onEventforATController(int eventType, Bundle eventBundle);
+        void onVideoBack();
+        /**
+         * 通知举报视频
+         */
+        void onVideoInform();
+        /**
+         * 保存剪裁的视频
+         */
+        void onVideoSaveCut(long startTime , long stopTime);
     }
-
-
-    public void setOnNoticeActivityListener(OnNoticeActivityListener listener) {
-        this.onNoticeActivityListener = listener;
+    public void setOnVideoDetailListener(OnVideoDetailListener listener) {
+        this.onVideoDetailListener = listener;
     }
 
 
@@ -275,8 +273,8 @@ public class AtVideoPlayerController extends VideoPlayerBaseController
             if (mOnVideoPlayerEventListener.isFullScreen()) {
                 mOnVideoPlayerEventListener.exitFullScreen();
             } else {
-                if (null != onNoticeActivityListener) {
-                    onNoticeActivityListener.onEventforATController(BACK_EVENT, null);
+                if (null != onVideoDetailListener) {
+                    onVideoDetailListener.onVideoBack();
                 }
             }
         } else if (v == atVideoRestartOrPause) {
@@ -296,8 +294,8 @@ public class AtVideoPlayerController extends VideoPlayerBaseController
         } else if (v == atVideoRetry) {//重试
             mOnVideoPlayerEventListener.restart();
         } else if (v == atVideoReport) {//举报
-            if (null != onNoticeActivityListener) {
-                onNoticeActivityListener.onEventforATController(INFORM_EVENT, null);
+            if (null != onVideoDetailListener) {
+                onVideoDetailListener.onVideoInform();
             }
         } else if (v == atVideoSpeed) {//速度调节
             setSpeed();
@@ -306,11 +304,8 @@ public class AtVideoPlayerController extends VideoPlayerBaseController
             mOnVideoPlayerEventListener.setMirror(isMirror);
         } else if (v == atVideoSave) {//保存
             saveCloseShow(true);
-            if (null != onNoticeActivityListener) {
-                mEventBundle = new Bundle();
-                mEventBundle.putLong("CUT_START_TIME", cutStartTime);
-                mEventBundle.putLong("CUT_STOP_TIME", cutStopTime);
-                onNoticeActivityListener.onEventforATController(SAVE_CUT_EVENT, mEventBundle);
+            if (null != onVideoDetailListener) {
+                onVideoDetailListener.onVideoSaveCut(cutStartTime, cutStopTime);
             }
         } else if (v == atVideoSaveClose) {//取消保存
             saveCloseShow(true);

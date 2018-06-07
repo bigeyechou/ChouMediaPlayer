@@ -37,9 +37,6 @@ public class BoxVideoPlayerController extends VideoPlayerBaseController
     private boolean isSpeed = false;
     private boolean isMirror = true;
 
-    private static final int BACK_EVENT = 1;
-    private static final int NEXT_EVENT = 2;
-    private static final int PREVIOUS_EVENT = 3;
     private OnDancerBoxListener onDancerBoxListener;
     public interface OnDancerBoxListener {
         void onVideoBack();
