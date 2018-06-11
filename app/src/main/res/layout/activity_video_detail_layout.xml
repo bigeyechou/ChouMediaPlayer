@@ -8,4 +8,9 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"/>
 
+    <Button
+        android:id="@+id/btn_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="重启"/>
 </LinearLayout>
