@@ -100,6 +100,7 @@ public class AtVideoPlayerController extends VideoPlayerBaseController
     private int stopTime;
     private boolean isABCirculation = false;
     private boolean isReStart = true;
+    private boolean isScaling= false;
     /**
      * 录制动画相关
      */
@@ -255,12 +256,19 @@ public class AtVideoPlayerController extends VideoPlayerBaseController
             mOnVideoPlayerEventListener.seekTo(cutStartTime);
         }
     }
+
+
+    /**
+     * AB自动停掉并播放
+     */
     private void autoIntoCut(){
         cutStopTime = mOnVideoPlayerEventListener.getCurrentPosition();
         stopTime = (int) (cutStopTime / 1000);
         cutAnimator.cancel();
         isABCirculation = true;
-        saveShow();
+        if (!isScaling){
+            saveShow();
+        }
         mOnVideoPlayerEventListener.seekTo(cutStartTime);
         if (!isReStart){
             mOnVideoPlayerEventListener.start();
@@ -351,7 +359,8 @@ public class AtVideoPlayerController extends VideoPlayerBaseController
         atVideoSaveClose.setVisibility(VISIBLE);
         atVideoSave.setVisibility(VISIBLE);
         this.setOnClickListener(null);
-        mOnVideoPlayerEventListener.isVideoScaling(true);
+        isScaling = true;
+        mOnVideoPlayerEventListener.isVideoScaling(isScaling);
         isReStart = false;
     }
 
@@ -372,7 +381,8 @@ public class AtVideoPlayerController extends VideoPlayerBaseController
         mOnVideoPlayerEventListener.start();
         isABCirculation = false;
         if (isAnim) {
-            mOnVideoPlayerEventListener.isVideoScaling(false);
+            isScaling =false;
+            mOnVideoPlayerEventListener.isVideoScaling(isScaling);
         }
         isReStart =true;
     }

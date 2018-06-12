@@ -134,7 +134,10 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
         } else if (mCurrentState == STATE_PAUSED || mCurrentState == STATE_BUFFERING_PAUSED) {
             this.mMediaPlayer.start();
             mCurrentState = STATE_PLAYING;
-        } else {
+        } else if (mCurrentState == STATE_COMPLETED ){//AB循环结束自动停掉并播放
+            this.mMediaPlayer.start();
+            mCurrentState = STATE_PLAYING;
+        }else {
             Log.d("videoLog====", "只有在mCurrentState == STATE_IDLE时才能调用start方法.");
         }
     }
