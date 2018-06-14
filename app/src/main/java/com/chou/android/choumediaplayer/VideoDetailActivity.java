@@ -36,7 +36,6 @@ public class VideoDetailActivity extends AppCompatActivity
 
     }
 
-
     private void initVideo() {
         HttpProxyCacheServer proxy = getProxy(this);
         proxyPath = proxy.getProxyUrl(videoPath);
