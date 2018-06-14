@@ -18,7 +18,7 @@ import com.danikula.videocache.HttpProxyCacheServer;
 import static com.chou.android.choumediaplayer.app.App.getProxy;
 
 /**
- * 开发版本
+ * 主线项目1.2
  */
 public class VideoDetailActivity extends AppCompatActivity
     implements AtVideoPlayerController.OnVideoDetailListener {
@@ -35,6 +35,7 @@ public class VideoDetailActivity extends AppCompatActivity
         initVideo();
 
     }
+
 
     private void initVideo() {
         HttpProxyCacheServer proxy = getProxy(this);
