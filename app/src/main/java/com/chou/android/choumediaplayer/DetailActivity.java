@@ -15,10 +15,14 @@ import butterknife.ButterKnife;
 import com.chou.android.choumediaplayer.adapter.DouYinAdapter;
 import com.chou.android.choumediaplayer.datas.DataUtil;
 import com.chou.android.choumediaplayer.datas.VideoBean;
+import com.chou.android.choumediaplayer.utils.GsonUtils;
 import com.chou.android.mediaplayerlibrary.ChouVideoPlayer;
 import com.chou.android.mediaplayerlibrary.VideoPlayerManager;
 import com.chou.android.mediaplayerlibrary.controllers.AtVideoPlayerController;
-import com.chou.android.mediaplayerlibrary.controllers.DouYinVideoPlayerController;
+import com.chou.android.network.bean.ShowVideoListBean;
+import com.chou.android.network.subscribe.MovieSubscribe;
+import com.chou.android.network.utils.OnSuccessAndFaultListener;
+import com.chou.android.network.utils.OnSuccessAndFaultSub;
 import com.danikula.videocache.HttpProxyCacheServer;
 import fr.castorflex.android.verticalviewpager.VerticalViewPager;
 import java.util.ArrayList;
@@ -27,6 +31,10 @@ import java.util.List;
 import static com.chou.android.choumediaplayer.app.App.getProxy;
 
 public class DetailActivity extends AppCompatActivity {
+    private int start = 0;
+    private int count = 20;
+
+    private List<ShowVideoListBean.ListBean> showListData = new ArrayList<>();
 
     @Bind(R.id.vp_douyin) VerticalViewPager douyinViewPage;
     private DouYinAdapter douYinAdapter;
@@ -122,6 +130,25 @@ public class DetailActivity extends AppCompatActivity {
             ViewCompat.requestApplyInsets(decorView);
             getWindow().setStatusBarColor(ContextCompat.getColor(this, android.R.color.transparent));
         }
+    }
+
+    /**
+     * 秀场
+     */
+    private void getShowList() {
+        OnSuccessAndFaultListener l = new OnSuccessAndFaultListener() {
+            @Override public void onSuccess(String result) {
+                ShowVideoListBean showVideoListBean = GsonUtils.fromJson(result,ShowVideoListBean.class);
+                showListData = showVideoListBean.getList();
+
+            }
+
+
+            @Override public void onFault(String errorMsg) {
+
+            }
+        };
+        MovieSubscribe.getShowList(new OnSuccessAndFaultSub(l,this,true),0,1);
     }
     @Override protected void onResume() {
         super.onResume();

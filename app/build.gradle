@@ -32,8 +32,14 @@ dependencies {
     // videoCache
     implementation 'com.danikula:videocache:2.7.0'
     // 注解框架
-    implementation "com.jakewharton:butterknife:7.0.1"
+    implementation 'com.jakewharton:butterknife:7.0.1'
     implementation project(':mediaplayerlibrary')
+    //导入Gson 库
+    implementation 'com.google.code.gson:gson:2.8.5'
     //抖音
     implementation 'com.github.castorflex.verticalviewpager:library:19.0.1'
+    //导入RxJava 和 RxAndroid
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
+    implementation 'io.reactivex.rxjava2:rxjava:2.x.y'
+    implementation project(':core-network')
 }
