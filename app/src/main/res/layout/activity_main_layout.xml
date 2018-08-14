@@ -27,4 +27,10 @@
         android:layout_height="wrap_content"
         android:text="仿抖音"/>
 
+    <Button
+        android:id="@+id/btn_aitiao"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="爱跳详情预"/>
+
 </LinearLayout>

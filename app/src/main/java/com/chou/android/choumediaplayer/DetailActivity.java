@@ -2,8 +2,6 @@ package com.chou.android.choumediaplayer;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.annotation.BoolRes;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
@@ -11,11 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.view.WindowInsets;
-import android.widget.FrameLayout;
-import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.chou.android.choumediaplayer.adapter.DouYinAdapter;
@@ -23,7 +17,7 @@ import com.chou.android.choumediaplayer.datas.DataUtil;
 import com.chou.android.choumediaplayer.datas.VideoBean;
 import com.chou.android.mediaplayerlibrary.ChouVideoPlayer;
 import com.chou.android.mediaplayerlibrary.VideoPlayerManager;
-import com.chou.android.mediaplayerlibrary.controllers.BoxVideoPlayerController;
+import com.chou.android.mediaplayerlibrary.controllers.AtVideoPlayerController;
 import com.chou.android.mediaplayerlibrary.controllers.DouYinVideoPlayerController;
 import com.danikula.videocache.HttpProxyCacheServer;
 import fr.castorflex.android.verticalviewpager.VerticalViewPager;
@@ -32,7 +26,7 @@ import java.util.List;
 
 import static com.chou.android.choumediaplayer.app.App.getProxy;
 
-public class DouYinActivity extends AppCompatActivity {
+public class DetailActivity extends AppCompatActivity {
 
     @Bind(R.id.vp_douyin) VerticalViewPager douyinViewPage;
     private DouYinAdapter douYinAdapter;
@@ -43,7 +37,7 @@ public class DouYinActivity extends AppCompatActivity {
     private int mCurrentPosition;
     private int mPlayingPosition;
     private ChouVideoPlayer chouVideoPlayer;
-    private DouYinVideoPlayerController controller;
+    private AtVideoPlayerController controller;
     private String proxyPath ;
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,13 +50,12 @@ public class DouYinActivity extends AppCompatActivity {
         mVideoList = DataUtil.getDouYinVideoList();
         for (VideoBean item : mVideoList) {
             inflater = LayoutInflater.from(this);
-            View view = inflater.inflate(R.layout.douyin_item, null);
+            View view = inflater.inflate(R.layout.aitiao_item, null);
             chouVideoPlayer = view.findViewById(R.id.douyin_video);
             chouVideoPlayer.isOpenGesture(false);
-            controller = new DouYinVideoPlayerController(this);
+            controller = new AtVideoPlayerController(this);
             proxyPath = proxy.getProxyUrl(item.getUrl());
             controller.setPathUrl(proxyPath);
-            controller.setImagePath(item.getThumb());
             chouVideoPlayer.setController(controller);
             views.add(view);
         }
@@ -114,7 +107,7 @@ public class DouYinActivity extends AppCompatActivity {
      */
     private void setStatusBarTransparent() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            View decorView = DouYinActivity.this.getWindow().getDecorView();
+            View decorView = DetailActivity.this.getWindow().getDecorView();
             decorView.setOnApplyWindowInsetsListener(new View.OnApplyWindowInsetsListener() {
                 @Override
                 public WindowInsets onApplyWindowInsets(View view, WindowInsets windowInsets) {
@@ -130,8 +123,6 @@ public class DouYinActivity extends AppCompatActivity {
             getWindow().setStatusBarColor(ContextCompat.getColor(this, android.R.color.transparent));
         }
     }
-
-
     @Override protected void onResume() {
         super.onResume();
         VideoPlayerManager.instance().resumeVideoPlayer();
