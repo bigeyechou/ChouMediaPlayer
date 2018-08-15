@@ -1,8 +1,6 @@
 package com.chou.android.network.subscribe;
 
-import com.chou.android.network.bean.BaseResponse;
 import com.chou.android.network.bean.ShowListRequestBean;
-import com.chou.android.network.bean.ShowVideoListBean;
 import com.chou.android.network.utils.RetrofitFactory;
 import io.reactivex.Observable;
 import io.reactivex.observers.DisposableObserver;
@@ -17,7 +15,7 @@ public class MovieSubscribe {
     /**
      * 获取秀场列表页面
      */
-    public static void getShowList(DisposableObserver<BaseResponse<ShowVideoListBean>> subscriber, int page, int userId) {
+    public static void getShowList(DisposableObserver<ResponseBody> subscriber, int page, int userId) {
         ShowListRequestBean bean = new ShowListRequestBean();
         bean.setPage(page);
         bean.setUser_id(userId);

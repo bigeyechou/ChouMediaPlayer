@@ -1,6 +1,5 @@
 package com.chou.android.network.api;
 
-import com.chou.android.network.bean.BaseResponse;
 import com.chou.android.network.bean.ShowListRequestBean;
 import com.chou.android.network.bean.ShowVideoListBean;
 import io.reactivex.Observable;
@@ -21,7 +20,7 @@ public interface HttpApi {
      * @return
      */
     @POST("v2/video/show")
-    Observable<BaseResponse<ShowVideoListBean>> getShowListData(@Body ShowListRequestBean bean);
+    Observable<ResponseBody> getShowListData(@Body ShowListRequestBean bean);
 
 
 }

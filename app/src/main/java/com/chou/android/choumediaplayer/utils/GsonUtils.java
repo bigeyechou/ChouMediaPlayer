@@ -1,6 +1,5 @@
 package com.chou.android.choumediaplayer.utils;
 
-
 import com.google.gson.Gson;
 
 /**

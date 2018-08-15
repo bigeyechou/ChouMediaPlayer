@@ -19,6 +19,9 @@ import com.chou.android.choumediaplayer.utils.GsonUtils;
 import com.chou.android.mediaplayerlibrary.ChouVideoPlayer;
 import com.chou.android.mediaplayerlibrary.VideoPlayerManager;
 import com.chou.android.mediaplayerlibrary.controllers.AtVideoPlayerController;
+import com.chou.android.mediaplayerlibrary.controllers.BoxVideoPlayerController;
+import com.chou.android.mediaplayerlibrary.controllers.DouYinVideoPlayerController;
+import com.chou.android.mediaplayerlibrary.controllers.ListVideoPlayerController;
 import com.chou.android.network.bean.ShowVideoListBean;
 import com.chou.android.network.subscribe.MovieSubscribe;
 import com.chou.android.network.utils.OnSuccessAndFaultListener;
@@ -45,25 +48,31 @@ public class DetailActivity extends AppCompatActivity {
     private int mCurrentPosition;
     private int mPlayingPosition;
     private ChouVideoPlayer chouVideoPlayer;
-    private AtVideoPlayerController controller;
-    private String proxyPath ;
+    // private AtVideoPlayerController controller;
+    private ListVideoPlayerController controller;
+    private String proxyPath;
+
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_douyin_layout);
         ButterKnife.bind(this);
 
-        HttpProxyCacheServer proxy = getProxy(this);
+        getShowList();
+
         setStatusBarTransparent();
-        mVideoList = DataUtil.getDouYinVideoList();
-        for (VideoBean item : mVideoList) {
+    }
+
+
+    private void initView() {
+        for (ShowVideoListBean.ListBean item : showListData) {
             inflater = LayoutInflater.from(this);
             View view = inflater.inflate(R.layout.aitiao_item, null);
             chouVideoPlayer = view.findViewById(R.id.douyin_video);
             chouVideoPlayer.isOpenGesture(false);
-            controller = new AtVideoPlayerController(this);
-            proxyPath = proxy.getProxyUrl(item.getUrl());
-            controller.setPathUrl(proxyPath);
+            // controller = new AtVideoPlayerController(this);
+            controller = new ListVideoPlayerController(this);
+            controller.setPathUrl(item.getVideo_href());
             chouVideoPlayer.setController(controller);
             views.add(view);
         }
@@ -76,15 +85,21 @@ public class DetailActivity extends AppCompatActivity {
 
             }
 
+
             @Override public void onPageSelected(int position) {
                 mCurrentPosition = position;
+                if (mCurrentPosition+1 == showListData.size()) {
+                    start++;
+                    getShowList();
+                }
             }
+
 
             @Override public void onPageScrollStateChanged(int state) {
                 if (mPlayingPosition == mCurrentPosition) {
                     return;
                 }
-                switch (state){
+                switch (state) {
                     case VerticalViewPager.SCROLL_STATE_IDLE:
                         startVideo();
                         break;
@@ -92,23 +107,26 @@ public class DetailActivity extends AppCompatActivity {
                         chouVideoPlayer.pause();
                         break;
                     case VerticalViewPager.SCROLL_STATE_SETTLING:
+                        chouVideoPlayer.release();
                         break;
                 }
             }
         });
-        douyinViewPage.post(new Runnable() {
-            @Override public void run() {
-                startVideo();
-            }
-        });
+        // douyinViewPage.post(new Runnable() {
+        //     @Override public void run() {
+        startVideo();
+        //     }
+        // });
     }
 
-    private void startVideo(){
+
+    private void startVideo() {
         View view = views.get(mCurrentPosition);
         chouVideoPlayer = view.findViewById(R.id.douyin_video);
         chouVideoPlayer.start();
         mPlayingPosition = mCurrentPosition;
     }
+
 
     /**
      * 把状态栏设成透明
@@ -128,9 +146,11 @@ public class DetailActivity extends AppCompatActivity {
                 }
             });
             ViewCompat.requestApplyInsets(decorView);
-            getWindow().setStatusBarColor(ContextCompat.getColor(this, android.R.color.transparent));
+            getWindow().setStatusBarColor(
+                ContextCompat.getColor(this, android.R.color.transparent));
         }
     }
+
 
     /**
      * 秀场
@@ -138,9 +158,17 @@ public class DetailActivity extends AppCompatActivity {
     private void getShowList() {
         OnSuccessAndFaultListener l = new OnSuccessAndFaultListener() {
             @Override public void onSuccess(String result) {
-                ShowVideoListBean showVideoListBean = GsonUtils.fromJson(result,ShowVideoListBean.class);
-                showListData = showVideoListBean.getList();
-
+                ShowVideoListBean showVideoListBean = GsonUtils.fromJson(result,
+                    ShowVideoListBean.class);
+                // showListData = showVideoListBean.getList();
+                if (start == 0) {
+                    showListData = showVideoListBean.getList();
+                    initView();
+                } else {
+                    showListData.addAll(showVideoListBean.getList());
+                    initView();
+                }
+                // initView();
             }
 
 
@@ -148,8 +176,10 @@ public class DetailActivity extends AppCompatActivity {
 
             }
         };
-        MovieSubscribe.getShowList(new OnSuccessAndFaultSub(l,this,true),0,1);
+        MovieSubscribe.getShowList(new OnSuccessAndFaultSub(l), start, count);
     }
+
+
     @Override protected void onResume() {
         super.onResume();
         VideoPlayerManager.instance().resumeVideoPlayer();

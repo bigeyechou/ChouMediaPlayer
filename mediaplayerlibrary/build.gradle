@@ -23,19 +23,18 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'com.android.support:appcompat-v7:27.1.1'
+    api 'com.android.support:appcompat-v7:27.1.1'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     //glide图片加载
-    implementation 'com.github.bumptech.glide:glide:3.7.0'
+    api 'com.github.bumptech.glide:glide:3.7.0'
 
     //IJK播放器
-    implementation 'tv.danmaku.ijk.media:ijkplayer-java:0.8.3'
-    implementation 'tv.danmaku.ijk.media:ijkplayer-armv7a:0.8.3'
-    implementation 'tv.danmaku.ijk.media:ijkplayer-armv5:0.8.3'
-    implementation 'tv.danmaku.ijk.media:ijkplayer-x86:0.8.3'
-    implementation 'tv.danmaku.ijk.media:ijkplayer-arm64:0.8.3'
-    implementation 'tv.danmaku.ijk.media:ijkplayer-x86_64:0.8.3'
-
+    api 'tv.danmaku.ijk.media:ijkplayer-java:0.8.3'
+    api 'tv.danmaku.ijk.media:ijkplayer-armv7a:0.8.3'
+    api 'tv.danmaku.ijk.media:ijkplayer-armv5:0.8.3'
+    api 'tv.danmaku.ijk.media:ijkplayer-x86:0.8.3'
+    api 'tv.danmaku.ijk.media:ijkplayer-arm64:0.8.3'
+    api 'tv.danmaku.ijk.media:ijkplayer-x86_64:0.8.3'
 }

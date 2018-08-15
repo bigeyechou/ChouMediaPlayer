@@ -3,15 +3,13 @@ package com.chou.android.network.utils;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.util.Log;
-import com.chou.android.network.bean.BaseResponse;
-import io.reactivex.Observer;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import javax.net.ssl.SSLHandshakeException;
 import okhttp3.ResponseBody;
+import org.json.JSONObject;
 import retrofit2.HttpException;
 
 /**
@@ -22,7 +20,7 @@ import retrofit2.HttpException;
  * 回调结果为String，需要手动序列化
  */
 
-public class OnSuccessAndFaultSub<T> extends DisposableObserver<BaseResponse<T>> implements ProgressCancelListener {
+public class OnSuccessAndFaultSub<T> extends DisposableObserver<ResponseBody> implements ProgressCancelListener {
     /**
      * 是否需要显示默认Loading
      */
@@ -141,16 +139,19 @@ public class OnSuccessAndFaultSub<T> extends DisposableObserver<BaseResponse<T>>
      * byte[] bytes = body.bytes();//获取字节数组
      * String str = body.string();//获取字符串数据
      */
-    @Override public void onNext(BaseResponse<T> responseBody) {
+    @Override public void onNext(ResponseBody responseBody) {
         try {
-            final String result = responseBody.toString();
+            JSONObject jsonObject = new JSONObject(responseBody.string());
+            int resultCode = jsonObject.getInt("code");
+            String msg = jsonObject.getString("msg");
+            final String result = jsonObject.getString("obj");
+            // responseBody.toString();
             Log.e("body", result);
-            int resultCode = responseBody.getCode();
-            if (resultCode == 200) {
-                mOnSuccessAndFaultListener.onSuccess(responseBody.getObj().toString());
+            if (resultCode == 200) {;
+                mOnSuccessAndFaultListener.onSuccess(result);
             } else {
-                mOnSuccessAndFaultListener.onFault(responseBody.getMsg());
-                Log.e("OnSuccessAndFaultSub", "errorMsg: " + responseBody.getMsg());
+                mOnSuccessAndFaultListener.onFault(msg);
+                Log.e("OnSuccessAndFaultSub", "errorMsg: " + msg);
             }
         } catch (Exception e) {
             e.printStackTrace();
