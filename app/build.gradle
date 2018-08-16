@@ -38,5 +38,5 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.5'
 
     api project(':mediaplayerlibrary')
-    api project(':core-network')
+    api project(':network')
 }

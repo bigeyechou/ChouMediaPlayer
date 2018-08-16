@@ -9,8 +9,8 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/core-network" />
             <option value="$PROJECT_DIR$/mediaplayerlibrary" />
+            <option value="$PROJECT_DIR$/network" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
