@@ -90,8 +90,10 @@ public class DouYinVideoPlayerController extends VideoPlayerBaseController
         }else if (view == dyRelTotal){
             if (mOnVideoPlayerEventListener.isPlaying()){
                 mOnVideoPlayerEventListener.pause();
+                dyIvVideoShow.setVisibility(VISIBLE);
             }else {
                 mOnVideoPlayerEventListener.start();
+                dyIvVideoShow.setVisibility(GONE);
             }
         }
     }
@@ -104,7 +106,6 @@ public class DouYinVideoPlayerController extends VideoPlayerBaseController
             case ChouVideoPlayer.STATE_PREPARING:
                 dyVideoError.setVisibility(View.GONE);
                 dyVideoLoading.setVisibility(View.VISIBLE);
-                dyIvVideoShow.setVisibility(GONE);
                 dyVideoLoadText.setText("正在加载...");
                 break;
             case ChouVideoPlayer.STATE_PREPARED:
@@ -112,11 +113,9 @@ public class DouYinVideoPlayerController extends VideoPlayerBaseController
             case ChouVideoPlayer.STATE_PLAYING:
                 dyVideoLoading.setVisibility(View.GONE);
                 dyIvBackground.setVisibility(View.GONE);
-                dyIvVideoShow.setVisibility(GONE);
                 break;
             case ChouVideoPlayer.STATE_PAUSED:
                 dyVideoLoading.setVisibility(View.GONE);
-                dyIvVideoShow.setVisibility(VISIBLE);
                 break;
             case ChouVideoPlayer.STATE_BUFFERING_PLAYING:
                 dyVideoLoading.setVisibility(View.GONE);

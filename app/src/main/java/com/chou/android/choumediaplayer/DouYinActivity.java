@@ -124,9 +124,6 @@ public class DouYinActivity extends AppCompatActivity {
 
     private void startVideo() {
         View view = views.get(mCurrentPosition);
-        if (chouVideoPlayer != null) {
-            chouVideoPlayer.removeAllViews();
-        }
         chouVideoPlayer = view.findViewById(R.id.douyin_video);
         chouVideoPlayer.start();
         mPlayingPosition = mCurrentPosition;
