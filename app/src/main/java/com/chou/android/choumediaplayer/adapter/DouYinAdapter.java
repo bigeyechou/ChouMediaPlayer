@@ -20,6 +20,10 @@ public class DouYinAdapter extends PagerAdapter {
         this.mViews = views;
     }
 
+    public void setViews(List<View> mViews) {
+        this.mViews = mViews;
+    }
+
     @Override
     public int getCount() {
         return mViews.size();
@@ -41,6 +45,7 @@ public class DouYinAdapter extends PagerAdapter {
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        container.removeView((View) object);
+        // container.removeView((View) object);
+        container.removeView(mViews.get(position));
     }
 }

@@ -1,11 +1,10 @@
 package com.chou.android.network.api;
 
-import com.chou.android.network.bean.ShowListRequestBean;
-import com.chou.android.network.bean.ShowVideoListBean;
 import io.reactivex.Observable;
+import java.util.Map;
 import okhttp3.ResponseBody;
-import retrofit2.http.Body;
 import retrofit2.http.POST;
+import retrofit2.http.QueryMap;
 
 /**
  * Created by 眼神 on 2018/3/27.
@@ -14,13 +13,7 @@ import retrofit2.http.POST;
  */
 
 public interface HttpApi {
-    /**
-     * 秀场列表
-     * @param bean
-     * @return
-     */
+
     @POST("v2/video/show")
-    Observable<ResponseBody> getShowListData(@Body ShowListRequestBean bean);
-
-
+    Observable<ResponseBody> getShowListData(@QueryMap Map<String,String> map);
 }

@@ -1,9 +1,10 @@
 package com.chou.android.network.subscribe;
 
-import com.chou.android.network.bean.ShowListRequestBean;
 import com.chou.android.network.utils.RetrofitFactory;
 import io.reactivex.Observable;
 import io.reactivex.observers.DisposableObserver;
+import java.util.HashMap;
+import java.util.Map;
 import okhttp3.ResponseBody;
 
 /**
@@ -15,11 +16,12 @@ public class MovieSubscribe {
     /**
      * 获取秀场列表页面
      */
-    public static void getShowList(DisposableObserver<ResponseBody> subscriber, int page, int userId) {
-        ShowListRequestBean bean = new ShowListRequestBean();
-        bean.setPage(page);
-        bean.setUser_id(userId);
-        Observable observable =  RetrofitFactory.getInstance().getHttpApi().getShowListData(bean);
+    public static void getShowList(DisposableObserver<ResponseBody> subscriber, String page, String userId) {
+        Map<String,String> map = new HashMap<>();
+        map.put("page",page);
+        map.put("user_id",userId);
+        Observable observable =  RetrofitFactory.getInstance().getHttpApi().getShowListData(map);
         RetrofitFactory.getInstance().toSubscribe(observable, subscriber);
     }
+
 }

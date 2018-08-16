@@ -48,9 +48,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btn_douyin:
                 startActivity(new Intent(MainActivity.this,DouYinActivity.class));
                 break;
-            case R.id.btn_aitiao:
-                startActivity(new Intent(MainActivity.this,DetailActivity.class));
-                break;
 
         }
     }
