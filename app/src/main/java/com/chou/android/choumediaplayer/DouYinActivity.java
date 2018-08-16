@@ -76,6 +76,7 @@ public class DouYinActivity extends AppCompatActivity {
             chouVideoPlayer.isOpenGesture(false);
             controller = new DouYinVideoPlayerController(this);
             controller.setPathUrl(item.getVideo_href());
+            controller.setDate(item.getVideo_cover(),item.getUser().getUsername(),item.getVideo_title());
             chouVideoPlayer.setController(controller);
             views.add(view);
         }
@@ -182,6 +183,7 @@ public class DouYinActivity extends AppCompatActivity {
                         chouVideoPlayer.isOpenGesture(false);
                         controller = new DouYinVideoPlayerController(DouYinActivity.this);
                         controller.setPathUrl(item.getVideo_href());
+                        controller.setDate(item.getVideo_cover(),item.getUser().getUsername(),item.getVideo_title());
                         chouVideoPlayer.setController(controller);
                         views.add(view);
                     }

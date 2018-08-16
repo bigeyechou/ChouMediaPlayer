@@ -15,7 +15,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Bind(R.id.btn_box) Button btnBox;
     @Bind(R.id.btn_circle) Button btnCircle;
     @Bind(R.id.btn_douyin) Button btnDouyin;
-    @Bind(R.id.btn_aitiao) Button btnAiTiao;
 
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -31,7 +30,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnBox.setOnClickListener(this);
         btnCircle.setOnClickListener(this);
         btnDouyin.setOnClickListener(this);
-        btnAiTiao.setOnClickListener(this);
     }
 
 

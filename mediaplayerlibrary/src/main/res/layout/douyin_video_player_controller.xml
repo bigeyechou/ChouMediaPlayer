@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/dy_rel_total"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -8,27 +9,39 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
+    <ImageView
+        android:id="@+id/dy_iv_video_show"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_centerInParent="true"
+        android:src="@mipmap/ic_follow_play"
+        android:visibility="gone"/>
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center_vertical"
         android:layout_alignParentRight="true">
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@mipmap/ic_gift"
             android:padding="16dp"/>
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@mipmap/ic_support"
             android:padding="16dp"/>
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@mipmap/ic_collect"
             android:padding="16dp"/>
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -93,6 +106,35 @@
             android:textSize="13sp"/>
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/dy_tv_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:maxLines="3"
+            android:ellipsize="end"
+            android:text=""/>
+
+        <TextView
+            android:id="@+id/dy_tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:text=""/>
+    </LinearLayout>
 
 </RelativeLayout>

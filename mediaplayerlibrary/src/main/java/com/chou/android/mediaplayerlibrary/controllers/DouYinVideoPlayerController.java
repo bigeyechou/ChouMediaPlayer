@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.chou.android.mediaplayerlibrary.ChouVideoPlayer;
@@ -16,11 +17,18 @@ import com.chou.android.mediaplayerlibrary.VideoPlayerBaseController;
 public class DouYinVideoPlayerController extends VideoPlayerBaseController
     implements View.OnClickListener {
 
+    private RelativeLayout dyRelTotal;
     private ImageView dyIvBackground;
     private LinearLayout dyVideoLoading;
     private TextView dyVideoLoadText;
     private LinearLayout dyVideoError;
     private TextView dyVideoRetry;
+    private ImageView dyIvVideoShow;
+    private TextView dyTvDescription;
+    private TextView dyTvName;
+
+
+
     private Context mContext;
     private String videoUrl;
 
@@ -35,12 +43,16 @@ public class DouYinVideoPlayerController extends VideoPlayerBaseController
 
     private void init() {
         LayoutInflater.from(mContext).inflate(R.layout.douyin_video_player_controller, this, true);
+        dyRelTotal = findViewById(R.id.dy_rel_total);
         dyIvBackground = findViewById(R.id.dy_iv_background);
         dyVideoLoading = findViewById(R.id.dy_video_loading);
         dyVideoLoadText = findViewById(R.id.dy_video_load_text);
         dyVideoError = findViewById(R.id.dy_video_error);
         dyVideoRetry = findViewById(R.id.dy_video_retry);
-
+        dyIvVideoShow = findViewById(R.id.dy_iv_video_show);
+        dyTvName = findViewById(R.id.dy_tv_name);
+        dyTvDescription = findViewById(R.id.dy_tv_description);
+        dyRelTotal.setOnClickListener(this);
         dyVideoRetry.setOnClickListener(this);
     }
 
@@ -65,14 +77,22 @@ public class DouYinVideoPlayerController extends VideoPlayerBaseController
     }
 
 
-    public void setImagePath(String imageUrl) {
+    public void setDate(String imageUrl,String title , String name) {
         Glide.with(mContext).load(imageUrl).into(dyIvBackground);
+        dyTvName.setText(name);
+        dyTvDescription.setText(title);
     }
 
 
     @Override public void onClick(View view) {
         if (view == dyVideoRetry) {
             mOnVideoPlayerEventListener.restart();
+        }else if (view == dyRelTotal){
+            if (mOnVideoPlayerEventListener.isPlaying()){
+                mOnVideoPlayerEventListener.pause();
+            }else {
+                mOnVideoPlayerEventListener.start();
+            }
         }
     }
 
@@ -84,6 +104,7 @@ public class DouYinVideoPlayerController extends VideoPlayerBaseController
             case ChouVideoPlayer.STATE_PREPARING:
                 dyVideoError.setVisibility(View.GONE);
                 dyVideoLoading.setVisibility(View.VISIBLE);
+                dyIvVideoShow.setVisibility(GONE);
                 dyVideoLoadText.setText("正在加载...");
                 break;
             case ChouVideoPlayer.STATE_PREPARED:
@@ -91,9 +112,11 @@ public class DouYinVideoPlayerController extends VideoPlayerBaseController
             case ChouVideoPlayer.STATE_PLAYING:
                 dyVideoLoading.setVisibility(View.GONE);
                 dyIvBackground.setVisibility(View.GONE);
+                dyIvVideoShow.setVisibility(GONE);
                 break;
             case ChouVideoPlayer.STATE_PAUSED:
                 dyVideoLoading.setVisibility(View.GONE);
+                dyIvVideoShow.setVisibility(VISIBLE);
                 break;
             case ChouVideoPlayer.STATE_BUFFERING_PLAYING:
                 dyVideoLoading.setVisibility(View.GONE);
