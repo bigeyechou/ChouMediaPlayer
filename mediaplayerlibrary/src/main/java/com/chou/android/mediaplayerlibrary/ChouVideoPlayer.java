@@ -10,15 +10,14 @@ import android.graphics.SurfaceTexture;
 import android.media.AudioManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Surface;
 import android.view.TextureView;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
-import android.view.animation.ScaleAnimation;
 import android.widget.FrameLayout;
 
 import android.widget.Toast;
@@ -33,6 +32,7 @@ import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 
 public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventListener,
     TextureView.SurfaceTextureListener {
+    private static final String TAG = "ChouVideoPlayer";
     /**
      * 播放状态
      **/
@@ -70,7 +70,6 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
      */
     private IjkMediaPlayer mMediaPlayer;
     private FrameLayout mContainer;
-    private FrameLayout mContainer1;
     private VideoTextureView mTextureView;
     private VideoPlayerBaseController mController;
     private SurfaceTexture mSurfaceTexture;
@@ -125,6 +124,10 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
 
     @Override
     public void start() {
+        if (TextUtils.isEmpty(mVideoPath)) {
+            LogUtil.e(TAG + "视频地址不存在");
+            return;
+        }
         if (mCurrentState == STATE_IDLE) {
             VideoPlayerManager.instance().setCurrentVideoPlayer(this);
             initAudioManager();
@@ -134,10 +137,10 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
         } else if (mCurrentState == STATE_PAUSED || mCurrentState == STATE_BUFFERING_PAUSED) {
             this.mMediaPlayer.start();
             mCurrentState = STATE_PLAYING;
-        } else if (mCurrentState == STATE_COMPLETED ){//AB循环结束自动停掉并播放
+        } else if (mCurrentState == STATE_COMPLETED) {//AB循环结束自动停掉并播放
             this.mMediaPlayer.start();
             mCurrentState = STATE_PLAYING;
-        }else {
+        } else {
             Log.d("videoLog====", "只有在mCurrentState == STATE_IDLE时才能调用start方法.");
         }
     }
@@ -190,17 +193,17 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
             mMediaPlayer.start();
             mCurrentState = STATE_PLAYING;
             mController.onPlayStateChanged(mCurrentState);
-            LogUtil.d("STATE_PLAYING");
+            LogUtil.d(TAG + "STATE_PLAYING");
         } else if (mCurrentState == STATE_BUFFERING_PAUSED) {
             mMediaPlayer.start();
             mCurrentState = STATE_BUFFERING_PLAYING;
             mController.onPlayStateChanged(mCurrentState);
-            LogUtil.d("STATE_BUFFERING_PLAYING");
+            LogUtil.d(TAG + "STATE_BUFFERING_PLAYING");
         } else if (mCurrentState == STATE_COMPLETED || mCurrentState == STATE_ERROR) {
             mMediaPlayer.reset();
             openMediaPlayer();
         } else {
-            LogUtil.d("在mCurrentState == " + mCurrentState + "时不能调用restart()方法.");
+            LogUtil.d(TAG + "在mCurrentState == " + mCurrentState + "时不能调用restart()方法.");
         }
     }
 
@@ -211,13 +214,13 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
             mMediaPlayer.pause();
             mCurrentState = STATE_PAUSED;
             mController.onPlayStateChanged(mCurrentState);
-            LogUtil.d("STATE_PAUSED");
+            LogUtil.d(TAG + "STATE_PAUSED");
         }
         if (mCurrentState == STATE_BUFFERING_PLAYING) {
             mMediaPlayer.pause();
             mCurrentState = STATE_BUFFERING_PAUSED;
             mController.onPlayStateChanged(mCurrentState);
-            LogUtil.d("STATE_BUFFERING_PAUSED");
+            LogUtil.d(TAG + "STATE_BUFFERING_PAUSED");
         }
     }
 
@@ -229,20 +232,20 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
         }
     }
 
+
     /**
      * 设置视频缩放
-     * @param isScaling
      */
     @Override public void isVideoScaling(boolean isScaling) {
         AnimatorSet animatorSetsuofang = new AnimatorSet();//组合动画
         ObjectAnimator scaleX;
         ObjectAnimator scaleY;
-        if (isScaling){
-             scaleX = ObjectAnimator.ofFloat(mContainer, "scaleX", 1f, 0.9f);
-             scaleY = ObjectAnimator.ofFloat(mContainer, "scaleY", 1f, 0.9f);
-        }else {
-             scaleX = ObjectAnimator.ofFloat(mContainer, "scaleX", 0.9f, 1.0f);
-             scaleY = ObjectAnimator.ofFloat(mContainer, "scaleY", 0.9f, 1.0f);
+        if (isScaling) {
+            scaleX = ObjectAnimator.ofFloat(mContainer, "scaleX", 1f, 0.9f);
+            scaleY = ObjectAnimator.ofFloat(mContainer, "scaleY", 1f, 0.9f);
+        } else {
+            scaleX = ObjectAnimator.ofFloat(mContainer, "scaleX", 0.9f, 1.0f);
+            scaleY = ObjectAnimator.ofFloat(mContainer, "scaleY", 0.9f, 1.0f);
         }
         animatorSetsuofang.setDuration(1000);
         animatorSetsuofang.setInterpolator(new DecelerateInterpolator());
@@ -399,13 +402,14 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
 
     /**
      * 倒退时间
+     *
      * @param backTime 毫秒
      */
     @Override public void setRewind(long backTime) {
-        if (mMediaPlayer!=null){
+        if (mMediaPlayer != null) {
             long time = mMediaPlayer.getCurrentPosition() - backTime;
             mMediaPlayer.seekTo(time);
-            Toast.makeText(mContext,"视频快退5s成功",Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, "视频快退5s成功", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -432,7 +436,7 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
             mController.onPlayStateChanged(mCurrentState);
         } catch (IOException e) {
             e.printStackTrace();
-            LogUtil.e("打开播放器发生错误");
+            LogUtil.e(TAG + "打开播放器发生错误");
         }
     }
 
@@ -444,7 +448,7 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
         public void onPrepared(IMediaPlayer mp) {
             mCurrentState = STATE_PREPARED;
             mController.onPlayStateChanged(mCurrentState);
-            LogUtil.d("onPrepared ——> STATE_PREPARED");
+            LogUtil.d(TAG + "onPrepared ——> STATE_PREPARED");
             mp.start();
             // 跳到指定位置播放
             if (skipToPosition != 0) {
@@ -512,12 +516,12 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
                 // 视频旋转了extra度，需要恢复
                 if (mTextureView != null) {
                     mTextureView.setRotation(extra);
-                    LogUtil.d("视频旋转角度：" + extra);
+                    LogUtil.d(TAG + "视频旋转角度：" + extra);
                 }
             } else if (what == IMediaPlayer.MEDIA_INFO_NOT_SEEKABLE) {
-                LogUtil.d("视频不能seekTo，为直播视频");
+                LogUtil.d(TAG + "视频不能seekTo，为直播视频");
             } else {
-                LogUtil.d("onInfo ——> what：" + what);
+                LogUtil.d(TAG + "onInfo ——> what：" + what);
             }
             return true;
         }

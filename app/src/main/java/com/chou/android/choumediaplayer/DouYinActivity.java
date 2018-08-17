@@ -75,7 +75,7 @@ public class DouYinActivity extends AppCompatActivity {
             chouVideoPlayer = view.findViewById(R.id.douyin_video);
             chouVideoPlayer.isOpenGesture(false);
             controller = new DouYinVideoPlayerController(this);
-            controller.setPathUrl(item.getVideo_href());
+            // controller.setPathUrl(item.getVideo_href());
             controller.setDate(item.getVideo_cover(),item.getUser().getUsername(),item.getVideo_title());
             chouVideoPlayer.setController(controller);
             views.add(view);
