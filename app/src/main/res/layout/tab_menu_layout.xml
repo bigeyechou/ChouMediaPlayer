@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:visibility="visible">
+
+    <RadioGroup
+        android:id="@+id/rg_only_course"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:gravity="center"
+        android:layout_gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/padding_right_and_left"
+        android:paddingRight="@dimen/padding_right_and_left">
+
+        <RadioButton
+            android:id="@+id/rb_tab_first"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:checked="true"
+            android:button="@null"
+            android:gravity="center_horizontal"
+            android:padding="5dp"
+            android:text="首页"
+            android:textColor="@drawable/tab_menu_text_color"
+            android:drawableTop="@drawable/tab_menu_first"
+            android:drawablePadding="5dp"
+            android:textSize="13sp" />
+        <RadioButton
+            android:id="@+id/rb_tab_second"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:checked="false"
+            android:button="@null"
+            android:gravity="center_horizontal"
+            android:padding="5dp"
+            android:text="我的"
+            android:textColor="@drawable/tab_menu_text_color"
+            android:drawableTop="@drawable/tab_menu_last"
+            android:drawablePadding="5dp"
+            android:textSize="13sp" />
+
+    </RadioGroup>
+
+</LinearLayout>

@@ -4,4 +4,6 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="white">#FFFFFF</color><!--白色-->
+    <color name="mainStyle">#d4237a</color>
+
 </resources>

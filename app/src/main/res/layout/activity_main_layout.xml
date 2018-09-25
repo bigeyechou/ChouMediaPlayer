@@ -1,30 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/btn_detail"
+    <FrameLayout
+        android:id="@+id/main_frame"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="主视频"/>
+        android:layout_height="match_parent"/>
 
-    <Button
-        android:id="@+id/btn_box"
+    <View
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="盒子视频"/>
+        android:layout_height="0.5dp"/>
 
-    <Button
-        android:id="@+id/btn_circle"
+    <include
+        android:id="@+id/tab_menu_bottom"
+        layout="@layout/tab_menu_layout"
+        android:layout_height="60dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="圈子的"/>
+        android:layout_alignParentBottom="true"/>
 
-    <Button
-        android:id="@+id/btn_douyin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="仿抖音"/>
-
-</LinearLayout>
+</RelativeLayout>
