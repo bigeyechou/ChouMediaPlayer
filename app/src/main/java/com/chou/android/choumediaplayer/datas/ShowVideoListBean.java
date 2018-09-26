@@ -1,5 +1,6 @@
-package com.chou.android.network.bean;
+package com.chou.android.choumediaplayer.datas;
 
+import com.chad.library.adapter.base.entity.MultiItemEntity;
 import java.util.List;
 
 /**
@@ -25,8 +26,9 @@ public class ShowVideoListBean {
     public void setList(List<ListBean> list) { this.list = list;}
 
 
-    public static class ListBean {
-
+    public static class ListBean implements MultiItemEntity {
+        public static final int VIDEO_LAND = 1;
+        public static final int VIDEO_VERTICAL = 0;
         private String id;
         private String video_href;
         private String video_long_time;
@@ -36,14 +38,25 @@ public class ShowVideoListBean {
         private String video_title;
         private String video_cover;
         private String video_introduction;
-        private String video_type;
+        private int video_type;
         private String video_like_nums;
         private String video_play_nums;
         private String video_collect_nums;
         private String video_upload_time;
         private int is_like_video;
         private String share_url;
+        private String dance_name;
         private UserBean user;
+
+
+        public String getDance_name() {
+            return dance_name;
+        }
+
+
+        public void setDance_name(String dance_name) {
+            this.dance_name = dance_name;
+        }
 
 
         public String getId() { return id;}
@@ -104,10 +117,10 @@ public class ShowVideoListBean {
         }
 
 
-        public String getVideo_type() { return video_type;}
+        public int getVideo_type() { return video_type;}
 
 
-        public void setVideo_type(String video_type) { this.video_type = video_type;}
+        public void setVideo_type(int video_type) { this.video_type = video_type;}
 
 
         public String getVideo_like_nums() { return video_like_nums;}
@@ -158,6 +171,11 @@ public class ShowVideoListBean {
 
 
         public void setUser(UserBean user) { this.user = user;}
+
+
+        @Override public int getItemType() {
+            return video_type;
+        }
 
 
         public static class UserBean {

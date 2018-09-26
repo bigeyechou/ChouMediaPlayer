@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.Process;
 import com.chou.android.network.AppUtils;
 import com.danikula.videocache.HttpProxyCacheServer;
+import com.facebook.drawee.backends.pipeline.Fresco;
 import java.util.ArrayList;
 
 public class App extends Application {
@@ -19,6 +20,7 @@ public class App extends Application {
     @Override public void onCreate() {
         super.onCreate();
         app = this;
+        Fresco.initialize(this);
         AppUtils.init(app);
     }
 

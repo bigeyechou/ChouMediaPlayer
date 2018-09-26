@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_video_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_video_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:overScrollMode="never"
+        android:background="@color/white"
+        tools:listitem="@layout/item_video_list"
+        tools:reverseLayout="false"
+        tools:stackFromEnd="false"
+        android:fadingEdge="none"/>
+    </android.support.v4.widget.SwipeRefreshLayout>
+</LinearLayout>

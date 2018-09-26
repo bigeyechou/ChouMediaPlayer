@@ -36,7 +36,10 @@ dependencies {
     //抖音
     implementation 'com.github.castorflex.verticalviewpager:library:19.0.1'
     implementation 'com.google.code.gson:gson:2.8.5'
-
+    //Facebook图片加载框架
+    implementation 'com.facebook.fresco:fresco:1.9.0'
+    //adapter
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.35'
     api project(':mediaplayerlibrary')
     api project(':network')
 }
