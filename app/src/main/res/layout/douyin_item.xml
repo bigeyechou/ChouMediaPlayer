@@ -1,12 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
     <com.chou.android.mediaplayerlibrary.ChouVideoPlayer
         android:id="@+id/douyin_video"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-</LinearLayout>
+    <LinearLayout
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="260dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/iv_look_video_douyin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_look_white"
+            android:padding="5dp"/>
+
+        <TextView
+            android:id="@+id/tv_look_video_douyin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="12sp"
+            android:textColor="@color/white"
+            android:layout_centerVertical="true"
+            android:text="3421"/>
+
+        <ImageView
+            android:id="@+id/iv_like_video_douyin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_like_white"
+            android:padding="5dp"
+            android:layout_marginTop="@dimen/dp_10"/>
+
+        <TextView
+            android:id="@+id/tv_like_video_douyin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="12sp"
+            android:textColor="@color/white"
+            android:layout_centerVertical="true"
+            android:text="2223"/>
+
+        <ImageView
+            android:id="@+id/iv_collect_video_douyin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_collect_white"
+            android:padding="5dp"
+            android:layout_marginTop="@dimen/dp_10"/>
+
+        <TextView
+            android:id="@+id/tv_collect_video_douyin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textColor="@color/white"
+            android:layout_centerVertical="true"
+            android:text="1212"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/iv_head_video_douyin"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                app:placeholderImage="@mipmap/ic_head_default"
+                app:failureImage="@mipmap/ic_head_default"
+                app:fadeDuration="300"
+                app:actualImageScaleType="focusCrop"
+                app:roundAsCircle="true"/>
+
+            <TextView
+                android:id="@+id/tv_name_video_douyin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textColor="@color/white"
+                android:layout_toRightOf="@+id/iv_head_video_douyin"
+                android:layout_toLeftOf="@+id/iv_share_video_douyin"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:text="瓜皮"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_description_video_douyin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textSize="15sp"
+            android:textColor="@color/white"
+            android:text="嘻哈帮街舞阿达大厦大厦的卡上的理解哈飞机快拉上来看房"/>
+    </LinearLayout>
+
+</RelativeLayout>

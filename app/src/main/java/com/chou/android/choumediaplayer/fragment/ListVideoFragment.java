@@ -208,6 +208,14 @@ public class ListVideoFragment extends BaseFragment
             }
         });
     }
+
+    @Override public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (!isVisibleToUser) {
+            VideoPlayerManager.instance().pauseVideoPlayer();
+        }
+    }
+
     @Override public void onResume() {
         super.onResume();
         VideoPlayerManager.instance().resumeVideoPlayer();

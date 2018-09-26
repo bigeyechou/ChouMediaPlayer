@@ -13,6 +13,7 @@ import com.chou.android.mediaplayerlibrary.ChouVideoPlayer;
 import com.chou.android.mediaplayerlibrary.OnVideoPlayerEventListener;
 import com.chou.android.mediaplayerlibrary.R;
 import com.chou.android.mediaplayerlibrary.VideoPlayerBaseController;
+import com.chou.android.mediaplayerlibrary.datas.ShowVideoListBean;
 
 public class DouYinVideoPlayerController extends VideoPlayerBaseController
     implements View.OnClickListener {
@@ -24,10 +25,6 @@ public class DouYinVideoPlayerController extends VideoPlayerBaseController
     private LinearLayout dyVideoError;
     private TextView dyVideoRetry;
     private ImageView dyIvVideoShow;
-    private TextView dyTvDescription;
-    private TextView dyTvName;
-
-
 
     private Context mContext;
     private String videoUrl;
@@ -50,8 +47,6 @@ public class DouYinVideoPlayerController extends VideoPlayerBaseController
         dyVideoError = findViewById(R.id.dy_video_error);
         dyVideoRetry = findViewById(R.id.dy_video_retry);
         dyIvVideoShow = findViewById(R.id.dy_iv_video_show);
-        dyTvName = findViewById(R.id.dy_tv_name);
-        dyTvDescription = findViewById(R.id.dy_tv_description);
         dyRelTotal.setOnClickListener(this);
         dyVideoRetry.setOnClickListener(this);
     }
@@ -64,9 +59,11 @@ public class DouYinVideoPlayerController extends VideoPlayerBaseController
         if (videoUrl != null && !videoUrl.isEmpty()) {
             onVideoPlayerEventListener.setVideoPath(videoUrl);
         }
-
     }
 
+    public void setData(ShowVideoListBean data){
+
+    }
 
     public void setPathUrl(String pathUrl) {
         this.videoUrl = pathUrl;
@@ -74,13 +71,6 @@ public class DouYinVideoPlayerController extends VideoPlayerBaseController
         if (mOnVideoPlayerEventListener != null) {
             mOnVideoPlayerEventListener.setVideoPath(pathUrl);
         }
-    }
-
-
-    public void setDate(String imageUrl,String title , String name) {
-        Glide.with(mContext).load(imageUrl).into(dyIvBackground);
-        dyTvName.setText(name);
-        dyTvDescription.setText(title);
     }
 
 

@@ -17,6 +17,7 @@ import butterknife.ButterKnife;
 import com.chou.android.choumediaplayer.R;
 import com.chou.android.choumediaplayer.utils.navigation.PageInfo;
 import com.chou.android.choumediaplayer.utils.navigation.PagerTitleView;
+import com.chou.android.mediaplayerlibrary.VideoPlayerManager;
 import com.chou.android.mediaplayerlibrary.utils.ChouPlayerUtil;
 import net.lucode.hackware.magicindicator.MagicIndicator;
 import net.lucode.hackware.magicindicator.ViewPagerHelper;
@@ -109,6 +110,13 @@ public class HomePageFragment extends BaseFragment {
         };
     }
 
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (hidden) {
+            VideoPlayerManager.instance().pauseVideoPlayer();
+        }
+    }
 
     private Bundle getBundle(int catalog) {
         Bundle bundle = new Bundle();
