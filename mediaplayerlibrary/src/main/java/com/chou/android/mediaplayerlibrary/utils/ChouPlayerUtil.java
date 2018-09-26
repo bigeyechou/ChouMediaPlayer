@@ -111,4 +111,39 @@ public class ChouPlayerUtil {
         }
     }
 
+    /**
+     * 保存播放位置，以便下次播放时接着上次的位置继续播放.
+     * @param context
+     * @param url     视频链接url
+     */
+    public static void savePlayPosition(Context context, String url, long position) {
+        context.getSharedPreferences("VIDEO_PLAYER_PLAY_POSITION",
+            Context.MODE_PRIVATE)
+            .edit()
+            .putLong(url, position)
+            .apply();
+    }
+
+    /**
+     * 取出上次保存的播放位置
+     * @param context
+     * @param url     视频链接url
+     * @return 上次保存的播放位置
+     */
+    public static long getSavedPlayPosition(Context context, String url) {
+        return context.getSharedPreferences("VIDEO_PLAYER_PLAY_POSITION",
+            Context.MODE_PRIVATE)
+            .getLong(url, 0);
+    }
+
+
+    /**
+     * 清除保存的位置
+     * @param context
+     */
+    public static void cleanSavePlayPosition(Context context){
+        context.getSharedPreferences("VIDEO_PLAYER_PLAY_POSITION",Context.MODE_PRIVATE).edit().clear().apply();
+    }
+
+
 }

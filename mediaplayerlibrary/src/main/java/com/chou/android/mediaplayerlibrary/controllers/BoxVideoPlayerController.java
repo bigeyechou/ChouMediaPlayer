@@ -1,7 +1,6 @@
 package com.chou.android.mediaplayerlibrary.controllers;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,7 +34,7 @@ public class BoxVideoPlayerController extends VideoPlayerBaseController
     private Context mContext;
     private String videoUrl;
     private boolean isSpeed = false;
-    private boolean isMirror = true;
+    private boolean isMirror = false;
 
     private OnDancerBoxListener onDancerBoxListener;
     public interface OnDancerBoxListener {
@@ -75,17 +74,17 @@ public class BoxVideoPlayerController extends VideoPlayerBaseController
 
     private void init() {
         LayoutInflater.from(mContext).inflate(R.layout.box_video_player_controller, this, true);
-        boxVideoBack = findViewById(R.id.box_video_back);
-        boxVideoControl = findViewById(R.id.box_video_control);
-        boxVideoMirror = findViewById(R.id.box_video_mirror);
-        boxVideoSpeed = findViewById(R.id.box_video_speed);
-        boxVideoLoading = findViewById(R.id.box_video_loading);
-        boxVideoLoadText = findViewById(R.id.box_video_load_text);
-        boxVideoError = findViewById(R.id.box_video_error);
-        boxVideoRetry = findViewById(R.id.box_video_retry);
-        boxVideoPrevious = findViewById(R.id.box_video_previous);
-        boxVideoNext = findViewById(R.id.box_video_next);
-        boxVideoFullScreen = findViewById(R.id.box_video_full_screen);
+        boxVideoBack = (ImageView) findViewById(R.id.box_video_back);
+        boxVideoControl = (LinearLayout) findViewById(R.id.box_video_control);
+        boxVideoMirror = (Button) findViewById(R.id.box_video_mirror);
+        boxVideoSpeed = (Button) findViewById(R.id.box_video_speed);
+        boxVideoLoading = (LinearLayout) findViewById(R.id.box_video_loading);
+        boxVideoLoadText = (TextView) findViewById(R.id.box_video_load_text);
+        boxVideoError = (LinearLayout) findViewById(R.id.box_video_error);
+        boxVideoRetry = (TextView) findViewById(R.id.box_video_retry);
+        boxVideoPrevious = (ImageView) findViewById(R.id.box_video_previous);
+        boxVideoNext = (ImageView) findViewById(R.id.box_video_next);
+        boxVideoFullScreen = (ImageView) findViewById(R.id.box_video_full_screen);
 
         boxVideoBack.setOnClickListener(this);
         boxVideoMirror.setOnClickListener(this);
@@ -98,8 +97,12 @@ public class BoxVideoPlayerController extends VideoPlayerBaseController
 
 
     @Override public void onClick(View v) {
+        if (videoUrl==null){
+            return;
+        }
         if (v == boxVideoBack) {//返回
             if (mOnVideoPlayerEventListener.isFullScreen()) {
+                mOnVideoPlayerEventListener.setSpeed(1f);
                 mOnVideoPlayerEventListener.exitFullScreen();
             } else {
                 if (null != onDancerBoxListener) {
@@ -108,15 +111,20 @@ public class BoxVideoPlayerController extends VideoPlayerBaseController
             }
         } else if (v == boxVideoMirror) {//镜像
             isMirror = !isMirror;
+            if (isMirror){
+                boxVideoMirror.setText("还原");
+            }else {
+                boxVideoMirror.setText("镜像");
+            }
             mOnVideoPlayerEventListener.setMirror(isMirror);
         } else if (v == boxVideoSpeed) {//调速
             isSpeed = !isSpeed;
             if (isSpeed){
                 mOnVideoPlayerEventListener.setSpeed(0.5f);
-                boxVideoSpeed.setText("慢速");
+                boxVideoSpeed.setText("原速");
             }else {
                 mOnVideoPlayerEventListener.setSpeed(1f);
-                boxVideoSpeed.setText("原速");
+                boxVideoSpeed.setText("慢速");
             }
         } else if (v == boxVideoRetry) {//重试
             mOnVideoPlayerEventListener.restart();
@@ -179,6 +187,10 @@ public class BoxVideoPlayerController extends VideoPlayerBaseController
             case ChouVideoPlayer.MODE_NORMAL:
                 boxVideoControl.setVisibility(GONE);
                 boxVideoFullScreen.setImageResource(R.mipmap.ic_video_enlarge);
+                mOnVideoPlayerEventListener.setSpeed(1f);
+                mOnVideoPlayerEventListener.setMirror(false);
+                boxVideoMirror.setText("镜像");
+                boxVideoSpeed.setText("慢速");
                 break;
             case ChouVideoPlayer.MODE_FULL_SCREEN:
                 boxVideoControl.setVisibility(VISIBLE);

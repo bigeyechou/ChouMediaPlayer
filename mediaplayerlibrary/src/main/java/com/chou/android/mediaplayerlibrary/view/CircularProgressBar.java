@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import com.chou.android.mediaplayerlibrary.R;
 
-import static com.chou.android.mediaplayerlibrary.controllers.AtVideoPlayerController.VIDEO_CUT_MAX;
 
 /**
  * Created by wxmylife on 2018/3/27.
@@ -41,6 +40,7 @@ public class CircularProgressBar extends View {
   private float highStroke;
   private RectF topTextRectF;
   private RectF bottomTextRectF;
+  private int VIDEO_CUT_MAX = 1500;
 
 
   //region Constructor & Init Method

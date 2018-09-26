@@ -1,38 +1,29 @@
 package com.chou.android.mediaplayerlibrary.controllers;
 
-import android.animation.ValueAnimator;
 import android.content.Context;
-import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-
-import android.widget.Toast;
 import com.chou.android.mediaplayerlibrary.ChouVideoPlayer;
 import com.chou.android.mediaplayerlibrary.OnVideoPlayerEventListener;
 import com.chou.android.mediaplayerlibrary.R;
 import com.chou.android.mediaplayerlibrary.VideoPlayerBaseController;
 import com.chou.android.mediaplayerlibrary.utils.ChouPlayerUtil;
-import com.chou.android.mediaplayerlibrary.view.CircularProgressBar;
-import com.chou.android.mediaplayerlibrary.view.TouchView;
 
 /**
- * 爱跳详情界面
+ * 爱跳界面
  */
 public class AtVideoPlayerController extends VideoPlayerBaseController
     implements View.OnClickListener, SeekBar.OnSeekBarChangeListener {
-    private RelativeLayout atVideoTotal;
     private TextView atVideoLoadText;
     private LinearLayout atVideoLoading;
     private TextView atVideoChangePositionCurrent;
@@ -52,16 +43,9 @@ public class AtVideoPlayerController extends VideoPlayerBaseController
     private TextView atVideoDuration;
     private ImageView atVideoFullScreen;
     private LinearLayout atVideoBottom;
-    private LinearLayout atVideoCutLayout;
-    private CircularProgressBar atVideoCutProgress;
     private ImageView atVideoReport;
-    private ImageView atVideoSaveClose;
-    private ImageView atVideoSave;
-    private ImageView atVideoRew;
-    private LinearLayout atVideoRight;
-    private ImageView atVideoSpeed;
-    private TouchView atVideoCut;
-    private ImageView atVideoMirror;
+    private TextView atVideoSpeed;
+    private TextView atVideoMirror;
 
     private Context mContext;
     /**
@@ -71,12 +55,9 @@ public class AtVideoPlayerController extends VideoPlayerBaseController
     /**
      * 隐藏显示的动画
      */
-    private Animation showTop, showBottom, showRight, hindTop, hindBottom, hindRight;
+    private Animation showTop, showBottom, hindTop, hindBottom;
     private boolean topBottomVisible;
-    /**
-     * 倒带时间
-     */
-    private static final long BACK_TIME = 5 * 1000;
+
     /**
      * 速度调节
      */
@@ -87,32 +68,19 @@ public class AtVideoPlayerController extends VideoPlayerBaseController
     private static final float SPEED_150 = 1.50f;
     private static final float SPEED_200 = 2.0f;
 
-    private boolean isShowRight = false;
-    private boolean isMirror = true;
+    private boolean isMirror = false;
 
     private String videoUrl;
     /**
      * AB循环相关
      */
     private long mProgress;
-    private long cutStartTime;
-    private long cutStopTime;
-    private int stopTime;
-    private boolean isABCirculation = false;
-    private boolean isReStart = true;
-    private boolean isScaling= false;
-    /**
-     * 录制动画相关
-     */
-    private ValueAnimator cutAnimator;
-    public static final int VIDEO_CUT_MIN = 1000;
-    public static final float VIDEO_CUT_MAX = 15000f;
-    private int currentCutTime;
-
     /**
      * 相关接口
      */
     private OnVideoDetailListener onVideoDetailListener;
+
+
     public interface OnVideoDetailListener {
         /**
          * 后退
@@ -125,8 +93,14 @@ public class AtVideoPlayerController extends VideoPlayerBaseController
         /**
          * 保存剪裁的视频
          */
-        void onVideoSaveCut(long startTime , long stopTime);
+        void onVideoSaveCut(long startTime, long stopTime);
+        /**
+         * 横竖屏变化
+         */
+        void onVideoChange(boolean isNormal);
     }
+
+
     public void setOnVideoDetailListener(OnVideoDetailListener listener) {
         this.onVideoDetailListener = listener;
     }
@@ -155,52 +129,33 @@ public class AtVideoPlayerController extends VideoPlayerBaseController
 
     private void init() {
         LayoutInflater.from(mContext).inflate(R.layout.at_video_player_controller, this, true);
-        atVideoLoadText = findViewById(R.id.at_video_load_text);
-        atVideoLoading = findViewById(R.id.at_video_loading);
-        atVideoChangePositionCurrent = findViewById(R.id.at_video_change_position_current);
-        atVideoChangePositionProgress = findViewById(R.id.at_video_change_position_progress);
-        atVideoChangePosition = findViewById(R.id.at_video_change_position);
-        atVideoChangeBrightnessProgress = findViewById(R.id.at_video_change_brightness_progress);
-        atVideoChangeBrightness = findViewById(R.id.at_video_change_brightness);
-        atVideoChangeVolumeProgress = findViewById(R.id.at_video_change_volume_progress);
-        atVideoChangeVolume = findViewById(R.id.at_video_change_volume);
-        atVideoRetry = findViewById(R.id.at_video_retry);
-        atVideoError = findViewById(R.id.at_video_error);
-        atVideoBack = findViewById(R.id.at_video_back);
-        atVideoTop = findViewById(R.id.at_video_top);
-        atVideoRestartOrPause = findViewById(R.id.at_video_restart_or_pause);
-        atVideoPosition = findViewById(R.id.at_video_position);
-        atVideoSeek = findViewById(R.id.at_video_seek);
-        atVideoDuration = findViewById(R.id.at_video_duration);
-        atVideoFullScreen = findViewById(R.id.at_video_full_screen);
-        atVideoBottom = findViewById(R.id.at_video_bottom);
-        atVideoReport = findViewById(R.id.at_video_report);
-        atVideoSaveClose = findViewById(R.id.at_video_save_close);
-        atVideoSave = findViewById(R.id.at_video_save);
-        atVideoRew = findViewById(R.id.at_video_rew);
-        atVideoRight = findViewById(R.id.at_video_right);
-        atVideoSpeed = findViewById(R.id.at_video_speed);
-        atVideoCut = findViewById(R.id.at_video_cut);
-        atVideoMirror = findViewById(R.id.at_video_mirror);
-        atVideoTotal = findViewById(R.id.rel_total);
-        atVideoCutLayout = findViewById(R.id.at_video_cut_layout);
-        atVideoCutProgress = findViewById(R.id.at_video_cut_progress);
-        /**
-         * 动画
-         */
-        cutAnimator = ValueAnimator.ofFloat(VIDEO_CUT_MAX, 0);
-        LinearInterpolator ll = new LinearInterpolator();
-        cutAnimator.setDuration((long) VIDEO_CUT_MAX);
-        cutAnimator.setInterpolator(ll);
-        cutAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override public void onAnimationUpdate(ValueAnimator animation) {
-                currentCutTime = Math.round((float) animation.getAnimatedValue());
-                atVideoCutProgress.setProgress((Float) animation.getAnimatedValue());
-                if (currentCutTime == 0) {//自动显示
-                    autoIntoCut();
-                }
-            }
-        });
+        atVideoLoadText = (TextView) findViewById(R.id.at_video_load_text);
+        atVideoLoading = (LinearLayout) findViewById(R.id.at_video_loading);
+        atVideoChangePositionCurrent = (TextView) findViewById(
+            R.id.at_video_change_position_current);
+        atVideoChangePositionProgress = (ProgressBar) findViewById(
+            R.id.at_video_change_position_progress);
+        atVideoChangePosition = (LinearLayout) findViewById(R.id.at_video_change_position);
+        atVideoChangeBrightnessProgress = (ProgressBar) findViewById(
+            R.id.at_video_change_brightness_progress);
+        atVideoChangeBrightness = (LinearLayout) findViewById(R.id.at_video_change_brightness);
+        atVideoChangeVolumeProgress = (ProgressBar) findViewById(
+            R.id.at_video_change_volume_progress);
+        atVideoChangeVolume = (LinearLayout) findViewById(R.id.at_video_change_volume);
+        atVideoRetry = (TextView) findViewById(R.id.at_video_retry);
+        atVideoError = (LinearLayout) findViewById(R.id.at_video_error);
+        atVideoBack = (ImageView) findViewById(R.id.at_video_back);
+        atVideoTop = (RelativeLayout) findViewById(R.id.at_video_top);
+        atVideoRestartOrPause = (ImageView) findViewById(R.id.at_video_restart_or_pause);
+        atVideoPosition = (TextView) findViewById(R.id.at_video_position);
+        atVideoSeek = (SeekBar) findViewById(R.id.at_video_seek);
+        atVideoDuration = (TextView) findViewById(R.id.at_video_duration);
+        atVideoFullScreen = (ImageView) findViewById(R.id.at_video_full_screen);
+        atVideoBottom = (LinearLayout) findViewById(R.id.at_video_bottom);
+        atVideoReport = (ImageView) findViewById(R.id.at_video_report);
+        atVideoSpeed = (TextView) findViewById(R.id.at_video_speed);
+        atVideoMirror = (TextView) findViewById(R.id.at_video_mirror);
+
 
         atVideoBack.setOnClickListener(this);
         atVideoRestartOrPause.setOnClickListener(this);
@@ -209,72 +164,10 @@ public class AtVideoPlayerController extends VideoPlayerBaseController
         atVideoReport.setOnClickListener(this);
         atVideoSpeed.setOnClickListener(this);
         atVideoMirror.setOnClickListener(this);
-        atVideoSave.setOnClickListener(this);
-        atVideoSaveClose.setOnClickListener(this);
-        atVideoRew.setOnClickListener(this);
         atVideoSeek.setOnSeekBarChangeListener(this);
         this.setOnClickListener(this);
-        /**
-         * 点击录制
-         */
-        atVideoCut.setOnTouchEventListener(new TouchView.OnTouchEventListener() {
-            @Override public void onTouchDown() {
-                //显示
-                touchDown();
-            }
 
-            @Override public void onTouchCancel() {
-                //隐藏
-                if (!isABCirculation){
-                    touchCancel();
-                }
-            }
-        });
     }
-
-    private void touchDown(){
-        cutAnimator.start();
-        cutShow();
-        cutStartTime = mOnVideoPlayerEventListener.getCurrentPosition();
-        isABCirculation = false;
-    }
-
-    private void touchCancel(){
-        cutStopTime = mOnVideoPlayerEventListener.getCurrentPosition();
-        stopTime = (int) (cutStopTime / 1000);
-        cutAnimator.cancel();
-
-        if (currentCutTime >= VIDEO_CUT_MAX - VIDEO_CUT_MIN) {
-            //小于1秒
-            isABCirculation = false;
-            Toast.makeText(mContext, "不能小于一秒", Toast.LENGTH_SHORT).show();
-            saveCloseShow(false);
-        } else if (currentCutTime < VIDEO_CUT_MAX - VIDEO_CUT_MIN) {
-            //1~15秒
-            saveShow();
-            isABCirculation = true;
-            mOnVideoPlayerEventListener.seekTo(cutStartTime);
-        }
-    }
-
-
-    /**
-     * AB自动停掉并播放
-     */
-    private void autoIntoCut(){
-        cutStopTime = mOnVideoPlayerEventListener.getCurrentPosition();
-        stopTime = (int) (cutStopTime / 1000);
-        cutAnimator.cancel();
-        isABCirculation = true;
-        if (!isScaling){
-            saveShow();
-        }
-        mOnVideoPlayerEventListener.seekTo(cutStartTime);
-        if (!isReStart){
-            mOnVideoPlayerEventListener.start();
-        }
-    }
-
 
     @Override public void onClick(View v) {
         if (v == atVideoBack) {
@@ -289,9 +182,13 @@ public class AtVideoPlayerController extends VideoPlayerBaseController
             if (mOnVideoPlayerEventListener.isPlaying() ||
                 mOnVideoPlayerEventListener.isBufferingPlaying()) {
                 mOnVideoPlayerEventListener.pause();
+
+                setIsSpeed(false);
             } else if (mOnVideoPlayerEventListener.isPaused() ||
                 mOnVideoPlayerEventListener.isBufferingPaused()) {
                 mOnVideoPlayerEventListener.restart();
+
+                setIsSpeed(true);
             }
         } else if (v == atVideoFullScreen) {
             if (mOnVideoPlayerEventListener.isNormal()) {
@@ -309,16 +206,14 @@ public class AtVideoPlayerController extends VideoPlayerBaseController
             setSpeed();
         } else if (v == atVideoMirror) {//镜像
             isMirror = !isMirror;
-            mOnVideoPlayerEventListener.setMirror(isMirror);
-        } else if (v == atVideoSave) {//保存
-            saveCloseShow(true);
-            if (null != onVideoDetailListener) {
-                onVideoDetailListener.onVideoSaveCut(cutStartTime, cutStopTime);
+            if (isMirror){
+                atVideoMirror.setTextColor(getResources().getColor(R.color.white40));
+                atVideoMirror.setBackground(getResources().getDrawable(R.drawable.shape_white40_2));
+            }else {
+                atVideoMirror.setTextColor(getResources().getColor(R.color.white));
+                atVideoMirror.setBackground(getResources().getDrawable(R.drawable.shape_white_2));
             }
-        } else if (v == atVideoSaveClose) {//取消保存
-            saveCloseShow(true);
-        } else if (v == atVideoRew) {//倒退
-            mOnVideoPlayerEventListener.setRewind(BACK_TIME);
+            mOnVideoPlayerEventListener.setMirror(isMirror);
         } else if (v == this) {
             if (mOnVideoPlayerEventListener.isPlaying()
                 || mOnVideoPlayerEventListener.isPaused()
@@ -329,62 +224,52 @@ public class AtVideoPlayerController extends VideoPlayerBaseController
         }
     }
 
-
     /**
-     * 录制样式
+     * 速度样式
      */
-    private void cutShow() {
-        setTopBottomVisible(false);
-        atVideoTop.setVisibility(GONE);
-        atVideoBottom.setVisibility(GONE);
-        atVideoRew.setVisibility(GONE);
-        atVideoSpeed.setVisibility(GONE);
-        atVideoMirror.setVisibility(GONE);
-        atVideoCutLayout.setVisibility(GONE);
-        atVideoRight.setVisibility(VISIBLE);
-        atVideoCut.setVisibility(VISIBLE);
-        atVideoCutLayout.setVisibility(VISIBLE);
-        isReStart = false;
-    }
-
-
-    /**
-     * 保存样式
-     */
-    private void saveShow() {
-        atVideoRight.setVisibility(GONE);
-        atVideoRew.setVisibility(GONE);
-        atVideoCut.setVisibility(GONE);
-        atVideoCutLayout.setVisibility(GONE);
-        atVideoSaveClose.setVisibility(VISIBLE);
-        atVideoSave.setVisibility(VISIBLE);
-        this.setOnClickListener(null);
-        isScaling = true;
-        mOnVideoPlayerEventListener.isVideoScaling(isScaling);
-        isReStart = false;
-    }
-
-
-    /**
-     * 结束保存样式
-     */
-    private void saveCloseShow(boolean isAnim) {
-        atVideoSaveClose.setVisibility(GONE);
-        atVideoSave.setVisibility(GONE);
-        atVideoRew.setVisibility(VISIBLE);
-        atVideoCutLayout.setVisibility(GONE);
-        atVideoMirror.setVisibility(VISIBLE);
-        atVideoSpeed.setVisibility(VISIBLE);
-        atVideoCut.setVisibility(VISIBLE);
-        this.setOnClickListener(this);
-        setTopBottomVisible(true);
-        mOnVideoPlayerEventListener.start();
-        isABCirculation = false;
-        if (isAnim) {
-            isScaling =false;
-            mOnVideoPlayerEventListener.isVideoScaling(isScaling);
+    private void setIsSpeed(boolean isSpeed) {
+        if (isSpeed) {
+            atVideoSpeed.setTextColor(getResources().getColor(R.color.white));
+            atVideoSpeed.setOnClickListener(this);
+            switch (speedType) {
+                case 1:
+                    atVideoSpeed.setText("0.5X");
+                    break;
+                case 2:
+                    atVideoSpeed.setText("0.75X");
+                    break;
+                case 3:
+                    atVideoSpeed.setText("1.0X");
+                    break;
+                case 4:
+                    atVideoSpeed.setText("1.5X");
+                    break;
+                case 5:
+                    atVideoSpeed.setText("2.0X");
+                    break;
+            }
+        } else {
+            atVideoSpeed.setOnClickListener(null);
+            atVideoSpeed.setTextColor(getResources().getColor(R.color.white40));
+            switch (speedType) {
+                case 1:
+                    atVideoSpeed.setText("0.5X");
+                    break;
+                case 2:
+                    atVideoSpeed.setText("0.75X");
+                    break;
+                case 3:
+                    atVideoSpeed.setText("1.0X");
+                    break;
+                case 4:
+                    atVideoSpeed.setText("1.5X");
+                    break;
+                case 5:
+                    atVideoSpeed.setText("2.0X");
+                    break;
+            }
         }
-        isReStart =true;
+
     }
 
 
@@ -393,6 +278,7 @@ public class AtVideoPlayerController extends VideoPlayerBaseController
      */
     private void setSpeed() {
         float speed = 1;
+        atVideoSpeed.setTextColor(getResources().getColor(R.color.white));
         if (speedType >= 5) {
             speedType = 1;
         } else {
@@ -401,23 +287,23 @@ public class AtVideoPlayerController extends VideoPlayerBaseController
         switch (speedType) {
             case 1:
                 speed = SPEED_050;
-                atVideoSpeed.setImageResource(R.mipmap.ic_wujike_media_speed_very_slow);
+                atVideoSpeed.setText("0.5X");
                 break;
             case 2:
                 speed = SPEED_075;
-                atVideoSpeed.setImageResource(R.mipmap.ic_wujike_media_speed_slow);
+                atVideoSpeed.setText("0.75X");
                 break;
             case 3:
                 speed = SPEED_100;
-                atVideoSpeed.setImageResource(R.mipmap.ic_wujike_media_speed_normal);
+                atVideoSpeed.setText("1.0X");
                 break;
             case 4:
                 speed = SPEED_150;
-                atVideoSpeed.setImageResource(R.mipmap.ic_wujike_media_speed_fast);
+                atVideoSpeed.setText("1.5X");
                 break;
             case 5:
                 speed = SPEED_200;
-                atVideoSpeed.setImageResource(R.mipmap.ic_wujike_media_speed_very_fast);
+                atVideoSpeed.setText("2.0X");
                 break;
         }
         mOnVideoPlayerEventListener.setSpeed(speed);
@@ -433,12 +319,15 @@ public class AtVideoPlayerController extends VideoPlayerBaseController
     }
 
 
+    public void startVideo() {
+        if (mOnVideoPlayerEventListener != null) {
+            mOnVideoPlayerEventListener.start();
+            atVideoRestartOrPause.setImageResource(R.mipmap.ic_video_pause);
+        }
+    }
+
     @Override public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         mProgress = (long) (progress * mOnVideoPlayerEventListener.getDuration() / 100f);
-        int pro = (int) mOnVideoPlayerEventListener.getCurrentPosition() / 1000;
-        if (isABCirculation && pro >= stopTime) {
-            mOnVideoPlayerEventListener.seekTo(cutStartTime);
-        }
         long duration = mOnVideoPlayerEventListener.getDuration();
         showChangePosition(duration, progress, false);
 
@@ -451,11 +340,6 @@ public class AtVideoPlayerController extends VideoPlayerBaseController
 
 
     @Override public void onStopTrackingTouch(SeekBar seekBar) {
-        if (mOnVideoPlayerEventListener.isBufferingPaused() ||
-            mOnVideoPlayerEventListener.isPaused()) {
-            mOnVideoPlayerEventListener.restart();
-        }
-
         mOnVideoPlayerEventListener.seekTo(mProgress);
         startDismissTopBottomTimer();
         startUpdateProgressTimer();
@@ -500,21 +384,11 @@ public class AtVideoPlayerController extends VideoPlayerBaseController
                 cancelDismissTopBottomTimer();
                 break;
             case ChouVideoPlayer.STATE_BUFFERING_PLAYING:
-                if (isABCirculation) {
-                    atVideoLoading.setVisibility(View.GONE);
-                } else {
-                    atVideoLoading.setVisibility(View.VISIBLE);
-                }
                 atVideoRestartOrPause.setImageResource(R.mipmap.ic_video_pause);
                 atVideoLoadText.setText("正在缓冲...");
                 startDismissTopBottomTimer();
                 break;
             case ChouVideoPlayer.STATE_BUFFERING_PAUSED:
-                if (isABCirculation) {
-                    atVideoLoading.setVisibility(View.GONE);
-                } else {
-                    atVideoLoading.setVisibility(View.VISIBLE);
-                }
                 atVideoRestartOrPause.setImageResource(R.mipmap.ic_video_play);
                 atVideoLoadText.setText("正在缓冲...");
                 cancelDismissTopBottomTimer();
@@ -526,13 +400,13 @@ public class AtVideoPlayerController extends VideoPlayerBaseController
                 atVideoError.setVisibility(View.VISIBLE);
                 break;
             case ChouVideoPlayer.STATE_COMPLETED:
-                if (isReStart){
-                    cancelUpdateProgressTimer();
-                    setTopBottomVisible(false);
-                    mOnVideoPlayerEventListener.restart();
-                }else {
-                    autoIntoCut();
-                }
+                // if (isReStart){
+                cancelUpdateProgressTimer();
+                setTopBottomVisible(false);
+                mOnVideoPlayerEventListener.restart();
+                // }else {
+                //     autoIntoCut();
+                // }
                 break;
         }
 
@@ -550,23 +424,34 @@ public class AtVideoPlayerController extends VideoPlayerBaseController
         switch (playMode) {
             case ChouVideoPlayer.MODE_NORMAL:
                 atVideoBack.setVisibility(View.VISIBLE);
-                atVideoRight.setVisibility(View.GONE);
-                atVideoRew.setVisibility(GONE);
-                atVideoSave.setVisibility(GONE);
-                atVideoCutLayout.setVisibility(GONE);
+                atVideoSpeed.setVisibility(View.INVISIBLE);
+                // atVideoRight.setVisibility(View.GONE);
+                // atVideoRew.setVisibility(GONE);
+                // atVideoSave.setVisibility(GONE);
+                // atVideoCutLayout.setVisibility(GONE);
                 atVideoReport.setVisibility(View.VISIBLE);
                 atVideoFullScreen.setImageResource(R.mipmap.ic_video_enlarge);
                 atVideoReport.setVisibility(VISIBLE);
-                isShowRight = false;
+                mOnVideoPlayerEventListener.setMirror(false);
+                speedType = 3;
+                setIsSpeed(false);
+                mOnVideoPlayerEventListener.setSpeed(SPEED_100);
+                if (null != onVideoDetailListener) {
+                    onVideoDetailListener.onVideoChange(true);
+                }
                 break;
             case ChouVideoPlayer.MODE_FULL_SCREEN:
                 atVideoBack.setVisibility(View.VISIBLE);
-                atVideoRight.setVisibility(View.VISIBLE);
-                atVideoRew.setVisibility(VISIBLE);
+                atVideoSpeed.setVisibility(View.VISIBLE);
+                // atVideoRight.setVisibility(View.VISIBLE);
+                // atVideoRew.setVisibility(VISIBLE);
                 atVideoReport.setVisibility(View.GONE);
                 atVideoFullScreen.setImageResource(R.mipmap.ic_video_shrink);
                 atVideoReport.setVisibility(GONE);
-                isShowRight = true;
+                setIsSpeed(true);
+                if (null != onVideoDetailListener) {
+                    onVideoDetailListener.onVideoChange(false);
+                }
                 break;
         }
     }
@@ -582,22 +467,20 @@ public class AtVideoPlayerController extends VideoPlayerBaseController
         hindTop = AnimationUtils.loadAnimation(mContext, R.anim.bottom_to_top_mirror);
         showBottom = AnimationUtils.loadAnimation(mContext, R.anim.bottom_to_top);
         hindBottom = AnimationUtils.loadAnimation(mContext, R.anim.top_to_bottom);
-        showRight = AnimationUtils.loadAnimation(mContext, R.anim.right_to_left);
-        hindRight = AnimationUtils.loadAnimation(mContext, R.anim.left_to_right);
         if (visible) {
             atVideoTop.setAnimation(showTop);
             atVideoBottom.setAnimation(showBottom);
-            atVideoRight.setAnimation(showRight);
+            // atVideoRight.setAnimation(showRight);
         } else {
             atVideoTop.setAnimation(hindTop);
             atVideoBottom.setAnimation(hindBottom);
-            atVideoRight.setAnimation(hindRight);
+            // atVideoRight.setAnimation(hindRight);
         }
         atVideoTop.setVisibility(visible ? View.VISIBLE : View.GONE);
         atVideoBottom.setVisibility(visible ? View.VISIBLE : View.GONE);
-        if (isShowRight) {
-            atVideoRight.setVisibility(visible ? View.VISIBLE : View.GONE);
-        }
+        // if (isShowRight) {
+        //     atVideoRight.setVisibility(visible ? View.VISIBLE : View.GONE);
+        // }
         topBottomVisible = visible;
         if (visible) {
             if (!mOnVideoPlayerEventListener.isPaused() &&
@@ -655,10 +538,6 @@ public class AtVideoPlayerController extends VideoPlayerBaseController
         atVideoBack.setVisibility(View.VISIBLE);
         atVideoLoading.setVisibility(View.GONE);
         atVideoError.setVisibility(View.GONE);
-        atVideoRight.setVisibility(GONE);
-        atVideoRew.setVisibility(GONE);
-        atVideoSave.setVisibility(GONE);
-        atVideoSaveClose.setVisibility(GONE);
     }
 
 

@@ -16,17 +16,12 @@ import com.chou.android.choumediaplayer.app.App;
  * @describe :
  **/
 public abstract class BaseActivity extends AppCompatActivity {
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         App.addActivity(this);
-
-        initLayout();
     }
-    /**
-     * 初始化布局
-     */
-    protected abstract void initLayout();
 
     @Override
     protected void onStart() {

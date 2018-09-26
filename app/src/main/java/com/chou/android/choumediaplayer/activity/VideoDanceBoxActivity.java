@@ -1,10 +1,11 @@
-package com.chou.android.choumediaplayer;
+package com.chou.android.choumediaplayer.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import com.chou.android.choumediaplayer.R;
 import com.chou.android.choumediaplayer.utils.NetUtils;
 import com.chou.android.mediaplayerlibrary.ChouVideoPlayer;
 import com.chou.android.mediaplayerlibrary.VideoPlayerManager;

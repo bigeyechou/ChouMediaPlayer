@@ -1,4 +1,4 @@
-package com.chou.android.choumediaplayer;
+package com.chou.android.choumediaplayer.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import com.chou.android.choumediaplayer.R;
 import com.chou.android.choumediaplayer.utils.NetUtils;
 import com.chou.android.mediaplayerlibrary.ChouVideoPlayer;
 import com.chou.android.mediaplayerlibrary.VideoPlayerManager;
@@ -87,6 +88,11 @@ public class VideoDetailActivity extends AppCompatActivity
 
 
     @Override public void onVideoSaveCut(long startTime, long stopTime) {
+
+    }
+
+
+    @Override public void onVideoChange(boolean isNormal) {
 
     }
 }

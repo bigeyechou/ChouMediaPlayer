@@ -8,7 +8,10 @@ public interface OnVideoPlayerEventListener {
      * 设置视频Url（本地/网络）
      */
     void setVideoPath(String pathUrl);
-
+    /**
+     * 设置视频橫宽样式
+     */
+    void setVideoViewType(int type);
     /**
      * 开始播放
      */
@@ -103,6 +106,18 @@ public interface OnVideoPlayerEventListener {
     void setMirror(boolean mirror);
 
     void setRewind(long backTime);
+
+    /**
+     * 开始播放时，是否从上一次的位置继续播放
+     *
+     * @param continueFromLastPosition true 接着上次的位置继续播放，false从头开始播放
+     */
+    void continueFromLastPosition(boolean continueFromLastPosition);
+
+    /**
+     * 开始播放时，是否从上一次的位置继续播放
+     */
+    void cleanLastPosition();
 
     /**
      * 进入全屏模式

@@ -1,9 +1,7 @@
-package com.chou.android.choumediaplayer;
+package com.chou.android.choumediaplayer.activity;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.annotation.BoolRes;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
@@ -11,32 +9,24 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.view.WindowInsets;
-import android.widget.FrameLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import com.chou.android.choumediaplayer.R;
 import com.chou.android.choumediaplayer.adapter.DouYinAdapter;
-import com.chou.android.choumediaplayer.datas.DataUtil;
-import com.chou.android.choumediaplayer.datas.VideoBean;
 import com.chou.android.choumediaplayer.utils.GsonUtils;
 import com.chou.android.mediaplayerlibrary.ChouVideoPlayer;
 import com.chou.android.mediaplayerlibrary.VideoPlayerManager;
-import com.chou.android.mediaplayerlibrary.controllers.BoxVideoPlayerController;
 import com.chou.android.mediaplayerlibrary.controllers.DouYinVideoPlayerController;
 import com.chou.android.network.bean.ShowVideoListBean;
 import com.chou.android.network.subscribe.MovieSubscribe;
 import com.chou.android.network.utils.OnSuccessAndFaultListener;
 import com.chou.android.network.utils.OnSuccessAndFaultSub;
-import com.danikula.videocache.HttpProxyCacheServer;
 import fr.castorflex.android.verticalviewpager.VerticalViewPager;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.chou.android.choumediaplayer.app.App.getProxy;
 
 public class DouYinActivity extends AppCompatActivity {
 

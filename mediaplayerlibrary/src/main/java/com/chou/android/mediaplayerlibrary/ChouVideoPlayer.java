@@ -18,6 +18,7 @@ import android.view.Surface;
 import android.view.TextureView;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
+import android.view.animation.ScaleAnimation;
 import android.widget.FrameLayout;
 
 import android.widget.Toast;
@@ -32,7 +33,6 @@ import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 
 public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventListener,
     TextureView.SurfaceTextureListener {
-    private static final String TAG = "ChouVideoPlayer";
     /**
      * 播放状态
      **/
@@ -51,6 +51,12 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
      **/
     public static final int MODE_NORMAL = 10;
     public static final int MODE_FULL_SCREEN = 11;
+    /**
+     * 视频样式（1 横屏 ， 0竖屏）
+     */
+    private static final int VIDEO_LAND = 1;
+    private static final int VIDEO_VERTICAL = 0;
+    private int videoViewType = VIDEO_LAND;
 
     /**
      * 设置默认
@@ -77,7 +83,8 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
     private String mVideoPath;
     private int mBufferPercentage;
     private long skipToPosition;
-
+    private long savedPlayPosition;
+    private boolean continueFromLastPosition = true;
 
     public ChouVideoPlayer(@NonNull Context context) {
         this(context, null);
@@ -122,12 +129,16 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
     }
 
 
+    /**
+     * 视频的横竖屏样式
+     * @param type
+     */
+    @Override public void setVideoViewType(int type) {
+        videoViewType = type;
+    }
+
     @Override
     public void start() {
-        if (TextUtils.isEmpty(mVideoPath)) {
-            LogUtil.e(TAG + "视频地址不存在");
-            return;
-        }
         if (mCurrentState == STATE_IDLE) {
             VideoPlayerManager.instance().setCurrentVideoPlayer(this);
             initAudioManager();
@@ -193,17 +204,18 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
             mMediaPlayer.start();
             mCurrentState = STATE_PLAYING;
             mController.onPlayStateChanged(mCurrentState);
-            LogUtil.d(TAG + "STATE_PLAYING");
+            LogUtil.d("STATE_PLAYING");
         } else if (mCurrentState == STATE_BUFFERING_PAUSED) {
             mMediaPlayer.start();
             mCurrentState = STATE_BUFFERING_PLAYING;
             mController.onPlayStateChanged(mCurrentState);
-            LogUtil.d(TAG + "STATE_BUFFERING_PLAYING");
+            LogUtil.d("STATE_BUFFERING_PLAYING");
         } else if (mCurrentState == STATE_COMPLETED || mCurrentState == STATE_ERROR) {
+            continueFromLastPosition(false);
             mMediaPlayer.reset();
             openMediaPlayer();
         } else {
-            LogUtil.d(TAG + "在mCurrentState == " + mCurrentState + "时不能调用restart()方法.");
+            LogUtil.d("在mCurrentState == " + mCurrentState + "时不能调用restart()方法.");
         }
     }
 
@@ -214,13 +226,13 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
             mMediaPlayer.pause();
             mCurrentState = STATE_PAUSED;
             mController.onPlayStateChanged(mCurrentState);
-            LogUtil.d(TAG + "STATE_PAUSED");
+            LogUtil.d("STATE_PAUSED");
         }
         if (mCurrentState == STATE_BUFFERING_PLAYING) {
             mMediaPlayer.pause();
             mCurrentState = STATE_BUFFERING_PAUSED;
             mController.onPlayStateChanged(mCurrentState);
-            LogUtil.d(TAG + "STATE_BUFFERING_PAUSED");
+            LogUtil.d("STATE_BUFFERING_PAUSED");
         }
     }
 
@@ -267,6 +279,23 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
         if (mMediaPlayer != null) {
             mMediaPlayer.setSpeed(speed);
         }
+    }
+    /**
+     * 是否从上一次的位置继续播放
+     *
+     * @param continueFromLastPosition true从上一次的位置继续播放
+     */
+    @Override
+    public void continueFromLastPosition(boolean continueFromLastPosition) {
+        this.continueFromLastPosition = continueFromLastPosition;
+    }
+
+
+    /**
+     * 清除播放位置
+     */
+    @Override public void cleanLastPosition() {
+        ChouPlayerUtil.cleanSavePlayPosition(mContext);
     }
 
 
@@ -436,7 +465,7 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
             mController.onPlayStateChanged(mCurrentState);
         } catch (IOException e) {
             e.printStackTrace();
-            LogUtil.e(TAG + "打开播放器发生错误");
+            LogUtil.e("打开播放器发生错误");
         }
     }
 
@@ -448,8 +477,13 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
         public void onPrepared(IMediaPlayer mp) {
             mCurrentState = STATE_PREPARED;
             mController.onPlayStateChanged(mCurrentState);
-            LogUtil.d(TAG + "onPrepared ——> STATE_PREPARED");
+            LogUtil.d("onPrepared ——> STATE_PREPARED");
+            // 从上次的保存位置播放
             mp.start();
+            if (continueFromLastPosition) {
+                savedPlayPosition = ChouPlayerUtil.getSavedPlayPosition(mContext, mVideoPath);
+                mp.seekTo(savedPlayPosition);
+            }
             // 跳到指定位置播放
             if (skipToPosition != 0) {
                 mp.seekTo(skipToPosition);
@@ -516,12 +550,12 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
                 // 视频旋转了extra度，需要恢复
                 if (mTextureView != null) {
                     mTextureView.setRotation(extra);
-                    LogUtil.d(TAG + "视频旋转角度：" + extra);
+                    LogUtil.d("视频旋转角度：" + extra);
                 }
             } else if (what == IMediaPlayer.MEDIA_INFO_NOT_SEEKABLE) {
-                LogUtil.d(TAG + "视频不能seekTo，为直播视频");
+                LogUtil.d("视频不能seekTo，为直播视频");
             } else {
-                LogUtil.d(TAG + "onInfo ——> what：" + what);
+                LogUtil.d("onInfo ——> what：" + what);
             }
             return true;
         }
@@ -548,9 +582,10 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
 
         // 隐藏ActionBar、状态栏，并横屏
         ChouPlayerUtil.hideActionBar(mContext);
-        ChouPlayerUtil.scanForActivity(mContext)
-            .setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-
+        if (videoViewType == VIDEO_LAND) {
+            ChouPlayerUtil.scanForActivity(mContext)
+                .setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
         ViewGroup contentView = (ViewGroup) ChouPlayerUtil.scanForActivity(mContext)
             .findViewById(android.R.id.content);
         contentView.setBackgroundColor(Color.BLACK);
@@ -558,6 +593,11 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
         LayoutParams params = new LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT);
+        if (videoViewType == VIDEO_VERTICAL){
+            ScaleAnimation scaleAnimation = new ScaleAnimation(0.3f, 1.0f, 0.3f, 1.0f,getWidth()/2,0);
+            scaleAnimation.setDuration(300);
+            mContainer.setAnimation(scaleAnimation);
+        }
         contentView.addView(mContainer, params);
 
         mCurrentMode = MODE_FULL_SCREEN;
@@ -572,8 +612,10 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
     public boolean exitFullScreen() {
         if (mCurrentMode == MODE_FULL_SCREEN) {
             ChouPlayerUtil.showActionBar(mContext);
-            ChouPlayerUtil.scanForActivity(mContext)
-                .setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            if (videoViewType == VIDEO_LAND) {
+                ChouPlayerUtil.scanForActivity(mContext)
+                    .setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            }
 
             ViewGroup contentView = (ViewGroup) ChouPlayerUtil.scanForActivity(mContext)
                 .findViewById(android.R.id.content);
@@ -582,8 +624,12 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
             LayoutParams params = new LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
+            if (videoViewType == VIDEO_VERTICAL){
+                ScaleAnimation scaleAnimation = new ScaleAnimation(1.0f, 1.0f, 1.0f, 1f,getWidth()/2,0);
+                scaleAnimation.setDuration(300);
+                mContainer.setAnimation(scaleAnimation);
+            }
             this.addView(mContainer, params);
-
             mCurrentMode = MODE_NORMAL;
             mController.onPlayModeChanged(mCurrentMode);
             return true;
@@ -617,6 +663,12 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
 
     @Override
     public void release() {
+        // 保存播放位置
+        if (isPlaying() || isBufferingPlaying() || isBufferingPaused() || isPaused()) {
+            ChouPlayerUtil.savePlayPosition(mContext, mVideoPath, getCurrentPosition());
+        } else if (isCompleted()||isError()) {
+            ChouPlayerUtil.savePlayPosition(mContext, mVideoPath, 0);
+        }
         // 退出全屏
         if (isFullScreen()) {
             exitFullScreen();
