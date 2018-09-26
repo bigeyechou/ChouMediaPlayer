@@ -13,7 +13,6 @@ import com.chou.android.mediaplayerlibrary.ChouVideoPlayer;
 import com.chou.android.mediaplayerlibrary.OnVideoPlayerEventListener;
 import com.chou.android.mediaplayerlibrary.R;
 import com.chou.android.mediaplayerlibrary.VideoPlayerBaseController;
-import com.chou.android.mediaplayerlibrary.datas.ShowVideoListBean;
 
 public class DouYinVideoPlayerController extends VideoPlayerBaseController
     implements View.OnClickListener {
@@ -25,6 +24,8 @@ public class DouYinVideoPlayerController extends VideoPlayerBaseController
     private LinearLayout dyVideoError;
     private TextView dyVideoRetry;
     private ImageView dyIvVideoShow;
+    private TextView tvLook,tvCollect,tvLike;
+    private TextView tvName,tvDescription;
 
     private Context mContext;
     private String videoUrl;
@@ -49,6 +50,11 @@ public class DouYinVideoPlayerController extends VideoPlayerBaseController
         dyIvVideoShow = findViewById(R.id.dy_iv_video_show);
         dyRelTotal.setOnClickListener(this);
         dyVideoRetry.setOnClickListener(this);
+        tvLike = findViewById(R.id.tv_like_video_douyin);
+        tvLook = findViewById(R.id.tv_look_video_douyin);
+        tvCollect = findViewById(R.id.tv_collect_video_douyin);
+        tvName = findViewById(R.id.tv_name_video_douyin);
+        tvLike = findViewById(R.id.tv_description_video_douyin);
     }
 
 
@@ -61,8 +67,12 @@ public class DouYinVideoPlayerController extends VideoPlayerBaseController
         }
     }
 
-    public void setData(ShowVideoListBean data){
-
+    public void setData(String name,String title,String look,String like,String collect){
+        tvName.setText(name);
+        tvLook.setText(look);
+        tvCollect.setText(collect);
+        tvLike.setText(like);
+        tvDescription.setText(title);
     }
 
     public void setPathUrl(String pathUrl) {

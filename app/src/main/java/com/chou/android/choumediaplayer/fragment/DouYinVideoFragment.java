@@ -99,6 +99,7 @@ public class DouYinVideoFragment extends BaseFragment {
             chouVideoPlayer.isOpenGesture(false);
             controller = new DouYinVideoPlayerController(mContext);
             controller.setPathUrl(item.getVideo_href());
+            // controller.setData(item.getUser().getUsername(),item.getVideo_title(),item.getVideo_play_nums(),item.getVideo_like_nums(),item.getVideo_collect_nums());
             chouVideoPlayer.setController(controller);
             views.add(view);
         }
@@ -222,6 +223,7 @@ public class DouYinVideoFragment extends BaseFragment {
                         chouVideoPlayer.isOpenGesture(false);
                         controller = new DouYinVideoPlayerController(mContext);
                         controller.setPathUrl(item.getVideo_href());
+                        // controller.setData(item.getUser().getUsername(),item.getVideo_title(),item.getVideo_play_nums(),item.getVideo_like_nums(),item.getVideo_collect_nums());
                         chouVideoPlayer.setController(controller);
                         views.add(view);
                     }
