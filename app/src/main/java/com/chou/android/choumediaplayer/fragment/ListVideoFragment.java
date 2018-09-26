@@ -1,5 +1,6 @@
 package com.chou.android.choumediaplayer.fragment;
 
+import android.content.Context;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -38,6 +39,7 @@ public class ListVideoFragment extends BaseFragment
     @Bind(R.id.recycler_video_list) RecyclerView recyclerVideoList;
     @Bind(R.id.swipe_video_list) SwipeRefreshLayout swipeVideoList;
 
+    private Context mContext;
     private VideoListAdapter videoAdapter;
     private List<ShowVideoListBean.ListBean> videoList = new ArrayList<>();
     private int page = 0;
@@ -50,6 +52,7 @@ public class ListVideoFragment extends BaseFragment
         Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_video_list_layout, null);
         ButterKnife.bind(this, view);
+        mContext = mContext;
         return view;
     }
 
@@ -71,7 +74,7 @@ public class ListVideoFragment extends BaseFragment
         videoAdapter = new VideoListAdapter(null);
         videoAdapter.openLoadAnimation();
         videoAdapter.setOnLoadMoreListener(this);
-        final LinearLayoutManager linearLayoutManagerVideo = new LinearLayoutManager(getContext());
+        final LinearLayoutManager linearLayoutManagerVideo = new LinearLayoutManager(mContext);
         swipeVideoList.setOnRefreshListener(this);
         recyclerVideoList.setLayoutManager(linearLayoutManagerVideo);
         recyclerVideoList.setAdapter(videoAdapter);
@@ -205,10 +208,20 @@ public class ListVideoFragment extends BaseFragment
             }
         });
     }
+    @Override public void onResume() {
+        super.onResume();
+        VideoPlayerManager.instance().resumeVideoPlayer();
+    }
 
+
+    @Override public void onPause() {
+        super.onPause();
+        VideoPlayerManager.instance().pauseVideoPlayer();
+    }
 
     @Override public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+        VideoPlayerManager.instance().releaseVideoPlayer();
     }
 }

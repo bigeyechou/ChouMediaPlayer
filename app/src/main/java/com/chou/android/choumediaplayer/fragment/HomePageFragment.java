@@ -105,7 +105,7 @@ public class HomePageFragment extends BaseFragment {
         final String[] pages = { "列表播放", "抖音" };
         return new PageInfo[] {
             new PageInfo(pages[0], ListVideoFragment.class, getBundle(0)),
-            new PageInfo(pages[1], DouYinFragment.class, getBundle(1)),
+            new PageInfo(pages[1], DouYinVideoFragment.class, getBundle(1)),
         };
     }
 
