@@ -1,15 +1,13 @@
 package com.chou.android.choumediaplayer.adapter;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chou.android.choumediaplayer.R;
 import com.chou.android.mediaplayerlibrary.ChouVideoPlayer;
-import com.chou.android.mediaplayerlibrary.controllers.FocusVideoPlayerController;
-import com.chou.android.mediaplayerlibrary.utils.ChouPlayerUtil;
+import com.chou.android.mediaplayerlibrary.controllers.ListVideoPlayerController;
 
 /**
  * @author : zgz
@@ -17,7 +15,7 @@ import com.chou.android.mediaplayerlibrary.utils.ChouPlayerUtil;
  * @describe :列表播放holder
  **/
 public class VideoListHolder extends BaseViewHolder
-    implements FocusVideoPlayerController.OnFollowListener {
+    implements ListVideoPlayerController.OnFollowListener {
 
     private ImageView playView;
 
@@ -38,7 +36,7 @@ public class VideoListHolder extends BaseViewHolder
         coverView = (ImageView) itemView.findViewById(R.id.iv_bg_video_list);
         chouVideoPlayer = (ChouVideoPlayer) itemView.findViewById(R.id.video_video_list);
         chouVideoPlayer.isOpenGesture(false);
-        FocusVideoPlayerController controller = new FocusVideoPlayerController(mContext);
+        ListVideoPlayerController controller = new ListVideoPlayerController(mContext);
         chouVideoPlayer.setController(controller);
         controller.setOnFollowListener(this);
         chouVideoPlayer.setOnClickListener(new View.OnClickListener() {

@@ -20,9 +20,9 @@ import com.chou.android.mediaplayerlibrary.VideoPlayerBaseController;
 import com.chou.android.mediaplayerlibrary.utils.ChouPlayerUtil;
 
 /**
- * 爱跳界面
+ * 普通的播放器
  */
-public class AtVideoPlayerController extends VideoPlayerBaseController
+public class CommonVideoPlayerController extends VideoPlayerBaseController
     implements View.OnClickListener, SeekBar.OnSeekBarChangeListener {
     private TextView atVideoLoadText;
     private LinearLayout atVideoLoading;
@@ -109,7 +109,7 @@ public class AtVideoPlayerController extends VideoPlayerBaseController
     /**
      * 构造
      */
-    public AtVideoPlayerController(@NonNull Context context) {
+    public CommonVideoPlayerController(@NonNull Context context) {
         super(context);
         this.mContext = context;
         init();
@@ -128,7 +128,7 @@ public class AtVideoPlayerController extends VideoPlayerBaseController
 
 
     private void init() {
-        LayoutInflater.from(mContext).inflate(R.layout.at_video_player_controller, this, true);
+        LayoutInflater.from(mContext).inflate(R.layout.common_video_player_controller, this, true);
         atVideoLoadText = (TextView) findViewById(R.id.at_video_load_text);
         atVideoLoading = (LinearLayout) findViewById(R.id.at_video_loading);
         atVideoChangePositionCurrent = (TextView) findViewById(
@@ -550,7 +550,6 @@ public class AtVideoPlayerController extends VideoPlayerBaseController
         atVideoSeek.setProgress(progress);
         atVideoPosition.setText(ChouPlayerUtil.formatTime(position));
         atVideoDuration.setText(ChouPlayerUtil.formatTime(duration));
-
     }
 
 

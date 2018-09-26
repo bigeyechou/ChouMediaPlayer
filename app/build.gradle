@@ -40,6 +40,7 @@ dependencies {
     implementation 'com.facebook.fresco:fresco:1.9.0'
     //adapter
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.35'
+    implementation 'com.github.hackware1993:MagicIndicator:1.5.0'
     api project(':mediaplayerlibrary')
     api project(':network')
 }

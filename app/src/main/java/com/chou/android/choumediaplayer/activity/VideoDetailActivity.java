@@ -1,25 +1,21 @@
 package com.chou.android.choumediaplayer.activity;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.Button;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.chou.android.choumediaplayer.R;
 import com.chou.android.choumediaplayer.utils.NetUtils;
 import com.chou.android.mediaplayerlibrary.ChouVideoPlayer;
 import com.chou.android.mediaplayerlibrary.VideoPlayerManager;
-import com.chou.android.mediaplayerlibrary.controllers.AtVideoPlayerController;
+import com.chou.android.mediaplayerlibrary.controllers.CommonVideoPlayerController;
 import com.danikula.videocache.HttpProxyCacheServer;
 
 import static com.chou.android.choumediaplayer.app.App.getProxy;
 
 public class VideoDetailActivity extends AppCompatActivity
-    implements AtVideoPlayerController.OnVideoDetailListener {
+    implements CommonVideoPlayerController.OnVideoDetailListener {
 
     @Bind(R.id.video) ChouVideoPlayer video;
     private String videoPath
@@ -39,7 +35,7 @@ public class VideoDetailActivity extends AppCompatActivity
         HttpProxyCacheServer proxy = getProxy(this);
         proxyPath = proxy.getProxyUrl(videoPath);
         video.isOpenGesture(true);
-        AtVideoPlayerController controller = new AtVideoPlayerController(this);
+        CommonVideoPlayerController controller = new CommonVideoPlayerController(this);
         controller.setPathUrl(proxyPath);
         controller.setOnVideoDetailListener(this);
         video.setController(controller);

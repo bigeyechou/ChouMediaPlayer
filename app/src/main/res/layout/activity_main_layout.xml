@@ -15,7 +15,7 @@
     <include
         android:id="@+id/tab_menu_bottom"
         layout="@layout/tab_menu_layout"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:layout_width="match_parent"
         android:layout_alignParentBottom="true"/>
 

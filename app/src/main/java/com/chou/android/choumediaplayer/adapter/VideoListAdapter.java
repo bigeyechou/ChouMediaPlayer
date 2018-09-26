@@ -60,6 +60,7 @@ public class VideoListAdapter
         helper.setText(R.id.tv_look_video_list, item.getVideo_play_nums());
         helper.setText(R.id.tv_like_video_list, item.getVideo_like_nums());
         helper.setText(R.id.tv_collect_video_list, item.getVideo_collect_nums());
+        helper.setTag(R.id.iv_time_video_list,item.getVideo_long_time());
         SimpleDraweeView focusBg = helper.getView(R.id.iv_bg_video_list);
         focusBg.setImageURI(Uri.parse(item.getVideo_cover()));
 
