@@ -29,8 +29,8 @@
 
             <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/iv_head_video_list"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 app:placeholderImage="@mipmap/ic_head_default"
                 app:failureImage="@mipmap/ic_head_default"
                 app:fadeDuration="300"
@@ -110,7 +110,7 @@
                         android:textSize="9dp"
                         android:textColor="@color/white"
                         android:padding="10dp"
-                        android:text="3:33"/>
+                        android:text=""/>
                 </RelativeLayout>
 
                 <LinearLayout

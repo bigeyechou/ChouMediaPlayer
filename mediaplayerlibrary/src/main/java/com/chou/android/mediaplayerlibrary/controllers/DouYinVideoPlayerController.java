@@ -50,11 +50,6 @@ public class DouYinVideoPlayerController extends VideoPlayerBaseController
         dyIvVideoShow = findViewById(R.id.dy_iv_video_show);
         dyRelTotal.setOnClickListener(this);
         dyVideoRetry.setOnClickListener(this);
-        tvLike = findViewById(R.id.tv_like_video_douyin);
-        tvLook = findViewById(R.id.tv_look_video_douyin);
-        tvCollect = findViewById(R.id.tv_collect_video_douyin);
-        tvName = findViewById(R.id.tv_name_video_douyin);
-        tvLike = findViewById(R.id.tv_description_video_douyin);
     }
 
 
@@ -68,6 +63,12 @@ public class DouYinVideoPlayerController extends VideoPlayerBaseController
     }
 
     public void setData(String name,String title,String look,String like,String collect){
+        tvLike = findViewById(R.id.tv_like_video_douyin);
+        tvLook = findViewById(R.id.tv_look_video_douyin);
+        tvCollect = findViewById(R.id.tv_collect_video_douyin);
+        tvName = findViewById(R.id.tv_name_video_douyin);
+        tvDescription = findViewById(R.id.tv_description_video_douyin);
+
         tvName.setText(name);
         tvLook.setText(look);
         tvCollect.setText(collect);

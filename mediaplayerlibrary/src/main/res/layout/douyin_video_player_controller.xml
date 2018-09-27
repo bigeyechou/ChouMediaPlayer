@@ -14,7 +14,7 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_centerInParent="true"
-        android:src="@mipmap/ic_follow_play"
+        android:src="@mipmap/bg_video_play_button"
         android:visibility="gone"/>
 
     <!--加载动画-->
@@ -27,9 +27,9 @@
         android:visibility="gone">
 
         <ProgressBar
-            android:layout_width="27dp"
-            android:layout_height="10dp"
-            android:indeterminateDrawable="@drawable/loading"/>
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:indeterminateDrawable="@drawable/video_loading"/>
 
         <TextView
             android:id="@+id/dy_video_load_text"
@@ -77,7 +77,8 @@
         android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="260dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="120dp"
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
@@ -86,7 +87,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@mipmap/ic_look_white"
-            android:padding="5dp"/>
+            android:padding="5dp"
+            android:layout_marginTop="10dp"/>
 
         <TextView
             android:id="@+id/tv_look_video_douyin"
@@ -149,17 +151,10 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal">
-
-            <!--<com.facebook.drawee.view.SimpleDraweeView-->
-                <!--android:id="@+id/iv_head_video_douyin"-->
-                <!--android:layout_width="36dp"-->
-                <!--android:layout_height="36dp"-->
-                <!--app:placeholderImage="@mipmap/ic_head_default"-->
-                <!--app:failureImage="@mipmap/ic_head_default"-->
-                <!--app:fadeDuration="300"-->
-                <!--app:actualImageScaleType="focusCrop"-->
-                <!--app:roundAsCircle="true"/>-->
-
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@mipmap/ic_head_default"/>
             <TextView
                 android:id="@+id/tv_name_video_douyin"
                 android:layout_width="wrap_content"
@@ -168,11 +163,10 @@
                 android:textColor="@color/white"
                 android:layout_toRightOf="@+id/iv_head_video_douyin"
                 android:layout_toLeftOf="@+id/iv_share_video_douyin"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
                 android:maxLines="1"
                 android:ellipsize="end"
-                android:text="瓜皮"/>
+                android:layout_marginLeft="10dp"
+                android:text=""/>
 
         </LinearLayout>
 
@@ -183,6 +177,6 @@
             android:layout_marginTop="10dp"
             android:textSize="15sp"
             android:textColor="@color/white"
-            android:text="嘻哈帮街舞阿达大厦大厦的卡上的理解哈飞机快拉上来看房"/>
+            android:text=""/>
     </LinearLayout>
 </RelativeLayout>

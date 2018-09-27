@@ -5,5 +5,5 @@ package com.chou.android.network.api;
  */
 
 public class URLConstant {
-    public static String BASE_URL = "http://testapi.wujike.com.cn/";
+    public static String BASE_URL = "http://api.wujike.com.cn/";
 }

@@ -45,7 +45,7 @@ public class ShowVideoListBean {
         private String video_upload_time;
         private int is_like_video;
         private String share_url;
-        private String dance_name;
+        private String dance_name = "街舞";
         private UserBean user;
 
 

@@ -81,25 +81,11 @@ public class DouYinVideoFragment extends BaseFragment {
         for (ShowVideoListBean.ListBean item : showListData) {
             inflater = LayoutInflater.from(mContext);
             View view = inflater.inflate(R.layout.douyin_item, null);
-
-            // tvLike = view.findViewById(R.id.tv_like_video_douyin);
-            // tvLook = view.findViewById(R.id.tv_look_video_douyin);
-            // tvCollect = view.findViewById(R.id.tv_collect_video_douyin);
-            // tvName = view.findViewById(R.id.tv_name_video_douyin);
-            // tvLike = view.findViewById(R.id.tv_description_video_douyin);
-            // headImage = view.findViewById(R.id.iv_head_video_douyin);
-            // tvName.setText(item.getDance_name());
-            // tvLook.setText(item.getVideo_play_nums());
-            // tvCollect.setText(item.getVideo_collect_nums());
-            // tvName.setText(item.getUser().getUsername());
-            // tvDescription.setText(item.getVideo_title());
-            // headImage.setImageURI(Uri.parse(item.getUser().getIcon()));
-
             chouVideoPlayer = view.findViewById(R.id.douyin_video);
             chouVideoPlayer.isOpenGesture(false);
             controller = new DouYinVideoPlayerController(mContext);
             controller.setPathUrl(item.getVideo_href());
-            // controller.setData(item.getUser().getUsername(),item.getVideo_title(),item.getVideo_play_nums(),item.getVideo_like_nums(),item.getVideo_collect_nums());
+            controller.setData(item.getUser().getUsername(),item.getVideo_title(),item.getVideo_play_nums(),item.getVideo_like_nums(),item.getVideo_collect_nums());
             chouVideoPlayer.setController(controller);
             views.add(view);
         }
@@ -205,25 +191,11 @@ public class DouYinVideoFragment extends BaseFragment {
                     for (ShowVideoListBean.ListBean item : showListData) {
                         View view = LayoutInflater.from(mContext)
                             .inflate(R.layout.douyin_item, null);
-
-                        // tvLike = view.findViewById(R.id.tv_like_video_douyin);
-                        // tvLook = view.findViewById(R.id.tv_look_video_douyin);
-                        // tvCollect = view.findViewById(R.id.tv_collect_video_douyin);
-                        // tvName = view.findViewById(R.id.tv_name_video_douyin);
-                        // tvLike = view.findViewById(R.id.tv_description_video_douyin);
-                        // headImage = view.findViewById(R.id.iv_head_video_douyin);
-                        // tvName.setText(item.getDance_name());
-                        // tvLook.setText(item.getVideo_play_nums());
-                        // tvCollect.setText(item.getVideo_collect_nums());
-                        // tvName.setText(item.getUser().getUsername());
-                        // tvDescription.setText(item.getVideo_title());
-                        // headImage.setImageURI(Uri.parse(item.getUser().getIcon()));
-
                         chouVideoPlayer = view.findViewById(R.id.douyin_video);
                         chouVideoPlayer.isOpenGesture(false);
                         controller = new DouYinVideoPlayerController(mContext);
                         controller.setPathUrl(item.getVideo_href());
-                        // controller.setData(item.getUser().getUsername(),item.getVideo_title(),item.getVideo_play_nums(),item.getVideo_like_nums(),item.getVideo_collect_nums());
+                        controller.setData(item.getUser().getUsername(),item.getVideo_title(),item.getVideo_play_nums(),item.getVideo_like_nums(),item.getVideo_collect_nums());
                         chouVideoPlayer.setController(controller);
                         views.add(view);
                     }
