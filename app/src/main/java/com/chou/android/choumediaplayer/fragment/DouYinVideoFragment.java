@@ -38,9 +38,6 @@ import java.util.List;
  **/
 public class DouYinVideoFragment extends BaseFragment {
     @Bind(R.id.vp_douyin) VerticalViewPager douyinViewPage;
-    private TextView tvLook,tvCollect,tvLike;
-    private TextView tvName,tvDescription;
-    private SimpleDraweeView headImage;
 
     private DouYinAdapter douYinAdapter;
     private List<View> views = new ArrayList<>();
