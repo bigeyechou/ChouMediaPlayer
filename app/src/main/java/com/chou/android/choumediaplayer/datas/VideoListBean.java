@@ -11,7 +11,7 @@ import java.util.List;
  * @time :  2018/6/22 0022 11:20
  * @describe :
  **/
-public class ShowVideoListBean implements Serializable {
+public class VideoListBean implements Serializable {
 
     private int has_more;
     private List<ListBean> list;

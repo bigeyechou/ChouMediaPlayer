@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,19 +15,16 @@ import android.widget.ImageView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.listener.OnItemChildClickListener;
-import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.chou.android.choumediaplayer.R;
 import com.chou.android.choumediaplayer.activity.VideoDetailActivity;
 import com.chou.android.choumediaplayer.adapter.VideoListAdapter;
-import com.chou.android.choumediaplayer.datas.ShowVideoListBean;
+import com.chou.android.choumediaplayer.datas.VideoListBean;
 import com.chou.android.choumediaplayer.utils.GsonUtils;
 import com.chou.android.mediaplayerlibrary.ChouVideoPlayer;
 import com.chou.android.mediaplayerlibrary.VideoPlayerManager;
 import com.chou.android.network.subscribe.MovieSubscribe;
 import com.chou.android.network.utils.OnSuccessAndFaultListener;
 import com.chou.android.network.utils.OnSuccessAndFaultSub;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,10 +44,9 @@ public class ListVideoFragment extends BaseFragment
     private Context mContext;
     private VideoListAdapter videoAdapter;
     private LinearLayoutManager linearLayoutManagerVideo;
-    private List<ShowVideoListBean.ListBean> videoList = new ArrayList<>();
+    private List<VideoListBean.ListBean> videoList = new ArrayList<>();
     private int page = 0;
     private int isMore = 0;
-    private int user_id = 32;
 
 
     @Override
@@ -73,7 +68,7 @@ public class ListVideoFragment extends BaseFragment
 
 
     private void intData() {
-        getShowList();
+        getVideoList();
     }
 
 
@@ -189,15 +184,15 @@ public class ListVideoFragment extends BaseFragment
 
 
     /**
-     * 秀场
+     * 视频列表
      */
-    private void getShowList() {
+    private void getVideoList() {
         OnSuccessAndFaultListener l = new OnSuccessAndFaultListener() {
             @Override public void onSuccess(String result) {
-                ShowVideoListBean showVideoListBean = GsonUtils.fromJson(result,
-                    ShowVideoListBean.class);
-                isMore = showVideoListBean.getHas_more();
-                videoList = showVideoListBean.getList();
+                VideoListBean videoListBean = GsonUtils.fromJson(result,
+                    VideoListBean.class);
+                isMore = videoListBean.getHas_more();
+                videoList = videoListBean.getList();
                 swipeVideoList.setRefreshing(false);
                 if (page == 0) {
                     videoAdapter.setNewData(videoList);
@@ -214,14 +209,14 @@ public class ListVideoFragment extends BaseFragment
                 swipeVideoList.setRefreshing(false);
             }
         };
-        MovieSubscribe.getShowList(new OnSuccessAndFaultSub(l), page + "", user_id + "");
+        MovieSubscribe.getShowList(new OnSuccessAndFaultSub(l), page + "");
     }
 
 
     @Override public void onRefresh() {
         VideoPlayerManager.instance().releaseVideoPlayer();
         page = 0;
-        getShowList();
+        getVideoList();
     }
 
 
@@ -230,7 +225,7 @@ public class ListVideoFragment extends BaseFragment
         recyclerVideoList.post(new Runnable() {
             @Override public void run() {
                 if (isMore == 1) {
-                    getShowList();
+                    getVideoList();
                 } else {
                     videoAdapter.loadMoreEnd();
                 }

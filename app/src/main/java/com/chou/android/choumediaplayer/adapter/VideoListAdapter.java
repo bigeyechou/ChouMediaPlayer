@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chou.android.choumediaplayer.R;
-import com.chou.android.choumediaplayer.datas.ShowVideoListBean;
+import com.chou.android.choumediaplayer.datas.VideoListBean;
 import com.facebook.drawee.view.SimpleDraweeView;
 import java.util.List;
 
@@ -19,21 +19,21 @@ import java.util.List;
  * @describe :视频播放列表adapter
  **/
 public class VideoListAdapter
-    extends BaseMultiItemQuickAdapter<ShowVideoListBean.ListBean, BaseViewHolder> {
+    extends BaseMultiItemQuickAdapter<VideoListBean.ListBean, BaseViewHolder> {
 
     private VideoListHolder holderLand;
     private VideoListHolder holderVertical;
 
 
-    public VideoListAdapter(@Nullable List<ShowVideoListBean.ListBean> data) {
+    public VideoListAdapter(@Nullable List<VideoListBean.ListBean> data) {
         super(data);
-        addItemType(ShowVideoListBean.ListBean.VIDEO_LAND, R.layout.item_video_list);
-        addItemType(ShowVideoListBean.ListBean.VIDEO_VERTICAL, R.layout.item_video_list);
+        addItemType(VideoListBean.ListBean.VIDEO_LAND, R.layout.item_video_list);
+        addItemType(VideoListBean.ListBean.VIDEO_VERTICAL, R.layout.item_video_list);
     }
 
 
     @Override protected BaseViewHolder onCreateDefViewHolder(ViewGroup parent, int viewType) {
-        if (ShowVideoListBean.ListBean.VIDEO_LAND == viewType) {
+        if (VideoListBean.ListBean.VIDEO_LAND == viewType) {
             return new VideoListHolder(getItemView(R.layout.item_video_list, parent),
                 mContext);
         } else {
@@ -44,8 +44,8 @@ public class VideoListAdapter
 
 
     @Override
-    protected void convert(final BaseViewHolder helper, final ShowVideoListBean.ListBean item) {
-        if (helper.getItemViewType() == ShowVideoListBean.ListBean.VIDEO_LAND) {
+    protected void convert(final BaseViewHolder helper, final VideoListBean.ListBean item) {
+        if (helper.getItemViewType() == VideoListBean.ListBean.VIDEO_LAND) {
             holderLand = (VideoListHolder) helper;
             holderLand.setDataTag(helper.getPosition(), item.getVideo_href());
         } else {

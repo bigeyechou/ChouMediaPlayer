@@ -31,9 +31,6 @@
             android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTop"/>
-        <activity android:name=".activity.VideoDanceBoxActivity"
-            android:screenOrientation="portrait"
-            android:configChanges="orientation|keyboardHidden|screenSize"/>
     </application>
 
 </manifest>

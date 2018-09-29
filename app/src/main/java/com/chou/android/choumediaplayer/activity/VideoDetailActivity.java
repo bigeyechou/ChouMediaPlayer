@@ -7,11 +7,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.chou.android.choumediaplayer.R;
-import com.chou.android.choumediaplayer.datas.ShowVideoListBean;
+import com.chou.android.choumediaplayer.datas.VideoListBean;
 import com.chou.android.choumediaplayer.utils.NetUtils;
 import com.chou.android.mediaplayerlibrary.ChouVideoPlayer;
 import com.chou.android.mediaplayerlibrary.VideoPlayerManager;
@@ -32,7 +31,7 @@ public class VideoDetailActivity extends AppCompatActivity
     @Bind(R.id.tv_name_video_detail) TextView tvNameVideoDetail;
     private String videoPath;
     private String proxyPath;
-    private ShowVideoListBean.ListBean videoData = new ShowVideoListBean.ListBean();
+    private VideoListBean.ListBean videoData = new VideoListBean.ListBean();
 
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,7 +39,7 @@ public class VideoDetailActivity extends AppCompatActivity
         setContentView(R.layout.activity_video_detail_layout);
         ButterKnife.bind(this);
         if (getIntent() != null) {
-            videoData = (ShowVideoListBean.ListBean) getIntent().getSerializableExtra("videoData");
+            videoData = (VideoListBean.ListBean) getIntent().getSerializableExtra("videoData");
         }
         initLayout();
         initVideo();

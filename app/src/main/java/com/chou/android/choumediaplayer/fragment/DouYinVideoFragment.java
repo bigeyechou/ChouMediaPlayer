@@ -1,7 +1,6 @@
 package com.chou.android.choumediaplayer.fragment;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,13 +11,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowInsets;
-import android.widget.TextView;
 import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.chou.android.choumediaplayer.R;
 import com.chou.android.choumediaplayer.adapter.DouYinAdapter;
-import com.chou.android.choumediaplayer.datas.ShowVideoListBean;
+import com.chou.android.choumediaplayer.datas.VideoListBean;
 import com.chou.android.choumediaplayer.utils.GsonUtils;
 import com.chou.android.mediaplayerlibrary.ChouVideoPlayer;
 import com.chou.android.mediaplayerlibrary.VideoPlayerManager;
@@ -26,7 +24,6 @@ import com.chou.android.mediaplayerlibrary.controllers.DouYinVideoPlayerControll
 import com.chou.android.network.subscribe.MovieSubscribe;
 import com.chou.android.network.utils.OnSuccessAndFaultListener;
 import com.chou.android.network.utils.OnSuccessAndFaultSub;
-import com.facebook.drawee.view.SimpleDraweeView;
 import fr.castorflex.android.verticalviewpager.VerticalViewPager;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,13 +41,12 @@ public class DouYinVideoFragment extends BaseFragment {
     private LayoutInflater inflater = null;
 
 
-    private List<ShowVideoListBean.ListBean> showListData = new ArrayList<>();
+    private List<VideoListBean.ListBean> showListData = new ArrayList<>();
 
     private Context mContext;
     private int mCurrentPosition;
     private int mPlayingPosition;
     private int page = 0;
-    private int user_id = 32;
 
     private ChouVideoPlayer chouVideoPlayer;
     private DouYinVideoPlayerController controller;
@@ -68,14 +64,14 @@ public class DouYinVideoFragment extends BaseFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getShowList();
+        getVideoList();
 
         // setStatusBarTransparent();
     }
 
-    private void initView(ShowVideoListBean data) {
+    private void initView(VideoListBean data) {
         showListData = data.getList();
-        for (ShowVideoListBean.ListBean item : showListData) {
+        for (VideoListBean.ListBean item : showListData) {
             inflater = LayoutInflater.from(mContext);
             View view = inflater.inflate(R.layout.douyin_item, null);
             chouVideoPlayer = view.findViewById(R.id.douyin_video);
@@ -98,7 +94,7 @@ public class DouYinVideoFragment extends BaseFragment {
                 chouVideoPlayer.pause();
                 if (mCurrentPosition == showListData.size() - 1) {
                     Toast.makeText(mContext, "加载中，请稍后", Toast.LENGTH_SHORT).show();
-                    getShowList();
+                    getVideoList();
                 }
             }
 
@@ -167,25 +163,25 @@ public class DouYinVideoFragment extends BaseFragment {
 
 
     /**
-     * 秀场
+     * 视频列表
      */
-    private void getShowList() {
+    private void getVideoList() {
         OnSuccessAndFaultListener l = new OnSuccessAndFaultListener() {
             @Override public void onSuccess(String result) {
-                ShowVideoListBean showVideoListBean = GsonUtils.fromJson(result,
-                    ShowVideoListBean.class);
+                VideoListBean videoListBean = GsonUtils.fromJson(result,
+                    VideoListBean.class);
 
-                if (showVideoListBean.getList() == null ||
-                    showVideoListBean.getList().size() == 0) {
+                if (videoListBean.getList() == null ||
+                    videoListBean.getList().size() == 0) {
                     return;
                 }
 
                 if (page == 0) {
-                    initView(showVideoListBean);
+                    initView(videoListBean);
                 } else {
-                    showListData.addAll(showVideoListBean.getList());
+                    showListData.addAll(videoListBean.getList());
                     views.clear();
-                    for (ShowVideoListBean.ListBean item : showListData) {
+                    for (VideoListBean.ListBean item : showListData) {
                         View view = LayoutInflater.from(mContext)
                             .inflate(R.layout.douyin_item, null);
                         chouVideoPlayer = view.findViewById(R.id.douyin_video);
@@ -207,7 +203,7 @@ public class DouYinVideoFragment extends BaseFragment {
 
             }
         };
-        MovieSubscribe.getShowList(new OnSuccessAndFaultSub(l), page + "", user_id + "");
+        MovieSubscribe.getShowList(new OnSuccessAndFaultSub(l), page + "");
     }
 
 

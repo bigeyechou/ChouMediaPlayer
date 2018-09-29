@@ -14,12 +14,12 @@ import okhttp3.ResponseBody;
 public class MovieSubscribe {
 
     /**
-     * 获取秀场列表页面
+     * 获取视频列表页面
      */
-    public static void getShowList(DisposableObserver<ResponseBody> subscriber, String page, String userId) {
+    public static void getShowList(DisposableObserver<ResponseBody> subscriber, String page) {
         Map<String,String> map = new HashMap<>();
         map.put("page",page);
-        map.put("user_id",userId);
+        map.put("user_id","32");
         Observable observable =  RetrofitFactory.getInstance().getHttpApi().getShowListData(map);
         RetrofitFactory.getInstance().toSubscribe(observable, subscriber);
     }
