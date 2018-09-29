@@ -192,7 +192,6 @@ public class ListVideoFragment extends BaseFragment
     @Override public void onRefresh() {
         page = 0;
         getShowList();
-        swipeVideoList.setRefreshing(false);
     }
 
 

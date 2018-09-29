@@ -1,8 +1,13 @@
 package com.chou.android.choumediaplayer.activity;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -34,6 +39,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         initLayout();
     }
 
+
     private void initLayout() {
         fm = getSupportFragmentManager();
         ft = fm.beginTransaction();
@@ -56,6 +62,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 break;
         }
     }
+
+
     public void switchCenter(Class<? extends Fragment> clazz) {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
@@ -83,6 +91,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     }
 
+
     @Override protected void onResume() {
         super.onResume();
     }
@@ -97,7 +106,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         super.onDestroy();
 
     }
-
 
     @Override
     public void onBackPressed() {
