@@ -1,6 +1,9 @@
 package com.chou.android.choumediaplayer.datas;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -8,7 +11,7 @@ import java.util.List;
  * @time :  2018/6/22 0022 11:20
  * @describe :
  **/
-public class ShowVideoListBean {
+public class ShowVideoListBean implements Serializable {
 
     private int has_more;
     private List<ListBean> list;
@@ -26,7 +29,7 @@ public class ShowVideoListBean {
     public void setList(List<ListBean> list) { this.list = list;}
 
 
-    public static class ListBean implements MultiItemEntity {
+    public static class ListBean implements MultiItemEntity,Serializable {
         public static final int VIDEO_LAND = 1;
         public static final int VIDEO_VERTICAL = 0;
         private String id;
@@ -178,7 +181,7 @@ public class ShowVideoListBean {
         }
 
 
-        public static class UserBean {
+        public static class UserBean implements Serializable {
 
             private String id;
             private String icon;

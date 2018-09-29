@@ -1,11 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.chou.android.mediaplayerlibrary.ChouVideoPlayer
-        android:id="@+id/video"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"/>
+        android:layout_height="220dp">
+
+        <com.chou.android.mediaplayerlibrary.ChouVideoPlayer
+            android:id="@+id/video_detail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/iv_bg_video_detail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:placeholderImage="@color/gainsboro"
+            app:failureImage="@color/gainsboro"
+            app:fadeDuration="300"
+            app:actualImageScaleType="focusCrop"/>
+
+        <ImageView
+            android:id="@+id/iv_start_video_detail"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerInParent="true"
+            android:src="@mipmap/bg_video_play_button"/>
+
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/tv_description_video_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:textSize="16dp"
+        android:textColor="@color/black"
+        android:text="我是标题我是标题"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:layout_marginLeft="10dp">
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/iv_head_detail"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            app:placeholderImage="@mipmap/ic_head_default"
+            app:failureImage="@mipmap/ic_head_default"
+            app:actualImageScaleType="focusCrop"
+            app:roundAsCircle="true"/>
+        <TextView
+            android:id="@+id/tv_name_video_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="@color/black"
+            android:layout_marginLeft="5dp"/>
+    </LinearLayout>
 
 </LinearLayout>

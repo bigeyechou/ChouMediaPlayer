@@ -71,9 +71,7 @@ public class CommonVideoPlayerController extends VideoPlayerBaseController
     private boolean isMirror = false;
 
     private String videoUrl;
-    /**
-     * AB循环相关
-     */
+
     private long mProgress;
     /**
      * 相关接口
@@ -91,10 +89,6 @@ public class CommonVideoPlayerController extends VideoPlayerBaseController
          */
         void onVideoInform();
         /**
-         * 保存剪裁的视频
-         */
-        void onVideoSaveCut(long startTime, long stopTime);
-        /**
          * 横竖屏变化
          */
         void onVideoChange(boolean isNormal);
@@ -106,9 +100,6 @@ public class CommonVideoPlayerController extends VideoPlayerBaseController
     }
 
 
-    /**
-     * 构造
-     */
     public CommonVideoPlayerController(@NonNull Context context) {
         super(context);
         this.mContext = context;
@@ -400,13 +391,9 @@ public class CommonVideoPlayerController extends VideoPlayerBaseController
                 atVideoError.setVisibility(View.VISIBLE);
                 break;
             case ChouVideoPlayer.STATE_COMPLETED:
-                // if (isReStart){
                 cancelUpdateProgressTimer();
                 setTopBottomVisible(false);
                 mOnVideoPlayerEventListener.restart();
-                // }else {
-                //     autoIntoCut();
-                // }
                 break;
         }
 

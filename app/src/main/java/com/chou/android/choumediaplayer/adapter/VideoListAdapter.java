@@ -75,6 +75,8 @@ public class VideoListAdapter
         }else {
             helper.setText(R.id.tv_description_video_list, item.getVideo_title());
         }
+        //给子view设置点击事件
+        helper.addOnClickListener(R.id.ll_all_video_list);
 
     }
 }

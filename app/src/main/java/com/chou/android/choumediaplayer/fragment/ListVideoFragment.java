@@ -1,8 +1,10 @@
 package com.chou.android.choumediaplayer.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,7 +16,10 @@ import android.widget.ImageView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemChildClickListener;
+import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.chou.android.choumediaplayer.R;
+import com.chou.android.choumediaplayer.activity.VideoDetailActivity;
 import com.chou.android.choumediaplayer.adapter.VideoListAdapter;
 import com.chou.android.choumediaplayer.datas.ShowVideoListBean;
 import com.chou.android.choumediaplayer.utils.GsonUtils;
@@ -23,6 +28,7 @@ import com.chou.android.mediaplayerlibrary.VideoPlayerManager;
 import com.chou.android.network.subscribe.MovieSubscribe;
 import com.chou.android.network.utils.OnSuccessAndFaultListener;
 import com.chou.android.network.utils.OnSuccessAndFaultSub;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +47,7 @@ public class ListVideoFragment extends BaseFragment
 
     private Context mContext;
     private VideoListAdapter videoAdapter;
+    private LinearLayoutManager linearLayoutManagerVideo;
     private List<ShowVideoListBean.ListBean> videoList = new ArrayList<>();
     private int page = 0;
     private int isMore = 0;
@@ -74,11 +81,33 @@ public class ListVideoFragment extends BaseFragment
         videoAdapter = new VideoListAdapter(null);
         videoAdapter.openLoadAnimation();
         videoAdapter.setOnLoadMoreListener(this);
-        final LinearLayoutManager linearLayoutManagerVideo = new LinearLayoutManager(mContext);
+        linearLayoutManagerVideo = new LinearLayoutManager(mContext);
         swipeVideoList.setOnRefreshListener(this);
         recyclerVideoList.setLayoutManager(linearLayoutManagerVideo);
         recyclerVideoList.setAdapter(videoAdapter);
         recyclerVideoList.setFocusable(false);
+        slideAutoPlay();
+        videoAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                switch (view.getId()) {
+                    case R.id.ll_all_video_list:
+                        Intent intent = new Intent(getActivity(), VideoDetailActivity.class);
+                        intent.putExtra("videoData", videoList.get(position));
+                        startActivity(intent);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
+    }
+
+
+    /**
+     * 滑动自动播放
+     */
+    private void slideAutoPlay() {
         recyclerVideoList.addOnChildAttachStateChangeListener(
             new RecyclerView.OnChildAttachStateChangeListener() {
                 @Override public void onChildViewAttachedToWindow(View view) {
@@ -165,7 +194,7 @@ public class ListVideoFragment extends BaseFragment
     private void getShowList() {
         OnSuccessAndFaultListener l = new OnSuccessAndFaultListener() {
             @Override public void onSuccess(String result) {
-                ShowVideoListBean showVideoListBean =  GsonUtils.fromJson(result,
+                ShowVideoListBean showVideoListBean = GsonUtils.fromJson(result,
                     ShowVideoListBean.class);
                 isMore = showVideoListBean.getHas_more();
                 videoList = showVideoListBean.getList();
@@ -190,6 +219,7 @@ public class ListVideoFragment extends BaseFragment
 
 
     @Override public void onRefresh() {
+        VideoPlayerManager.instance().releaseVideoPlayer();
         page = 0;
         getShowList();
     }
@@ -208,12 +238,14 @@ public class ListVideoFragment extends BaseFragment
         });
     }
 
+
     @Override public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (!isVisibleToUser) {
             VideoPlayerManager.instance().pauseVideoPlayer();
         }
     }
+
 
     @Override public void onResume() {
         super.onResume();
@@ -225,6 +257,7 @@ public class ListVideoFragment extends BaseFragment
         super.onPause();
         VideoPlayerManager.instance().pauseVideoPlayer();
     }
+
 
     @Override public void onDestroyView() {
         super.onDestroyView();
