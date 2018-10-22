@@ -418,14 +418,9 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
      */
     @Override
     public void setMirror(boolean mirror) {
-        Matrix matrix = new Matrix();
-        if (mirror) {
-            matrix.setScale(-1, 1, mTextureView.getWidth() / 2, 0);
-        } else {
-            matrix.setScale(1, 1, mTextureView.getWidth() / 2, 0);
+          if (mTextureView != null) {
+            mTextureView.setScaleX(mirror ? -1 : 1);
         }
-        mTextureView.setTransform(matrix);
-        mTextureView.invalidate();
     }
 
 
