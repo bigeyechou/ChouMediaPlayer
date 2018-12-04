@@ -107,7 +107,7 @@ public class HomePageFragment extends BaseFragment {
         return new PageInfo[] {
             new PageInfo(pages[0], ListVideoFragment.class, getBundle(0)),
             new PageInfo(pages[1], DouYinVideoFragment.class, getBundle(1)),
-            new PageInfo(pages[1], ListSupernatantFragment.class, getBundle(2)),
+            new PageInfo(pages[2], ListSupernatantFragment.class, getBundle(2)),
         };
     }
 

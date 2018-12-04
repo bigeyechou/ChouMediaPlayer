@@ -22,6 +22,7 @@ import android.view.animation.ScaleAnimation;
 import android.widget.FrameLayout;
 
 import android.widget.Toast;
+
 import com.chou.android.mediaplayerlibrary.utils.ChouPlayerUtil;
 import com.chou.android.mediaplayerlibrary.utils.LogUtil;
 import com.chou.android.mediaplayerlibrary.view.VideoTextureView;
@@ -32,7 +33,7 @@ import tv.danmaku.ijk.media.player.IMediaPlayer;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 
 public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventListener,
-    TextureView.SurfaceTextureListener {
+        TextureView.SurfaceTextureListener {
     /**
      * 播放状态
      **/
@@ -51,6 +52,7 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
      **/
     public static final int MODE_NORMAL = 10;
     public static final int MODE_FULL_SCREEN = 11;
+    public static final int MODE_TINY_WINDOW = 12;
     /**
      * 视频样式（1 横屏 ， 0竖屏）
      */
@@ -86,14 +88,15 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
     private long savedPlayPosition;
     private boolean continueFromLastPosition = true;
 
+
     public ChouVideoPlayer(@NonNull Context context) {
         this(context, null);
     }
 
 
     public ChouVideoPlayer(
-        @NonNull Context context,
-        @Nullable AttributeSet attrs) {
+            @NonNull Context context,
+            @Nullable AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
         init();
@@ -104,7 +107,7 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
         mContainer = new FrameLayout(mContext);
         mContainer.setBackgroundColor(Color.BLACK);
         LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.MATCH_PARENT);
+                ViewGroup.LayoutParams.MATCH_PARENT);
         this.addView(mContainer, params);
     }
 
@@ -115,7 +118,7 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
         mController.reset();
         mController.setVideoPlayerView(this);
         LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.MATCH_PARENT);
+                ViewGroup.LayoutParams.MATCH_PARENT);
         mContainer.addView(mController, params);
     }
 
@@ -131,11 +134,12 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
 
     /**
      * 视频的横竖屏样式
-     * @param type
      */
-    @Override public void setVideoViewType(int type) {
+    @Override
+    public void setVideoViewType(int type) {
         videoViewType = type;
     }
+
 
     @Override
     public void start() {
@@ -161,7 +165,7 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
         if (mAudioManager == null) {
             mAudioManager = (AudioManager) getContext().getSystemService(Context.AUDIO_SERVICE);
             mAudioManager.requestAudioFocus(null, AudioManager.STREAM_MUSIC,
-                AudioManager.AUDIOFOCUS_GAIN);
+                    AudioManager.AUDIOFOCUS_GAIN);
         }
     }
 
@@ -184,9 +188,9 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
     private void addTextureView() {
         mContainer.removeView(mTextureView);
         LayoutParams params = new LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            Gravity.CENTER);
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                Gravity.CENTER);
         mContainer.addView(mTextureView, 0, params);
     }
 
@@ -248,7 +252,8 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
     /**
      * 设置视频缩放
      */
-    @Override public void isVideoScaling(boolean isScaling) {
+    @Override
+    public void isVideoScaling(boolean isScaling) {
         AnimatorSet animatorSetsuofang = new AnimatorSet();//组合动画
         ObjectAnimator scaleX;
         ObjectAnimator scaleY;
@@ -280,6 +285,8 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
             mMediaPlayer.setSpeed(speed);
         }
     }
+
+
     /**
      * 是否从上一次的位置继续播放
      *
@@ -294,7 +301,8 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
     /**
      * 清除播放位置
      */
-    @Override public void cleanLastPosition() {
+    @Override
+    public void cleanLastPosition() {
         ChouPlayerUtil.cleanSavePlayPosition(mContext);
     }
 
@@ -360,6 +368,12 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
 
 
     @Override
+    public boolean isTinyWindow() {
+        return mCurrentMode == MODE_TINY_WINDOW;
+    }
+
+
+    @Override
     public boolean isNormal() {
         return mCurrentMode == MODE_NORMAL;
     }
@@ -418,9 +432,7 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
      */
     @Override
     public void setMirror(boolean mirror) {
-          if (mTextureView != null) {
-            mTextureView.setScaleX(mirror ? -1 : 1);
-        }
+        mTextureView.setScaleX(mirror ? -1 : 1);
     }
 
 
@@ -429,7 +441,8 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
      *
      * @param backTime 毫秒
      */
-    @Override public void setRewind(long backTime) {
+    @Override
+    public void setRewind(long backTime) {
         if (mMediaPlayer != null) {
             long time = mMediaPlayer.getCurrentPosition() - backTime;
             mMediaPlayer.seekTo(time);
@@ -466,8 +479,8 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
 
 
     private IjkMediaPlayer
-        .OnPreparedListener mOnPreparedListener
-        = new IjkMediaPlayer.OnPreparedListener() {
+            .OnPreparedListener mOnPreparedListener
+            = new IjkMediaPlayer.OnPreparedListener() {
         @Override
         public void onPrepared(IMediaPlayer mp) {
             mCurrentState = STATE_PREPARED;
@@ -487,7 +500,7 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
 
     };
     private IjkMediaPlayer.OnVideoSizeChangedListener mOnVideoSizeChangedListener
-        = new IjkMediaPlayer.OnVideoSizeChangedListener() {
+            = new IjkMediaPlayer.OnVideoSizeChangedListener() {
         @Override
         public void onVideoSizeChanged(IMediaPlayer mp, int width, int height, int sar_num, int sar_den) {
             mTextureView.adaptVideoSize(width, height);
@@ -495,7 +508,7 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
     };
 
     private IjkMediaPlayer.OnCompletionListener mOnCompletionListener
-        = new IjkMediaPlayer.OnCompletionListener() {
+            = new IjkMediaPlayer.OnCompletionListener() {
         @Override
         public void onCompletion(IMediaPlayer mp) {
             mCurrentState = STATE_COMPLETED;
@@ -506,7 +519,7 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
     };
 
     private IjkMediaPlayer.OnErrorListener mOnErrorListener
-        = new IjkMediaPlayer.OnErrorListener() {
+            = new IjkMediaPlayer.OnErrorListener() {
         @Override
         public boolean onError(IMediaPlayer mp, int what, int extra) {
             mCurrentState = STATE_ERROR;
@@ -516,7 +529,7 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
     };
 
     private IjkMediaPlayer.OnInfoListener mOnInfoListener
-        = new IjkMediaPlayer.OnInfoListener() {
+            = new IjkMediaPlayer.OnInfoListener() {
         @Override
         public boolean onInfo(IMediaPlayer mp, int what, int extra) {
             if (what == IMediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START) {
@@ -558,7 +571,7 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
     };
 
     private IjkMediaPlayer.OnBufferingUpdateListener mOnBufferingUpdateListener
-        = new IjkMediaPlayer.OnBufferingUpdateListener() {
+            = new IjkMediaPlayer.OnBufferingUpdateListener() {
         @Override
         public void onBufferingUpdate(IMediaPlayer mp, int percent) {
             mBufferPercentage = percent;
@@ -579,17 +592,23 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
         ChouPlayerUtil.hideActionBar(mContext);
         if (videoViewType == VIDEO_LAND) {
             ChouPlayerUtil.scanForActivity(mContext)
-                .setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                    .setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         }
         ViewGroup contentView = (ViewGroup) ChouPlayerUtil.scanForActivity(mContext)
-            .findViewById(android.R.id.content);
+                .findViewById(android.R.id.content);
         contentView.setBackgroundColor(Color.BLACK);
         this.removeView(mContainer);
+        if (mCurrentMode == MODE_TINY_WINDOW) {
+            contentView.removeView(mContainer);
+        } else {
+            this.removeView(mContainer);
+        }
         LayoutParams params = new LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.MATCH_PARENT);
-        if (videoViewType == VIDEO_VERTICAL){
-            ScaleAnimation scaleAnimation = new ScaleAnimation(0.3f, 1.0f, 0.3f, 1.0f,getWidth()/2,0);
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        if (videoViewType == VIDEO_VERTICAL) {
+            ScaleAnimation scaleAnimation = new ScaleAnimation(0.3f, 1.0f, 0.3f, 1.0f,
+                    getWidth() / 2, 0);
             scaleAnimation.setDuration(300);
             mContainer.setAnimation(scaleAnimation);
         }
@@ -609,24 +628,73 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
             ChouPlayerUtil.showActionBar(mContext);
             if (videoViewType == VIDEO_LAND) {
                 ChouPlayerUtil.scanForActivity(mContext)
-                    .setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                        .setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
             }
 
             ViewGroup contentView = (ViewGroup) ChouPlayerUtil.scanForActivity(mContext)
-                .findViewById(android.R.id.content);
+                    .findViewById(android.R.id.content);
             contentView.setBackgroundColor(Color.WHITE);
             contentView.removeView(mContainer);
             LayoutParams params = new LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT);
-            if (videoViewType == VIDEO_VERTICAL){
-                ScaleAnimation scaleAnimation = new ScaleAnimation(1.0f, 1.0f, 1.0f, 1f,getWidth()/2,0);
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT);
+            if (videoViewType == VIDEO_VERTICAL) {
+                ScaleAnimation scaleAnimation = new ScaleAnimation(1.0f, 1.0f, 1.0f, 1f,
+                        getWidth() / 2, 0);
                 scaleAnimation.setDuration(300);
                 mContainer.setAnimation(scaleAnimation);
             }
             this.addView(mContainer, params);
             mCurrentMode = MODE_NORMAL;
             mController.onPlayModeChanged(mCurrentMode);
+            return true;
+        }
+        return false;
+    }
+
+
+    /**
+     * 进入悬浮播放
+     */
+    @Override
+    public void enterTinyWindow() {
+        if (mCurrentMode == MODE_TINY_WINDOW) {
+            return;
+        }
+        this.removeView(mContainer);
+
+        ViewGroup contentView = (ViewGroup) ChouPlayerUtil.scanForActivity(mContext)
+                .findViewById(android.R.id.content);
+        // 小窗口的宽度为屏幕宽度的60%，长宽比默认为16:9，右边距、下边距为8dp。
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+                (int) (ChouPlayerUtil.getScreenWidth(mContext) * 0.6f),
+                (int) (ChouPlayerUtil.getScreenWidth(mContext) * 0.6f * 9f / 16f));
+        params.gravity = Gravity.BOTTOM | Gravity.END;
+        params.rightMargin = ChouPlayerUtil.dp2px(mContext, 8f);
+        params.bottomMargin = ChouPlayerUtil.dp2px(mContext, 8f);
+
+        contentView.addView(mContainer, params);
+
+        mCurrentMode = MODE_TINY_WINDOW;
+        mController.onPlayModeChanged(mCurrentMode);
+        LogUtil.d("MODE_TINY_WINDOW");
+    }
+
+
+    @Override
+    public boolean exitTinyWindow() {
+        if (mCurrentMode == MODE_TINY_WINDOW) {
+            ViewGroup contentView = (ViewGroup) ChouPlayerUtil.scanForActivity(mContext)
+                    .findViewById(android.R.id.content);
+            contentView.removeView(mContainer);
+            LayoutParams params = new LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT);
+            this.addView(mContainer, params);
+
+            mCurrentMode = MODE_NORMAL;
+            mController.onPlayModeChanged(mCurrentMode);
+            LogUtil.d("MODE_NORMAL");
             return true;
         }
         return false;
@@ -661,7 +729,7 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
         // 保存播放位置
         if (isPlaying() || isBufferingPlaying() || isBufferingPaused() || isPaused()) {
             ChouPlayerUtil.savePlayPosition(mContext, mVideoPath, getCurrentPosition());
-        } else if (isCompleted()||isError()) {
+        } else if (isCompleted() || isError()) {
             ChouPlayerUtil.savePlayPosition(mContext, mVideoPath, 0);
         }
         // 退出全屏

@@ -1,1 +1,1 @@
-include ':app', ':mediaplayerlibrary','network'
+include ':app', ':mediaplayerlibrary', 'network', ':bannerlibrary'

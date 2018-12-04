@@ -43,4 +43,5 @@ dependencies {
     implementation 'com.github.hackware1993:MagicIndicator:1.5.0'
     api project(':mediaplayerlibrary')
     api project(':network')
+    api project(':bannerlibrary')
 }

@@ -68,6 +68,7 @@ public interface OnVideoPlayerEventListener {
      * 播放器的模式(全屏正常视频)
      */
     boolean isFullScreen();
+    boolean isTinyWindow();
     boolean isNormal();
     /**
      * 是否开启手势
@@ -128,6 +129,18 @@ public interface OnVideoPlayerEventListener {
      * 退出全屏模式
      */
     boolean exitFullScreen();
+
+    /**
+     * 进入小窗口模式
+     */
+    void enterTinyWindow();
+
+    /**
+     * 退出小窗口模式
+     *
+     * @return true 退出小窗口
+     */
+    boolean exitTinyWindow();
 
     /**
      * 此处只释放播放器（如果要释放播放器并恢复控制器状态需要调用{@link #release()}方法）

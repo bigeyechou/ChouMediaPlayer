@@ -73,6 +73,8 @@ public class VideoPlayerManager {
         if (mVideoPlayer != null) {
             if (mVideoPlayer.isFullScreen()) {
                 return mVideoPlayer.exitFullScreen();
+            } else if (mVideoPlayer.isTinyWindow()) {
+                return mVideoPlayer.exitTinyWindow();
             }
         }
         return false;

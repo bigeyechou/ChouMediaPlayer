@@ -1,18 +1,10 @@
 package com.chou.android.choumediaplayer.adapter;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
-import com.chou.android.choumediaplayer.R;
-import com.chou.android.choumediaplayer.datas.VideoBean;
-import com.chou.android.mediaplayerlibrary.ChouVideoPlayer;
-import com.chou.android.mediaplayerlibrary.controllers.BoxVideoPlayerController;
-import com.danikula.videocache.HttpProxyCacheServer;
 import java.util.List;
-
-import static com.chou.android.choumediaplayer.app.App.getProxy;
 
 public class DouYinAdapter extends PagerAdapter {
     private List<View> mViews;
