@@ -31,6 +31,11 @@
             android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTop"/>
+
+        <activity android:name=".watch.ui.ImagePagerActivity"
+            android:theme="@style/translucent"/>
+
+        <activity android:name=".activity.LargeImageActivity"/>
     </application>
 
 </manifest>

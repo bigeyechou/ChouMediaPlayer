@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    android:id="@+id/frame_total"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/black"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.chou.android.choumediaplayer.photozoom.PhotoView
+        android:id="@+id/image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:placeholderImage="@color/gainsboro"
+        app:failureImage="@color/gainsboro"
+        app:fadeDuration="300"
+        app:actualImageScaleType="centerInside"/>
+
+</FrameLayout>
+
+
+
+
