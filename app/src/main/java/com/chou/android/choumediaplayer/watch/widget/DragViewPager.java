@@ -97,8 +97,6 @@ public class DragViewPager extends ViewPager implements View.OnClickListener {
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         if (getAdapter() instanceof ImagePagerAdapter) {
-            ImagePagerAdapter adapter = ((ImagePagerAdapter) getAdapter());
-            FrameLayout imgFrame = (FrameLayout) adapter.getItem(getCurrentItem()).getView().findViewById(R.id.frame_total);
             switch (ev.getAction()){
                 case MotionEvent.ACTION_DOWN:
                     Log.e("jc","onInterceptTouchEvent:ACTION_DOWN");
@@ -107,14 +105,11 @@ public class DragViewPager extends ViewPager implements View.OnClickListener {
                     break;
                 case MotionEvent.ACTION_MOVE:
                     Log.e("jc","onInterceptTouchEvent:ACTION_MOVE");
-                    if (imgFrame.getContext() != null && imgFrame.getY()<= imgFrame.getHeight() / imgFrame.getScaleY() / 2) {
-                        Log.e("jc","onInterceptTouchEvent:ACTION_MOVE");
                         int deltaX = Math.abs((int) (ev.getRawX() - mDownX));
                         int deltaY = (int) (ev.getRawY() - mDownY);
                         if (deltaY > DRAG_GAP_PX && deltaX <= DRAG_GAP_PX) {//往下移动超过临界，左右移动不超过临界时，拦截滑动事件
                             return true;
                         }
-                    }
                     break;
                 case MotionEvent.ACTION_UP:
                     Log.e("jc","onInterceptTouchEvent:ACTION_UP");

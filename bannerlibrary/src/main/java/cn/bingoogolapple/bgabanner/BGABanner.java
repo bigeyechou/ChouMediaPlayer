@@ -297,6 +297,14 @@ public class BGABanner extends RelativeLayout implements BGAViewPager.AutoPlayDe
     }
 
     /**
+     * 显示三张
+     */
+    public void setPageMore(){
+        if (mViewPager != null) {
+        mViewPager.setOffscreenPageLimit(3);
+        }
+    }
+    /**
      * 设置自动轮播的时间间隔
      */
     public void setAutoPlayInterval(int autoPlayInterval) {

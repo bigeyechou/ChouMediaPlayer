@@ -4,31 +4,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
-    android:background="@color/plum"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:clipChildren="false">
 
     <cn.bingoogolapple.bgabanner.BGABanner
+        style="@style/BannerDefaultStyle"
         android:id="@+id/banner"
         android:layout_width="match_parent"
-        android:layout_height="180dp"
-        style="@style/BannerDefaultStyle"
+        android:layout_height="120dp"
+        android:clipChildren="false"
         app:banner_indicatorGravity="bottom|center_horizontal"
-        app:banner_transitionEffect="defaultEffect"
-        app:banner_isNeedShowIndicatorOnOnlyOnePage="true"
+        app:banner_transitionEffect="card"
+        app:banner_isNeedShowIndicatorOnOnlyOnePage="false"
         app:banner_isNumberIndicator="false"
         app:banner_pointAutoPlayAble="true"
         app:banner_pointContainerBackground="@android:color/transparent"
         app:banner_pointDrawable="@drawable/bga_banner_selector_point_hollow"/>
 
     <Button
-        android:id="@+id/btn_watch"
+        android:id="@+id/video_download"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="浏览图片"/>
+        android:background="@color/white"
+        android:text="视频下载列表"/>
 
-    <Button
-        android:id="@+id/btn_watch_hr"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="浏览图片hr"/>
+
 </LinearLayout>

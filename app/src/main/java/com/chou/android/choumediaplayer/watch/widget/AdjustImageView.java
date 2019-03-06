@@ -9,7 +9,9 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.Scroller;
 
-public class AdjustImageView extends AppCompatImageView {
+import com.facebook.drawee.view.SimpleDraweeView;
+
+public class AdjustImageView extends SimpleDraweeView {
 
 
     boolean mAdjustViewBounds;//是否维持原图比例

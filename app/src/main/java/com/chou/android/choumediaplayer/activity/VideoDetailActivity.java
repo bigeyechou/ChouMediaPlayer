@@ -70,11 +70,6 @@ public class VideoDetailActivity extends AppCompatActivity
                 }
             }
         });
-        ivHeadDetail.setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                enterTinyWindow();
-            }
-        });
     }
 
 

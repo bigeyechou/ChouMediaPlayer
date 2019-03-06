@@ -22,6 +22,9 @@ import com.facebook.drawee.view.SimpleDraweeView;
 
 import static com.chou.android.choumediaplayer.app.App.getProxy;
 
+/**
+ * AndroidO画中画页面
+ */
 public class VideoDetailActivityForAndroidO extends AppCompatActivity
     implements CommonVideoPlayerController.OnVideoDetailListener {
 

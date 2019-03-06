@@ -1,6 +1,7 @@
 package com.chou.android.choumediaplayer.watch.ui;
 
 import android.content.Context;
+import android.graphics.drawable.Animatable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,9 +10,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 
 import com.chou.android.choumediaplayer.R;
-import com.facebook.drawee.view.SimpleDraweeView;
+import com.chou.android.choumediaplayer.watch.widget.AdjustImageView;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.controller.BaseControllerListener;
+import com.facebook.drawee.controller.ControllerListener;
+import com.facebook.drawee.interfaces.DraweeController;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -21,9 +27,11 @@ import butterknife.ButterKnife;
  */
 public class ImageDetailFragment extends Fragment {
     @Bind(R.id.image)
-    SimpleDraweeView image;
+    AdjustImageView image;
     @Bind(R.id.frame_total)
     FrameLayout frameTotal;
+    @Bind(R.id.progress)
+    ProgressBar progress;
     private String mImageUrl;
 
     private boolean isNewCreate = false, isVisible = false;//是否第一次加载完成，是否可见。
@@ -71,7 +79,7 @@ public class ImageDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View v = inflater.inflate(R.layout.image_detail_fragment,
+        final View v = inflater.inflate(R.layout.watch_image_detail_fragment,
                 container, false);
         ButterKnife.bind(this, v);
         return v;
@@ -92,7 +100,17 @@ public class ImageDetailFragment extends Fragment {
         if (onImageListener != null) {
             onImageListener.onInit();
         }
-        image.setImageURI(Uri.parse(mImageUrl));
+//        image.setImageURI(Uri.parse(mImageUrl));
+
+        ControllerListener controllerListener = new BaseControllerListener() {
+            @Override
+            public void onFinalImageSet(String id, @Nullable Object imageInfo, @Nullable Animatable animatable) {
+                super.onFinalImageSet(id, imageInfo, animatable);
+                progress.setVisibility(View.GONE);
+            }
+        };
+        DraweeController controller = Fresco.newDraweeControllerBuilder().setControllerListener(controllerListener).setUri(Uri.parse(mImageUrl)).build();
+        image.setController(controller);
     }
 
     @Override
