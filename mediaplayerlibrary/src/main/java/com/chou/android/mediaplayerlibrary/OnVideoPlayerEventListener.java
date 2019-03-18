@@ -45,7 +45,10 @@ public interface OnVideoPlayerEventListener {
      * 设置音量
      */
     void setVolume(int volume);
-
+    /**
+     * 静音非静音模式
+     */
+    void setVolumeMode(boolean volumeMode);
     /**
      * 设置播放速度，目前只有IjkPlayer有效果，原生MediaPlayer暂不支持
      */

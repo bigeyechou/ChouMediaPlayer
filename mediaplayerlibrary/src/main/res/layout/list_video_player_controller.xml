@@ -48,6 +48,14 @@
             android:textSize="13sp"/>
     </LinearLayout>
 
+    <ImageView
+        android:id="@+id/video_volume"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:padding="10dp"
+        android:src="@mipmap/ic_volume_off" />
+
     <SeekBar
         android:id="@+id/focus_video_seek"
         android:layout_width="match_parent"
@@ -64,4 +72,5 @@
         android:progressDrawable="@drawable/seek_progress_dynamic"
         android:thumb="@null"
         android:thumbOffset="0dp"/>
+
 </RelativeLayout>

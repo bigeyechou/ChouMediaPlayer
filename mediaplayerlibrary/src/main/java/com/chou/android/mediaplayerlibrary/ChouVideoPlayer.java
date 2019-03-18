@@ -278,6 +278,23 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
         }
     }
 
+    /**
+     * 静音模式
+     *
+     * @param volumeMode
+     */
+    @Override
+    public void setVolumeMode(boolean volumeMode) {
+        if (mMediaPlayer==null){
+            return;
+        }
+        ChouPlayerUtil.volumeMode = volumeMode;
+        if (volumeMode) {
+            mMediaPlayer.setVolume(1f, 1f);
+        } else {
+            mMediaPlayer.setVolume(0f, 0f);
+        }
+    }
 
     @Override
     public void setSpeed(float speed) {

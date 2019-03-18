@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -11,6 +12,7 @@ import com.chou.android.mediaplayerlibrary.ChouVideoPlayer;
 import com.chou.android.mediaplayerlibrary.OnVideoPlayerEventListener;
 import com.chou.android.mediaplayerlibrary.R;
 import com.chou.android.mediaplayerlibrary.VideoPlayerBaseController;
+import com.chou.android.mediaplayerlibrary.utils.ChouPlayerUtil;
 
 /**
  * 列表播放器
@@ -22,9 +24,13 @@ public class ListVideoPlayerController extends VideoPlayerBaseController
     private LinearLayout videoError;
     private TextView videoRetry;
     private SeekBar videoSeek;
+    private ImageView volumeControl;
 
     private Context mContext;
     private String videoUrl;
+
+    //音量控制
+    private Boolean volumeType;
 
     private ListVideoPlayerController.OnFollowListener onFollowListener;
 
@@ -73,14 +79,25 @@ public class ListVideoPlayerController extends VideoPlayerBaseController
         videoError = (LinearLayout) findViewById(R.id.focus_video_error);
         videoRetry = (TextView) findViewById(R.id.focus_video_retry);
         videoSeek = (SeekBar) findViewById(R.id.focus_video_seek);
+        volumeControl = findViewById(R.id.video_volume);
         videoRetry.setOnClickListener(this);
+        volumeControl.setOnClickListener(this);
     }
 
 
     @Override public void onClick(View v) {
         if (v == videoRetry) {
             mOnVideoPlayerEventListener.restart();
-        } else if (mOnVideoPlayerEventListener.isPlaying()
+        }else if (v == volumeControl) {//静音
+            volumeType = !volumeType;
+            if (volumeType) {
+                volumeControl.setImageResource(R.mipmap.ic_volume_on);
+                mOnVideoPlayerEventListener.setVolumeMode(volumeType);
+            } else {
+                volumeControl.setImageResource(R.mipmap.ic_volume_off);
+                mOnVideoPlayerEventListener.setVolumeMode(volumeType);
+            }
+        }  else if (mOnVideoPlayerEventListener.isPlaying()
             || mOnVideoPlayerEventListener.isPaused()
             || mOnVideoPlayerEventListener.isBufferingPlaying()
             || mOnVideoPlayerEventListener.isBufferingPaused()) {
@@ -94,6 +111,13 @@ public class ListVideoPlayerController extends VideoPlayerBaseController
 
 
     @Override protected void onPlayStateChanged(int playState) {
+        volumeType = ChouPlayerUtil.volumeMode;
+        mOnVideoPlayerEventListener.setVolumeMode(volumeType);
+        if (volumeType) {
+            volumeControl.setImageResource(R.mipmap.ic_volume_on);
+        } else {
+            volumeControl.setImageResource(R.mipmap.ic_volume_off);
+        }
         switch (playState) {
             case ChouVideoPlayer.STATE_IDLE:
                 break;

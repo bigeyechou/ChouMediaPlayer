@@ -23,6 +23,7 @@ import java.util.Locale;
  * 工具类.
  */
 public class ChouPlayerUtil {
+    public static boolean volumeMode = false;
     /**
      * Get activity from context object
      */
