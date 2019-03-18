@@ -20,7 +20,7 @@ import com.chou.android.choumediaplayer.datas.VideoListBean;
 import com.chou.android.choumediaplayer.utils.GsonUtils;
 import com.chou.android.mediaplayerlibrary.ChouVideoPlayer;
 import com.chou.android.mediaplayerlibrary.VideoPlayerManager;
-import com.chou.android.mediaplayerlibrary.controllers.DouYinVideoPlayerController;
+import com.chou.android.mediaplayerlibrary.controllers.VerticalVideoPlayerController;
 import com.chou.android.network.subscribe.MovieSubscribe;
 import com.chou.android.network.utils.OnSuccessAndFaultListener;
 import com.chou.android.network.utils.OnSuccessAndFaultSub;
@@ -49,7 +49,7 @@ public class DouYinVideoFragment extends BaseFragment {
     private int page = 0;
 
     private ChouVideoPlayer chouVideoPlayer;
-    private DouYinVideoPlayerController controller;
+    private VerticalVideoPlayerController controller;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable
@@ -76,7 +76,7 @@ public class DouYinVideoFragment extends BaseFragment {
             View view = inflater.inflate(R.layout.douyin_item, null);
             chouVideoPlayer = view.findViewById(R.id.douyin_video);
             chouVideoPlayer.isOpenGesture(false);
-            controller = new DouYinVideoPlayerController(mContext);
+            controller = new VerticalVideoPlayerController(mContext);
             controller.setPathUrl(item.getVideo_href());
             controller.setData(item.getUser().getUsername(),item.getVideo_title(),item.getVideo_play_nums(),item.getVideo_like_nums(),item.getVideo_collect_nums());
             chouVideoPlayer.setController(controller);
@@ -186,7 +186,7 @@ public class DouYinVideoFragment extends BaseFragment {
                             .inflate(R.layout.douyin_item, null);
                         chouVideoPlayer = view.findViewById(R.id.douyin_video);
                         chouVideoPlayer.isOpenGesture(false);
-                        controller = new DouYinVideoPlayerController(mContext);
+                        controller = new VerticalVideoPlayerController(mContext);
                         controller.setPathUrl(item.getVideo_href());
                         controller.setData(item.getUser().getUsername(),item.getVideo_title(),item.getVideo_play_nums(),item.getVideo_like_nums(),item.getVideo_collect_nums());
                         chouVideoPlayer.setController(controller);

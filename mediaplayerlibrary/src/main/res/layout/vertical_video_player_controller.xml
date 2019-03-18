@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/dy_rel_total"
+    android:id="@+id/rel_total"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/dy_iv_background"
+        android:id="@+id/iv_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
     <ImageView
-        android:id="@+id/dy_iv_video_show"
+        android:id="@+id/iv_video_show"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_centerInParent="true"
@@ -19,7 +19,7 @@
 
     <!--加载动画-->
     <LinearLayout
-        android:id="@+id/dy_video_loading"
+        android:id="@+id/video_loading"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
@@ -32,7 +32,7 @@
             android:indeterminateDrawable="@drawable/video_loading"/>
 
         <TextView
-            android:id="@+id/dy_video_load_text"
+            android:id="@+id/video_load_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -43,7 +43,7 @@
 
     <!--播放错误-->
     <LinearLayout
-        android:id="@+id/dy_video_error"
+        android:id="@+id/video_error"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/black"
@@ -59,7 +59,7 @@
             android:textSize="13sp"/>
 
         <TextView
-            android:id="@+id/dy_video_retry"
+            android:id="@+id/video_retry"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"

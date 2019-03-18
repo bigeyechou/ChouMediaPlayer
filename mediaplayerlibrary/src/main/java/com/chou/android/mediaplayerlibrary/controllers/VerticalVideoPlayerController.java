@@ -8,22 +8,25 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import com.bumptech.glide.Glide;
+
 import com.chou.android.mediaplayerlibrary.ChouVideoPlayer;
 import com.chou.android.mediaplayerlibrary.OnVideoPlayerEventListener;
 import com.chou.android.mediaplayerlibrary.R;
 import com.chou.android.mediaplayerlibrary.VideoPlayerBaseController;
 
-public class DouYinVideoPlayerController extends VideoPlayerBaseController
+/**
+ * 竖直播放样式
+ */
+public class VerticalVideoPlayerController extends VideoPlayerBaseController
     implements View.OnClickListener {
 
-    private RelativeLayout dyRelTotal;
-    private ImageView dyIvBackground;
-    private LinearLayout dyVideoLoading;
-    private TextView dyVideoLoadText;
-    private LinearLayout dyVideoError;
-    private TextView dyVideoRetry;
-    private ImageView dyIvVideoShow;
+    private RelativeLayout mRelTotal;
+    private ImageView mIvBackground;
+    private LinearLayout mVideoLoading;
+    private TextView mVideoLoadText;
+    private LinearLayout mVideoError;
+    private TextView mVideoRetry;
+    private ImageView mIvVideoShow;
     private TextView tvLook,tvCollect,tvLike;
     private TextView tvName,tvDescription;
 
@@ -31,7 +34,7 @@ public class DouYinVideoPlayerController extends VideoPlayerBaseController
     private String videoUrl;
 
 
-    public DouYinVideoPlayerController(
+    public VerticalVideoPlayerController(
         @NonNull Context context) {
         super(context);
         mContext = context;
@@ -40,16 +43,16 @@ public class DouYinVideoPlayerController extends VideoPlayerBaseController
 
 
     private void init() {
-        LayoutInflater.from(mContext).inflate(R.layout.douyin_video_player_controller, this, true);
-        dyRelTotal = findViewById(R.id.dy_rel_total);
-        dyIvBackground = findViewById(R.id.dy_iv_background);
-        dyVideoLoading = findViewById(R.id.dy_video_loading);
-        dyVideoLoadText = findViewById(R.id.dy_video_load_text);
-        dyVideoError = findViewById(R.id.dy_video_error);
-        dyVideoRetry = findViewById(R.id.dy_video_retry);
-        dyIvVideoShow = findViewById(R.id.dy_iv_video_show);
-        dyRelTotal.setOnClickListener(this);
-        dyVideoRetry.setOnClickListener(this);
+        LayoutInflater.from(mContext).inflate(R.layout.vertical_video_player_controller, this, true);
+        mRelTotal = findViewById(R.id.rel_total);
+        mIvBackground = findViewById(R.id.iv_background);
+        mVideoLoading = findViewById(R.id.video_loading);
+        mVideoLoadText = findViewById(R.id.video_load_text);
+        mVideoError = findViewById(R.id.video_error);
+        mVideoRetry = findViewById(R.id.video_retry);
+        mIvVideoShow = findViewById(R.id.iv_video_show);
+        mRelTotal.setOnClickListener(this);
+        mVideoRetry.setOnClickListener(this);
     }
 
 
@@ -86,15 +89,15 @@ public class DouYinVideoPlayerController extends VideoPlayerBaseController
 
 
     @Override public void onClick(View view) {
-        if (view == dyVideoRetry) {
+        if (view == mVideoRetry) {
             mOnVideoPlayerEventListener.restart();
-        }else if (view == dyRelTotal){
+        }else if (view == mRelTotal){
             if (mOnVideoPlayerEventListener.isPlaying()){
                 mOnVideoPlayerEventListener.pause();
-                dyIvVideoShow.setVisibility(VISIBLE);
+                mIvVideoShow.setVisibility(VISIBLE);
             }else {
                 mOnVideoPlayerEventListener.start();
-                dyIvVideoShow.setVisibility(GONE);
+                mIvVideoShow.setVisibility(GONE);
             }
         }
     }
@@ -105,29 +108,29 @@ public class DouYinVideoPlayerController extends VideoPlayerBaseController
             case ChouVideoPlayer.STATE_IDLE:
                 break;
             case ChouVideoPlayer.STATE_PREPARING:
-                dyVideoError.setVisibility(View.GONE);
-                dyVideoLoading.setVisibility(View.VISIBLE);
-                dyVideoLoadText.setText("正在加载...");
+                mVideoError.setVisibility(View.GONE);
+                mVideoLoading.setVisibility(View.VISIBLE);
+                mVideoLoadText.setText("正在加载...");
                 break;
             case ChouVideoPlayer.STATE_PREPARED:
                 break;
             case ChouVideoPlayer.STATE_PLAYING:
-                dyVideoLoading.setVisibility(View.GONE);
-                dyIvBackground.setVisibility(View.GONE);
+                mVideoLoading.setVisibility(View.GONE);
+                mIvBackground.setVisibility(View.GONE);
                 break;
             case ChouVideoPlayer.STATE_PAUSED:
-                dyVideoLoading.setVisibility(View.GONE);
+                mVideoLoading.setVisibility(View.GONE);
                 break;
             case ChouVideoPlayer.STATE_BUFFERING_PLAYING:
-                dyVideoLoading.setVisibility(View.GONE);
-                dyVideoLoadText.setText("正在缓冲...");
+                mVideoLoading.setVisibility(View.GONE);
+                mVideoLoadText.setText("正在缓冲...");
                 break;
             case ChouVideoPlayer.STATE_BUFFERING_PAUSED:
-                dyVideoLoading.setVisibility(View.GONE);
-                dyVideoLoadText.setText("正在缓冲...");
+                mVideoLoading.setVisibility(View.GONE);
+                mVideoLoadText.setText("正在缓冲...");
                 break;
             case ChouVideoPlayer.STATE_ERROR:
-                dyVideoError.setVisibility(View.VISIBLE);
+                mVideoError.setVisibility(View.VISIBLE);
                 break;
             case ChouVideoPlayer.STATE_COMPLETED:
                 mOnVideoPlayerEventListener.restart();
@@ -142,9 +145,9 @@ public class DouYinVideoPlayerController extends VideoPlayerBaseController
 
 
     @Override protected void reset() {
-        dyVideoLoading.setVisibility(View.GONE);
-        dyVideoError.setVisibility(View.GONE);
-        dyIvBackground.setVisibility(View.VISIBLE);
+        mVideoLoading.setVisibility(View.GONE);
+        mVideoError.setVisibility(View.GONE);
+        mIvBackground.setVisibility(View.VISIBLE);
     }
 
 

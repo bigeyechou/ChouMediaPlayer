@@ -20,7 +20,7 @@ import com.chou.android.mediaplayerlibrary.VideoPlayerBaseController;
 import com.chou.android.mediaplayerlibrary.utils.ChouPlayerUtil;
 
 /**
- *
+ * 小屏播放器样式
  */
 public class TinyVideoPlayerController extends VideoPlayerBaseController
     implements View.OnClickListener {
