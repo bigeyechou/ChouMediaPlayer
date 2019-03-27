@@ -126,7 +126,6 @@ public class ListVideoPlayerController extends VideoPlayerBaseController
                 videoLoading.setVisibility(View.VISIBLE);
                 break;
             case ChouVideoPlayer.STATE_PREPARED:
-                startUpdateProgressTimer();
                 break;
             case ChouVideoPlayer.STATE_PLAYING:
                 videoLoading.setVisibility(View.GONE);

@@ -630,9 +630,9 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
             mContainer.setAnimation(scaleAnimation);
         }
         contentView.addView(mContainer, params);
-
         mCurrentMode = MODE_FULL_SCREEN;
         mController.onPlayModeChanged(mCurrentMode);
+        mTextureView.setScaleType(VideoTextureView.FIT_CENTER);
     }
 
 
@@ -664,6 +664,7 @@ public class ChouVideoPlayer extends FrameLayout implements OnVideoPlayerEventLi
             this.addView(mContainer, params);
             mCurrentMode = MODE_NORMAL;
             mController.onPlayModeChanged(mCurrentMode);
+            mTextureView.setScaleType(VideoTextureView.CENTER_CROP);
             return true;
         }
         return false;

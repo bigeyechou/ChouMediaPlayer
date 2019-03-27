@@ -8,9 +8,13 @@ import android.view.TextureView;
  * （参考自节操播放器 https://github.com/lipangit/JieCaoVideoPlayer）
  */
 public class VideoTextureView extends TextureView {
+    public static final int FIT_CENTER  = 0;
+    public static final int CENTER_CROP = 1;
 
     private int videoHeight;
     private int videoWidth;
+    private int scaleType = CENTER_CROP;
+
 
     public VideoTextureView(Context context) {
         super(context);
@@ -22,6 +26,10 @@ public class VideoTextureView extends TextureView {
             this.videoHeight = videoHeight;
             requestLayout();
         }
+    }
+
+    public void setScaleType(int scaleType){
+        this.scaleType = scaleType;
     }
 
     @Override
@@ -59,9 +67,21 @@ public class VideoTextureView extends TextureView {
                 height = heightSpecSize;
                 // for compatibility, we adjust size based on aspect ratio
                 if (videoWidth * height < width * videoHeight) {
-                    width = height * videoWidth / videoHeight;
+                    if (scaleType == FIT_CENTER){
+                        width = height * videoWidth / videoHeight;
+                    }else if (scaleType == CENTER_CROP){
+                        height = width * videoHeight / videoWidth;
+                    }else {
+                        height = width * videoHeight / videoWidth;
+                    }
                 } else if (videoWidth * height > width * videoHeight) {
-                    height = width * videoHeight / videoWidth;
+                    if (scaleType == FIT_CENTER){
+                        height = width * videoHeight / videoWidth;
+                    }else if (scaleType == CENTER_CROP){
+                        width = height * videoWidth / videoHeight;
+                    }else {
+                        width = height * videoWidth / videoHeight;
+                    }
                 }
             } else if (widthSpecMode == MeasureSpec.EXACTLY) {
                 // only the width is fixed, adjust the height to match aspect ratio if possible
